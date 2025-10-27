@@ -1,0 +1,258 @@
+<div class="memberDetailCard">
+   
+        <div class="grid justify-content-start">
+            <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                <b>Building Combined Section</b>
+            </div>
+        </div>
+        <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                        [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code" />
+                </div>
+                <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+        </div>
+        <div class="grid mt-3">
+            <div class="col-12 col-sm-12 col-md-12 pb-0 px-4">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="primaryfields"
+                        [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-12 sm:col-12 md:col-12 pb-0 ">
+                    <p-table [value]="groupedFields"
+                        class="p-datatable-gridlines">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Coverage</th>
+                                <th>Sum Insured</th>
+                                <th>Coverage</th>
+                                <th>Sum Insured</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-row>
+                            <tr>
+                                <td>
+                                    <label
+                                        *ngIf="row[0] && !row[0]?.fieldGroup">{{
+                                        row[0]?.props?.label }}</label>
+                                    <label *ngIf="row[0]?.fieldGroup">{{
+                                        row[0]?.fieldGroup[0]?.props?.label
+                                        }}</label>
+                                </td>
+                                <td>
+                                    <fieldset
+                                        [disabled]="checkDisable(row[0]?.key)"
+                                        class="field_set">
+                                        <input
+                                            *ngIf="row[0]?.type === 'input' || row[0]?.type === 'number-input'"
+                                            pInputText
+                                            [(ngModel)]="productItem[row[0]?.key]"
+                                            class="w-full"
+                                            (keydown)="onKeyDown($event,row)"
+                                            (keyup)="CommaFormattedDynamic($event,row[0].key)"
+                                            [placeholder]="row[0]?.props?.placeholder"
+                                            [required]="row[0]?.props?.required"
+                                            styleClass="col-5 p-0 w-full" />
+                                    </fieldset>
+                                    <p-dropdown
+                                        *ngIf="row[0]?.type === 'select'"
+                                        appendTo="body"
+                                        [readonly]="checkDisable(row[0]?.key)"
+                                        class="w-full flex css"
+                                        [(ngModel)]="productItem[row[0]?.key]"
+                                        [options]="row[0]?.props?.options"
+                                        [placeholder]="row[0]?.props?.placeholder"
+                                        [required]="row[0]?.props?.required"
+                                        [filter]="true"
+                                        styleClass="col-5 p-0 w-full flex css">
+                                    </p-dropdown>
+                                </td>
+                                <td>
+                                    <!-- If row[1] is a normal field, display its label -->
+                                    <label
+                                        *ngIf="row[1] && !row[1]?.fieldGroup">{{
+                                        row[1]?.props?.label }}</label>
+                                    <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                    <label *ngIf="row[1]?.fieldGroup">{{
+                                        row[1]?.fieldGroup[0]?.props?.label
+                                        }}</label>
+                                </td>
+                                <td>
+                                    <fieldset
+                                        [disabled]="checkDisable(row[1]?.key)"
+                                        class="field_set">
+                                        <input *ngIf="row[1]?.type === 'input'"
+                                            pInputText
+                                            [(ngModel)]="productItem[row[1]?.key]"
+                                            class="w-full"
+                                            (keydown)="onKeyDown($event,row)"
+                                            (keyup)="CommaFormattedDynamic($event,row[1].key)"
+                                            [placeholder]="row[1]?.props?.placeholder"
+                                            [required]="row[1]?.props?.required"
+                                            [disabled]="checkDisable(row[1]?.key)" />
+                                    </fieldset>
+                                    <p-dropdown
+                                        *ngIf="row[1]?.type === 'select'"
+                                        [readonly]="checkDisable(row[1]?.key)"
+                                        appendTo="body" styleClass="w-full"
+                                        class="w-full flex css"
+                                        [(ngModel)]="productItem[row[1]?.key]"
+                                        [options]="row[1]?.props?.options"
+                                        [placeholder]="row[1]?.props?.placeholder"
+                                        [required]="row[1]?.props?.required"
+                                        [filter]="true">
+                                    </p-dropdown>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+            </div>
+        </div>
+        <div class="grid mt-2 px-3">
+            <div class="col-12 sm:col-6 md:col-6 pb-0">
+                <div class="grid">
+                    <div
+                        class="col-7 sm:col-6 md:col-7 flex align-items-center">
+                        <h5 style="color:#5064a6" class="mb-0">Business
+                            Interruption
+                        </h5>
+                    </div>
+                    <div class="col">
+                        <p-selectButton [options]="BIList" class="custom-select"
+                            [disabled]="endorsementSection"
+                            (click)="change('isConfirmed')"
+                            [(ngModel)]="BIValue" id="dmlYN"
+                            optionLabel="CodeDesc"
+                            optionValue="Code"></p-selectButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid mt-3" *ngIf="showInterruptions">
+            <div class="col-12 sm:col-12 md:col-12 pb-0 px-4">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="interruptionfields"
+                        [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <div class="grid mt-2 px-3" *ngIf="showExtensionToggle">
+            <div class="col-12 sm:col-6 md:col-6 pb-0">
+                <div class="grid">
+                    <div
+                        class="col-7 sm:col-6 md:col-7 flex align-items-center">
+                        <h5 style="color:#5064a6" class="mb-0">Extensions</h5>
+                    </div>
+                    <div class="col ml-4">
+                        <p-selectButton [options]="BIList" class="custom-select"
+                            [disabled]="endorsementSection"
+                            (click)="change('extensions')" [(ngModel)]="EValue"
+                            id="dmlYN" optionLabel="CodeDesc"
+                            optionValue="Code"></p-selectButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid mt-2" *ngIf="showExtensions">
+            <div class="col-12 sm:col-12 md:col-12 pb-0">
+                <h3 class="mr-3 mb-0 px-2">Extension Details</h3>
+            </div>
+        </div>
+        <div class="grid mt-3" *ngIf="showExtensions">
+            <div class="col-2 sm:col-2 md:col-2 pb-0 px-4"></div>
+            <div class="col-8 sm:col-8 md:col-8 pb-0 px-4">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="extensionfields"
+                        [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <div class="grid" *ngIf="showExtensions">
+            <div class="col-2 sm:col-2 md:col-2 pb-0 px-4"></div>
+            <div class="col-8 sm:col-8 md:col-8 pb-0 px-4">
+                    <p-table [value]="extensionTablefields"
+                        class="p-datatable-gridlines">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Cover Type</th>
+                                <th>Option</th>
+                                <th>Sum Insured</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-row>
+                            <tr>
+                                <!-- Coverage Column -->
+                                <td>
+                                    <label>{{ row.props?.label }}</label>
+                                </td>
+                                <!-- Value Column (Dropdown) -->
+                                <td>
+                                    <ng-container
+                                        *ngIf="row?.type && row.key!='PreventionofAccessBC' && row.key!='PreventionofAccess'">
+                                        <p-dropdown
+                                            *ngIf="row?.type === 'ngselect'"
+                                            [readonly]="checkDisable(row?.key)"
+                                            appendTo="body"
+                                            class="w-full flex css"
+                                            [(ngModel)]="productItem[row?.key]"
+                                            [options]="row?.props?.options"
+                                            [placeholder]="row?.props?.placeholder"
+                                            [required]="row?.props?.required"
+                                            [filter]="true"
+                                            styleClass="col-5 p-0 w-full flex css">
+                                        </p-dropdown>
+                                    </ng-container>
+                                </td>
+                                <!-- Sum Insured Column (Textbox) -->
+                                <td>
+                                    
+                                    <ng-container
+                                        *ngIf="row.key!='PreventionofAccessBC'">
+                                        <input pInputText
+                                            [readonly]="checkDisable(row?.fieldGroup[0]?.key)"
+                                            [(ngModel)]="productItem[row?.fieldGroup[0]?.key]"
+                                            class="w-full" (change)="onDynamicChange($event.target,row?.fieldGroup[0]?.key)"
+                                            (keydown)="onKeyDown($event,row?.fieldGroup[0])"
+                                            (keyup)="CommaFormattedDynamic($event,row?.fieldGroup[0]?.key)"
+                                            [required]="row?.fieldGroup[0]?.props?.required" />
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="row.key=='PreventionofAccessBC'">
+                                        <input pInputText
+                                            [(ngModel)]="productItem[row?.key]"
+                                            class="w-full"
+                                            [readonly]="checkDisable(row?.key)"
+                                            (keydown)="onKeyDown($event,row)"
+                                            (keyup)="CommaFormattedDynamic($event,row?.key)"
+                                            [required]="row?.props?.required" />
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+            </div>
+        </div>
+        <div class="text-center" *ngIf="productId!='92'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']"
+                routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)" (click)="onProceedData('Previous')" size="small"
+                    class="mr-4 text-l mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                    (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='92'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small"
+                (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small"
+                (click)="onProceedData('packageData')"></p-button>
+        </div>
+</div>

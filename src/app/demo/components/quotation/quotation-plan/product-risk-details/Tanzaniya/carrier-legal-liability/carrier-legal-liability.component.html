@@ -1,0 +1,34 @@
+ <div class="grid">
+    <div class="col-12 lg:col-8 xl:col-8 mx-auto">
+        <div class="memberDetailCard">
+            <div class="grid justify-content-start">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b>Carrier Legal Liability</b>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <div>
+                            <form [formGroup]="form">
+                                <formly-form [form]="form"
+                                    [fields]="carrierlegalliabilityFields"
+                                    [model]="productItem"></formly-form>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="grid">
+  <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+  <div class="col-12 lg:col-10 xl:col-10">
+    <div class="memberDetailCard">
+
+      <!-- Header -->
+      <div class="grid justify-content-start mb-3">
+        <div class="col-12 lg:col-10 xl:col-10">
+          <b class="text-xl">Construction at All Risk</b>
+        </div>
+      </div>
+
+      <!-- Main Form Content -->
+      <div class="grid">
+        <div class="col-12 flex md:flex-row flex-col items-start md:space-x-4">
+
+          <!-- Icon -->
+          <div class="mt-4 mr-3 ml-3">
+            <img src="./assets/images/content.png" width="40" height="35">
+          </div>
+
+          <!-- Forms -->
+          <div class="flex-1">
+
+            <!-- CAR Main Fields -->
+            <form [formGroup]="form" class="mb-4">
+              <formly-form [form]="form" [fields]="fieldsCAR" [model]="productItem" class="grid grid-cols-2 gap-4"></formly-form>
+            </form>
+
+            <!-- Construction Specific Fields -->
+            <form [formGroup]="form" class="mb-4">
+              <formly-form [form]="form" [fields]="constructionCARfields" [model]="productItem" class="grid grid-cols-2 gap-4"></formly-form>
+            </form>
+
+            <!-- Extensions Selector -->
+            <div class="flex justify-content-center align-items-center my-4">
+              <label class="mr-3 font-medium">Add Extensions?</label>
+              <p-selectButton
+                [options]="[{label: 'Yes', value: true}, {label: 'No', value: false}]"
+                [(ngModel)]="showExtensions"
+                [ngModelOptions]="{standalone: true}"
+                optionLabel="label"
+                optionValue="value"
+                class="p-button-sm">
+              </p-selectButton>
+            </div>
+
+            <hr class="my-3" />
+
+            <!-- Extensions Forms -->
+            <div *ngIf="showExtensions">
+              <form [formGroup]="form2" class="mb-4">
+                <formly-form [form]="form2" [fields]="fieldsCARAdditional" [model]="productItem" class="grid grid-cols-2 gap-4"></formly-form>
+              </form>
+              <form [formGroup]="form2" class="mb-4">
+                <formly-form [form]="form2" [fields]="fieldsCARExtensions" [model]="productItem" class="grid grid-cols-2 gap-4"></formly-form>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="text-center mt-4" *ngIf="productId!='92'">
+        <p-button styleClass="p-button-outlined" label="Back" size="small"
+          [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+        <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+          (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+          icon="pi pi-chevron-left"></p-button>
+        <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+          (click)="onProceedData('Next')"></p-button>&nbsp;
+        <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+      </div>
+
+      <div class="text-center mt-2" *ngIf="productId=='92'">
+        <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+        <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+        <p-button class="mr-2" label="Save & Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+      </div>
+
+    </div>
+  </div>
+</div>

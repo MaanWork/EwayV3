@@ -1,0 +1,26 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <ng-container *ngIf="typeValue">
+        <app-topbar [typeValue]="typeValue" [typeList]="typeList"
+            (typeValueChange)="onTypeValueChange($event)"></app-topbar>
+    </ng-container>
+    <!-- <div class="layout-sidebar" [style.width]="isMenuExpanded ? '16rem':''"> -->
+    <div  *ngIf="productType!=0" class="layout-sidebar" [style.width]="getisMenuExpanded(isMenuExpanded)" (mouseenter)="expandMenu()"
+        (mouseleave)="minimizeMenu()">
+        <div style="height: 2.5rem">
+            <p-inputSwitch [ngModel]="isMenuExpandedStatic" (ngModelChange)="toggleMenuExpandStatic()"
+                class="mb-3 flex justify-content-end"
+                *ngIf="!layoutService.state.staticMenuMobileActive && isMenuExpanded">
+            </p-inputSwitch>
+        </div>
+        <ng-container *ngIf="typeValue">
+            <app-sidebar></app-sidebar>
+        </ng-container>
+    </div>
+    <div  [ngClass]="productType == '0'? '' : 'layout-main-container'"  [style.margin-left]="getisMenuExpanded(isMenuExpanded)">
+        <div class="layout-main p-3">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <app-config></app-config>
+    <div class="layout-mask"></div>
+</div>

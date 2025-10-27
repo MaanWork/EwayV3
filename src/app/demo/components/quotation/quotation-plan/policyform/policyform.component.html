@@ -1,0 +1,185 @@
+<!-- <p-toast></p-toast> -->
+
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4 pb-0">
+            <h3 class="mr-3 mb-0 px-2">Policy-Form Details</h3>
+        </div>
+    </div>
+    <div class="grid mt-3">
+        <div class="col-12 col-sm-12 col-md-12 pb-0 px-4">
+            <form [formGroup]="form">
+                <formly-form [form]="form" [fields]="primaryfields" [model]="policyItem"></formly-form>
+            </form>
+        </div>
+    </div>
+    <div class="grid">
+
+        <div class="col-12 sm:col-12 md:col-12 pb-0 ">
+
+
+            <form [formGroup]="form">
+                <p-table [value]="groupedFields" class="p-datatable-gridlines">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Coverage</th>
+                            <th>Value</th>
+                            <th>Coverage</th>
+                            <th>Value</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>
+                                <label *ngIf="row[0] && !row[0]?.fieldGroup">{{ row[0]?.props?.label }}</label>
+                                <label *ngIf="row[0]?.fieldGroup">{{ row[0]?.fieldGroup[0]?.props?.label }}</label>
+                            </td>
+                            <td>
+                                <input *ngIf="row[0]?.type === 'input' || row[0]?.type === 'number-input'" pInputText
+                                    [formControl]="form.controls[row[0]?.key]"
+                                    [placeholder]="row[0]?.props?.placeholder" [required]="row[0]?.props?.required"
+                                    styleClass="col-5 p-0" />
+                                <p-dropdown *ngIf="row[0]?.type === 'select'" appendTo="body"
+                                    [formControl]="form.controls[row[0]?.key]" [options]="row[0]?.props?.options"
+                                    [placeholder]="row[0]?.props?.placeholder" [required]="row[0]?.props?.required"
+                                    [filter]="true" styleClass="col-5 p-0">
+                                </p-dropdown>
+                             
+                               
+
+
+                                <div
+                                    *ngIf="form.controls[row[0]?.key]?.hasError('required') && form.controls[row[0]?.key]?.touched">
+                                    <small class="error-text">This field is required.</small>
+                                </div>
+                            </td>
+
+
+                            <td>
+                                <!-- If row[1] is a normal field, display its label -->
+                                <label *ngIf="row[1] && !row[1]?.fieldGroup">{{ row[1]?.props?.label }}</label>
+
+                                <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                <label *ngIf="row[1]?.fieldGroup">{{ row[1]?.fieldGroup[0]?.props?.label }}</label>
+                            </td>
+
+                            <td>
+
+                                <input *ngIf="row[1]?.type === 'input'" pInputText
+                                    [formControl]="form.controls[row[1]?.key]"
+                                    [placeholder]="row[1]?.props?.placeholder" [required]="row[1]?.props?.required" />
+
+
+                                <p-dropdown *ngIf="row[1]?.type === 'select'" appendTo="body"
+                                    [formControl]="form.controls[row[1]?.key]" [options]="row[1]?.props?.options"
+                                    [placeholder]="row[1]?.props?.placeholder" [required]="row[1]?.props?.required"
+                                    [filter]="true">
+                                </p-dropdown>
+                            
+
+
+                                <div
+                                    *ngIf="form.controls[row[1]?.key]?.hasError('required') && form.controls[row[1]?.key]?.touched">
+                                    <small class="error-text">This field is required.</small>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </form>
+
+
+
+
+        </div>
+    </div>
+    <div class="grid mt-2 px-3">
+        <div class="col-12 sm:col-6 md:col-6 pb-0">
+            <div class="grid">
+                <div class="col-7 sm:col-6 md:col-7 flex align-items-center">
+                    <h5 style="color:#5064a6" class="mb-0">Business Interruption</h5>
+                </div>
+                <div class="col">
+                    <p-selectButton [options]="BIList" class="custom-select" (click)="change($event,'isConfirmed')"
+                        [(ngModel)]="BIValue" id="dmlYN" optionLabel="CodeDesc" optionValue="Code"></p-selectButton>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid mt-3" *ngIf="showInterruptions">
+        <div class="col-12 sm:col-12 md:col-12 pb-0 px-4">
+            <form [formGroup]="form">
+                <formly-form [form]="form" [fields]="interruptionfields" [model]="policyItem"></formly-form>
+            </form>
+        </div>
+    </div>
+    <div class="grid mt-2 px-3" *ngIf="showExtensionToggle">
+        <div class="col-12 sm:col-6 md:col-6 pb-0">
+            <div class="grid">
+                <div class="col-7 sm:col-6 md:col-7 flex align-items-center">
+                    <h5 style="color:#5064a6" class="mb-0">Extensions</h5>
+                </div>
+                <div class="col">
+                    <p-selectButton [options]="BIList" class="custom-select" (click)="change($event,'extensions')"
+                        [(ngModel)]="EValue" id="dmlYN" optionLabel="CodeDesc" optionValue="Code"></p-selectButton>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid mt-2" *ngIf="showExtensions">
+        <div class="col-12 sm:col-12 md:col-12 pb-0">
+            <h3 class="mr-3 mb-0 px-2">Extension Details</h3>
+        </div>
+    </div>
+    <div class="grid mt-3" *ngIf="showExtensions">
+        <div class="col-12 sm:col-12 md:col-12 pb-0 px-4">
+            <form [formGroup]="form">
+                <formly-form [form]="form" [fields]="extensionfields" [model]="policyItem"></formly-form>
+            </form>
+        </div>
+    </div>
+    <div class="grid" *ngIf="showExtensions">
+
+        <div class="col-12 sm:col-12 md:col-12 pb-0 ">
+            <form [formGroup]="form">
+                <p-table [value]="extensionTablefields" class="p-datatable-gridlines">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Cover Type</th>
+                            <th>Option</th>
+                            <th>Sum Insured</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <!-- Coverage Column -->
+                            <td>
+                                <label>{{ row.props?.label }}</label>
+                            </td>
+
+                            <!-- Value Column (Dropdown) -->
+                            <td>
+                                <p-dropdown *ngIf="row?.type === 'ngselect'" appendTo="body"
+                                    [formControl]="form.controls[row?.key]" [options]="row?.props?.options"
+                                    [placeholder]="row?.props?.placeholder" [required]="row?.props?.required"
+                                    [disabled]="row?.props?.disabled" [filter]="true" styleClass="col-5 p-0">
+                                </p-dropdown>
+                            </td>
+
+                            <!-- Sum Insured Column (Textbox) -->
+                            <td>
+                                <input pInputText type="number" [formControl]="form.controls[row?.key]"
+                                    placeholder="Enter Sum Insured" class="p-inputtext p-ml-2" />
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </form>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,414 @@
+<div class="container">
+    <div>
+        <div class="mt-4">
+            <div class="grid mb-3">
+                <div class="lg:col-2">
+                </div>
+                <div class="col-12 lg:col-8 xl:col-8">
+                    <div class="memberDetailCard">
+                        <div class="grid">
+                            <div class="mb-2 col-12 lg:col-7 xl:col-7">
+                                <b>Location Details</b>
+                            </div>
+                            <div class="mb-2 col-12 lg:col-5 xl:col-5">&nbsp;<p-button label="Add Location"
+                                    icon="pi pi-plus" (click)="onAddLocationDetails('new')" />&nbsp;
+                            </div>
+                        </div>
+                        <ng-container>
+                            <div class="grid mt-2">
+                                <div class="col-12 md:col-12 lg:col-12 xl:col-12">
+                                    <p-table [value]="locationList" dataKey="id" editMode="row" [rows]="5"
+                                        [paginator]="false" [tableStyle]="{'min-width': '50rem' }">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th [pSortableColumn]="column"
+                                                    *ngFor="let column of buildingColumnHeader">
+                                                    {{column}}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                                            <tr>
+                                                <td>
+                                                    <ng-container *ngIf="locationIndex==ri">
+                                                        <input class="w-full p-button-outlined"
+                                                            [disabled]="endorsementSection"
+                                                            placeholder="Enter Location Name" styleClass="w-full"
+                                                            pInputText type="text" [(ngModel)]="product.LocationName"
+                                                            (input)="product.LocationNameError=false" />
+                                                    </ng-container>
+                                                    <ng-container *ngIf="locationIndex!=ri">
+                                                        {{product.LocationName}}
+                                                    </ng-container>
+                                                    <div class="input-form-error" *ngIf="product.LocationNameError">
+                                                        <div class="error-text text-danger">
+                                                            Enter Valid LocationName
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ng-container *ngIf="locationIndex==ri">
+                                                        <input class="w-full p-button-outlined"
+                                                            [disabled]="endorsementSection" placeholder="Enter Address"
+                                                            styleClass="w-full" pInputText type="text"
+                                                            [(ngModel)]="product.BuildingAddress"
+                                                            (input)="product.BuildingAddressError=false" />
+                                                    </ng-container>
+                                                    <ng-container *ngIf="locationIndex!=ri">
+                                                        {{product.BuildingAddress}}
+                                                    </ng-container>
+                                                    <div class="input-form-error" *ngIf="product.BuildingAddressError">
+                                                        <div class="error-text text-danger">
+                                                            Enter Valid Address
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="flex align-items-center justify-content-center gap-2">
+                                                        <button pButton type="button" *ngIf="locationIndex!=ri"
+                                                            icon="pi pi-pencil" (click)="locationIndex=ri"
+                                                            styleClass="p-button-outlined">
+                                                        </button>
+                                                        <button pButton type="button" icon="pi pi-trash"
+                                                            (click)="deleteLocation(ri)" styleClass="p-button-outlined">
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="locationList.length!=0 && checkLocationDetailAlt()">
+            <div class="grid mb-3">
+                <div [ngClass]="productId == '92' || productId == '85' || productId == '66' 
+                        ? 'col-12 md:col-12 lg:col-12 xl:col-12 md:p-5 lg:p-5 xl:p-5' 
+                        : 'col-12 md:col-11 lg:col-11 xl:col-11 mx-auto md:p-5 lg:p-5 xl:p-5 m-5'">
+                    <div style="border-radius: 25px !important;">
+                        <p-tabView [(activeIndex)]="tabIndex" (onChange)="onTabChange2($event)">
+                            <ng-container *ngFor="let item of locationList;let k=index">
+                                <p-tabPanel [header]="item.LocationName">
+                                    <ng-container *ngIf="DetoriationPhoenix && industryTypeList.length!=0">
+                                        <app-detoriation-of-stock [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-detoriation-of-stock>
+                                    </ng-container>
+                                    <ng-container *ngIf="FirePhoenix && industryTypeList.length!=0">
+                                        <app-fire [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-fire>
+                                    </ng-container>
+                                    <ng-container *ngIf="UmbrellaPhoenix && industryTypeList.length!=0">
+                                        <app-umberlla-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-umberlla-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="theftPhoenix && industryTypeList.length!=0">
+                                        <app-theft [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-theft>
+                                    </ng-container>
+                                    <ng-container *ngIf="AccidentalDamagePhoneix && industryTypeList.length!=0">
+                                        <app-accidental-damage [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-accidental-damage>
+                                    </ng-container>
+                                    <ng-container *ngIf="AccountsRecivablePhoneix && industryTypeList.length!=0">
+                                        <app-accounts-recivable [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-accounts-recivable>
+                                    </ng-container>
+                                    <ng-container *ngIf="BuildingCombinedPhoenix && industryTypeList.length!=0">
+                                        <app-building [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-building>
+                                    </ng-container>
+                                    <ng-container *ngIf="EmployeePhoenix && industryTypeList.length!=0">
+                                        <app-employers-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-employers-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="ElectronicEquipmentPhoenix && industryTypeList.length!=0">
+                                        <app-electronic-equipment [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-electronic-equipment>
+                                    </ng-container>
+                                    <ng-container *ngIf="FidelityPhoenix && industryTypeList.length!=0">
+                                        <app-fidelity [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-fidelity>
+                                    </ng-container>
+                                    <ng-container *ngIf="GlassPhoenix && industryTypeList.length!=0">
+                                        <app-glass [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-glass>
+                                    </ng-container>
+                                    <ng-container *ngIf="StateBenefitsPhoenix && industryTypeList.length!=0">
+                                        <app-state-benefits [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-state-benefits>
+                                    </ng-container>
+                                    <ng-container *ngIf="CommercialPackage && industryTypeList.length!=0">
+                                        <app-commercial-package [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-commercial-package>
+                                    </ng-container>
+                                    <ng-container *ngIf="BidTension && industryTypeList.length!=0">
+                                        <app-bid-tender-bond [form]="form" [locationList]="locationList"
+                                            [engineerData]="engineerData" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-bid-tender-bond>
+                                    </ng-container>
+                                    <ng-container *ngIf="MachineryPhoenix && industryTypeList.length!=0">
+                                        <app-machinery-breakdown [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-machinery-breakdown>
+                                    </ng-container>
+                                    <ng-container *ngIf="BusinessAllRiskPhoenix && industryTypeList.length!=0">
+                                        <app-business-all-risk [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-business-all-risk>
+                                    </ng-container>
+                                    <ng-container *ngIf="MoneyPhoenix && industryTypeList.length!=0">
+                                        <app-money [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></app-money>
+                                    </ng-container>
+                                    <ng-container *ngIf="OfficeContentPhoenix && industryTypeList.length!=0">
+                                        <app-office-contents [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-office-contents>
+                                    </ng-container>
+                                    <ng-container *ngIf="HouseOwnerPhoenix && industryTypeList.length!=0">
+                                        <app-houseowners [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-houseowners>
+                                    </ng-container>
+                                    <ng-container *ngIf="GoodsInTransitPhoenix && industryTypeList.length!=0">
+                                        <app-goods-in-transit [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-goods-in-transit>
+                                    </ng-container>
+                                    <ng-container *ngIf="PersonalAllRisKPhoenix && industryTypeList.length!=0">
+                                        <app-personal-all-risks [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-personal-all-risks>
+                                    </ng-container>
+                                    <ng-container *ngIf="DirectorOfficerPhoenix && industryTypeList.length!=0">
+                                        <app-director-officer [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-director-officer>
+                                    </ng-container>
+                                    <ng-container *ngIf="KidnapAndRandomPhoenix && industryTypeList.length!=0">
+                                        <app-kidnapAndRansom [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-kidnapAndRansom>
+                                    </ng-container>
+                                    <ng-container *ngIf="CashInTransitPhoenix && industryTypeList.length!=0">
+                                        <app-cash-in-transit [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-cash-in-transit>
+                                    </ng-container>
+                                    <ng-container *ngIf="PublicLiablityPhoenix && industryTypeList.length!=0">
+                                        <app-public-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-public-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="HouseHolderPhoenix && industryTypeList.length!=0">
+                                        <app-house-holders [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-house-holders>
+                                    </ng-container>
+                                    <ng-container *ngIf="ThirdPartLiabilityPhoenix && industryTypeList.length!=0">
+                                        <app-thirdparty-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-thirdparty-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="PensionFundTrusteePhoenix && industryTypeList.length!=0">
+                                        <app-pension-fund-trustee [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-pension-fund-trustee>
+                                    </ng-container>
+                                    <ng-container *ngIf="PersonalLiabilityPhoenix && industryTypeList.length!=0">
+                                        <app-personal-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-personal-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="ConstructionAllRiskPhoenix && industryTypeList.length!=0">
+                                        <app-construction-all-risk [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-construction-all-risk>
+                                    </ng-container>
+                                    <ng-container *ngIf="ProfessionalIndeminityPhoenix && industryTypeList.length!=0">
+                                        <app-professional-Indeminity [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-professional-Indeminity>
+                                    </ng-container>
+                                    <ng-container *ngIf="CountBondPhoenix && industryTypeList.length!=0">
+                                        <app-court-bond [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-court-bond>
+                                    </ng-container>
+                                    <ng-container *ngIf="LiveStockPhoenix && industryTypeList.length!=0">
+                                        <app-livestock [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-livestock>
+                                    </ng-container>
+                                    <ng-container *ngIf="PerfomanceGuranteePhoenix && industryTypeList.length!=0">
+                                        <app-performance-guarantee [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-performance-guarantee>
+                                    </ng-container>
+                                    <ng-container *ngIf="FuelGuaranteePhoenix && industryTypeList.length!=0">
+                                        <app-fuel-guarantee [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-fuel-guarantee>
+                                    </ng-container>
+                                    <ng-container *ngIf="PlantAllRiskPhoenix && industryTypeList.length!=0">
+                                        <app-plant-all-risk [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-plant-all-risk>
+                                    </ng-container>
+                                    <ng-container *ngIf="GroupPersonalAccidentPhoenix && industryTypeList.length!=0">
+                                        <app-group-personal-accident [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-group-personal-accident>
+                                    </ng-container>
+                                    <ng-container *ngIf="CustomsTransitPhoenix && industryTypeList.length!=0">
+                                        <app-customs-and-transit-bond [form]="form"
+                                            [industryTypeList]="industryTypeList" [locationList]="locationList"
+                                            [locationDetails]="locationDetails" [tabIndex]="tabIndex"
+                                            [productItem]="productItem" (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-customs-and-transit-bond>
+                                    </ng-container>
+                                    <ng-container *ngIf="PersonalPackagePlus && industryTypeList.length!=0">
+                                        <app-personal-package-plus [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-personal-package-plus>
+                                    </ng-container>
+                                    <ng-container *ngIf="NichePackagePlus && industryTypeList.length!=0">
+                                        <app-niche-package-plus [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-niche-package-plus>
+                                    </ng-container>
+                                     <ng-container *ngIf="AgriculturePhoenix && industryTypeList.length!=0">
+                                        <app-agriculture [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></app-agriculture>
+                                    </ng-container>
+                                    <!--Tanzaniya Products-->
+                                    <ng-container *ngIf="GoodsInTransitTZA">
+                                        <goods-in-transit-tanz [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></goods-in-transit-tanz>
+                                    </ng-container>
+                                    <ng-container *ngIf="CarrierLegalTZA">
+                                        <carrier-legal-liability [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></carrier-legal-liability>
+                                    </ng-container>
+                                    <ng-container *ngIf="carUptoTZA">
+                                        <car-upto-billion [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></car-upto-billion>
+                                    </ng-container>
+                                    <ng-container *ngIf="carAboveTZA">
+                                        <car-above-billion [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></car-above-billion>
+                                    </ng-container>
+                                </p-tabPanel>
+                            </ng-container>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

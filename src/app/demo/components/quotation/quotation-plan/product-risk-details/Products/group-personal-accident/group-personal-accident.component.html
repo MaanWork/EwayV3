@@ -1,0 +1,99 @@
+<div class="grid">
+  <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+  <div class="col-12 lg:col-10 xl:col-10">
+    <div class="memberDetailCard">
+      <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+          <div class="input-control-container">
+              <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+              <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                  [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                  (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                  optionLabel="CodeDesc" optionValue="Code" />
+          </div>
+          <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+      </div>
+      <div class="grid ">
+        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+          <b>Group Personal Accident</b>
+        </div>
+        <div class="text-right">
+          <p-button label="Add New" *ngIf="!showAddForm" styleClass="mr-3 p-button-outlined"
+            (click)="showAddForm = !showAddForm; ResetForm(); ResetForm()"></p-button>
+        </div>
+      </div>
+      <div class="">
+        <div>
+          <div>
+            <div *ngIf="filteredGPAList.length!=0">
+              <p-table #dtEmployeeExist [value]="filteredGPAList" [tableStyle]="{'min-width':'50rem'}" [rows]="5">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of GPAcolumns">
+                      {{column}} <p-sortIcon [field]="column"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-GPAList let-rowIndex="rowIndex">
+                  <tr>
+                    <td>{{
+                      getCodeDesc(GPAList?.occupation,
+                      'occupation') }}</td>
+                    <td>{{GPAList?.NumberofEmployees}}
+                    </td>
+                    <td>{{GPAList?.AnnualRemuneration}}
+                    </td>
+                    <td>{{GPAList?.TemporaryDisablement}}
+                    </td>
+                    <td>{{
+                      getCodeDesc(GPAList?.Coverage,
+                      'phonixWeeks') }}</td>
+                    <td>{{GPAList?.MedicalExpenses}}
+                    </td>
+                    <td>
+                      <span class="p-buttonset">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined"
+                          (click)="editGPA(GPAList,rowIndex)"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"
+                          (click)="deleteGPA(rowIndex)"></button>
+                      </span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="text-center" *ngIf="filteredGPAList.length==0 && !showAddForm">
+                <b>No Data Available</b>
+            </div>
+            <div *ngIf="showAddForm">
+              <form [formGroup]="form" (ngSubmit)="submit()">
+                <formly-form [model]="productItem" [fields]="GroupPersonalForm" [options]="options"
+                  [form]="form"></formly-form>
+              </form>
+            </div>
+            <div class="text-center">
+              <p-button [label]="isEditing ? 'Update' : 'Submit'" *ngIf="showAddForm"
+                (click)="isEditing ? updateGPA() : AddGPA()" styleClass="mr-3">
+              </p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center" *ngIf="productId!='92'">
+          <p-button styleClass="p-button-outlined" label="Back" size="small"
+              [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+          <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+              (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+              icon="pi pi-chevron-left"></p-button>
+          <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+              (click)="onProceedData('Next')"></p-button>&nbsp;
+          <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+      </div>
+      <div class="text-center mt-2" *ngIf="productId=='92'">
+          <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+          <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+          <p-button class="mr-2" label="Save & Proceed" size="small"
+              (click)="onProceedData('packageData')"></p-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,297 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4">
+            <h3 class="mr-3">Payment Status</h3>
+            <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+            <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                <!-- <span class="p-input-icon-right mr-3 mb-3">
+            <i class="pi pi-search"></i>
+            <input type="text" placeholder="Search" pInputText/>
+          </span> -->
+                <!-- <p-button icon="pi pi-cloud-download" label="Export" styleClass="p-button-outlined" class="mr-3" size="small"></p-button> -->
+                <!-- <p-button (click) = "showSearchForm('change')" icon="pi pi-plus" [label]="'QUOTEGRID.AddNewQuote' | translate" severity="warning" size="small"></p-button> -->
+            </div>
+        </div>
+    </div>
+
+    <p-divider></p-divider>
+          <div class="grid mt-1">
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Start Date <span class="text-danger">*</span></label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="StartDate" (onSelect)="search()"
+                        [maxDate]="maxDate" [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy"
+                        placeholder="Select Start Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">End Date <span class="text-danger">*</span></label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EndDate" [maxDate]="maxDate"
+                        [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy" placeholder="Select End Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Product <span class="text-danger">*</span></label>
+                    <p-dropdown inputId="body-type" class="w-full" id="Bodytype" styleClass="w-full" [filter]="true"
+                        filterBy="CodeDesc" [options]="productList" [(ngModel)]="productId" optionLabel="CodeDesc"
+                        optionValue="Code" placeholder="Select Product">
+                    </p-dropdown>
+                </div>
+                <div class="col-12 sm:col-6 md:col-3 mt-3" *ngIf="StartDate && EndDate && productId">
+                    <p-button class="mr-4 mb-4" label="Search" (click)="getPaymentStatusList()"></p-button>
+                </div>
+            </div>
+    <p-tabView (onChange)="onTabChange($event)" activeIndex="0">
+        <p-tabPanel header="Pending">
+  
+
+            <ng-container *ngIf="paymentList?.length!=0">
+                <p-table [value]="paymentList" [paginator]="true" [rows]="5">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of cols">
+                                {{ col.header }}
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr>
+                            <td *ngFor="let col of cols">
+                                <ng-container
+                                    *ngIf="col.field === 'PolicyStartDate' || col.field === 'PolicyEndDate'; else normalCell">
+                                    {{ rowData[col.field] | date: 'dd/MM/yyyy' }}
+                                </ng-container>
+                                <ng-template #normalCell>
+                                    {{ rowData[col.field] }}
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-container>
+            <ng-container *ngIf="paymentList?.length==0">
+                <div class="flex flex-wrap justify-content-center mt-2">
+                    No data Found
+                </div>
+            </ng-container>
+        </p-tabPanel>
+        <p-tabPanel header="Accepted">
+            <!-- <div class="grid mt-1">
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Start Date</label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="StartDate" (onSelect)="search()"
+                        [maxDate]="maxDate" [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy"
+                        placeholder="Select Start Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">End Date</label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EndDate" [maxDate]="maxDate"
+                        [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy" placeholder="Select End Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Product</label>
+                    <p-dropdown inputId="body-type" class="w-full" id="Bodytype" styleClass="w-full" [filter]="true"
+                        filterBy="CodeDesc" [options]="productList" [(ngModel)]="productId" optionLabel="CodeDesc"
+                        optionValue="Code" placeholder="Select Product">
+                    </p-dropdown>
+                </div>
+                <div class="col-12 sm:col-6 md:col-3 mt-3" *ngIf="StartDate && EndDate && productId">
+                    <p-button class="mr-4 mb-4" label="Search" (click)="getPaymentStatusList()"></p-button>
+                </div>
+            </div> -->
+
+            <ng-container *ngIf="paymentList?.length!=0">
+                <p-table [value]="paymentList" [paginator]="true" [rows]="5">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of cols">
+                                {{ col.header }}
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr>
+                            <td *ngFor="let col of cols">
+                                <ng-container
+                                    *ngIf="col.field === 'PolicyStartDate' || col.field === 'PolicyEndDate'; else normalCell">
+                                    {{ rowData[col.field] | date: 'dd/MM/yyyy' }}
+                                </ng-container>
+                                <ng-template #normalCell>
+                                    {{ rowData[col.field] }}
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-container>
+            <ng-container *ngIf="paymentList?.length==0">
+                <div class="flex flex-wrap justify-content-center mt-2">
+                    No data Found
+                </div>
+            </ng-container>
+        </p-tabPanel>
+        <p-tabPanel header="Failed">
+            <!-- <div class="grid mt-1">
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Start Date</label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="StartDate" (onSelect)="search()"
+                        [maxDate]="maxDate" [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy"
+                        placeholder="Select Start Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">End Date</label>
+                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EndDate" [maxDate]="maxDate"
+                        [ngModelOptions]="{standalone: true}" dateFormat="dd/mm/yy" placeholder="Select End Date">
+                    </p-calendar>
+                </div>
+                <div class="lg:col-3 md:col-3 col-12">
+                    <label for="username">Product</label>
+                    <p-dropdown inputId="body-type" class="w-full" id="Bodytype" styleClass="w-full" [filter]="true"
+                        filterBy="CodeDesc" [options]="productList" [(ngModel)]="productId" optionLabel="CodeDesc"
+                        optionValue="Code" placeholder="Select Product">
+                    </p-dropdown>
+                </div>
+                <div class="col-12 sm:col-6 md:col-3 mt-3" *ngIf="StartDate && EndDate && productId">
+                    <p-button class="mr-4 mb-4" label="Search" (click)="getPaymentStatusList()"></p-button>
+                </div>
+            </div> -->
+
+            <ng-container *ngIf="paymentList?.length!=0">
+                <p-table [value]="paymentList" [paginator]="true" [rows]="5">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of cols">
+                                {{ col.header }}
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr>
+                            <td *ngFor="let col of cols">
+                                <ng-container
+                                    *ngIf="col.field === 'PolicyStartDate' || col.field === 'PolicyEndDate'; else normalCell">
+                                    {{ rowData[col.field] | date: 'dd/MM/yyyy' }}
+                                </ng-container>
+                                <ng-template #normalCell>
+                                    {{ rowData[col.field] }}
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-container>
+            <ng-container *ngIf="paymentList?.length==0">
+                <div class="flex flex-wrap justify-content-center mt-2">
+                    No data Found
+                </div>
+            </ng-container>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<p-dialog header="Tira View" [modal]="true" [(visible)]="visible" position="top" [style]="{ width: 'w-10' }"
+    [draggable]="false">
+
+    <ng-container>
+        <p-table #dtEmployeeExist [value]="tiradetails" expanded [tableStyle]="{'min-width':'w-full'}"
+            [paginator]="true" [rows]="5" dataKey="TiraTrackingId"
+            [globalFilterFields]="['RequestId','ResponseId','StatusCode','TiraTrackingId','EntryDate','MethodName']">
+            <ng-template pTemplate="caption">
+                <div class="flex flex wrap justify-content-end">
+                    <div class="table-header">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text"
+                                (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')"
+                                placeholder="GlobalSearch" />
+                        </span>
+                    </div>
+                </div>
+
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of tiraHeader">{{column}} <p-sortIcon
+                            [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-pending let-expanded="expanded">
+                <tr>
+                    <td>{{ pending.RequestId }}</td>
+                    <td>{{ pending.ResponseId }}</td>
+                    <td>{{ pending.StatusCode }}</td>
+                    <td>{{ pending.TiraTrackingId }}</td>
+                    <td>{{ pending.HitCount }}</td>
+                    <td>{{ pending.StatusDesc }}</td>
+                    <td>{{ pending.EntryDate }}</td>
+                    <td>{{ pending.MethodName }}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-cloud-download" (click)="onReqPathDownload(pending)"
+                            title="RequestFilePath" class="p-button-outlined"></button>
+                    </td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-cloud-download" title="ResponseFilePath"
+                            (click)="onResPathDownload(pending)" class="p-button-outlined"></button>
+                    </td>
+                    <td>
+                        <p-button type="button" pRipple [pRowToggler]="pending" [text]="true" [rounded]="true"
+                            [plain]="true" (click)="onInnerData(pending)"
+                            [icon]="expanded ? 'pi pi-minus' : 'pi pi-plus'" />
+                    </td>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-pending>
+                <tr>
+                    <td colspan="12">
+                        <div class="p-1 justify-content-center">
+                            <p-table [value]="innerdata" dataKey="TiraTrackingId">
+                                <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of innerColumnHeader">{{column}} <p-sortIcon
+                            [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-pending>
+                <tr>
+                    <td>{{ pending.RequestId }}</td>
+                    <td>{{ pending.ResponseId }}</td>
+                    <td>{{ pending.StatusCode }}</td>
+                    <td>{{ pending.TiraTrackingId }}</td>
+                    <td>{{ pending.HitCount }}</td>
+                    <td>{{ pending.StatusDesc }}</td>
+                    <td>{{ pending.EntryDate }}</td>
+                    <td>{{ pending.MethodName }}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-cloud-download" (click)="onReqPathDownload(pending)"
+                            title="RequestFilePath" class="p-button-outlined"></button>
+                    </td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-cloud-download" title="ResponseFilePath"
+                            (click)="onResPathDownload(pending)" class="p-button-outlined"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+    </ng-container>
+    <ng-container *ngIf="tiradetails.length==0">
+        <div class="flex flex-wrap justify-content-center mt-2">
+            No data Found
+        </div>
+    </ng-container>
+
+
+</p-dialog>

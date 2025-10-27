@@ -1,0 +1,75 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-12">
+        <div class="memberDetailCard">
+             <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                        <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                            [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                            (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                            optionLabel="CodeDesc" optionValue="Code" />
+                    </div>
+                    <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+                </div>
+             <div class="grid justify-content-start">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b class="text-xl">Goods In Transit</b>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="flex md:flex-row flex-col items-center md:space-x-3">
+                    <div>
+                        <div style="display: flex !important;justify-content: space-between !important;">
+                            <div class="mt-4 mr-3 ml-3">
+                                <img src="./assets/images/content.png" width="40" height="35">
+                            </div>
+                            <div style="width: 100%;">
+                            <!-- Main Form -->
+                            <form [formGroup]="form">
+                                <formly-form [form]="form" [fields]="GoodsTransitFields" [model]="productItem"></formly-form>
+                            </form>
+                            <!-- Toggle Section -->
+                            <div class="flex justify-content-center align-items-center my-4">
+                                <label class="mr-3 font-medium">Add Extensions?</label>
+                                <p-selectButton 
+                                [options]="[{label: 'Yes', value: true}, {label: 'No', value: false}]"
+                                [(ngModel)]="showExtensions"
+                                [ngModelOptions]="{standalone: true}"
+                                optionLabel="label"
+                                optionValue="value"
+                                class="p-button-sm">
+                                </p-selectButton>
+                            </div>
+                            <hr class="my-3" />
+                            <!-- Conditional Second Form -->
+                            <div *ngIf="showExtensions">
+                                <form [formGroup]="form2">
+                                <formly-form [form]="form2" [fields]="GoodsTransitextentionsField" [model]="productItem"></formly-form>
+                                </form>
+                            </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" *ngIf="productId!='92'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='92'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small"
+                (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small"
+                (click)="onProceedData('packageData')"></p-button>
+        </div>
+    </div>
+</div>

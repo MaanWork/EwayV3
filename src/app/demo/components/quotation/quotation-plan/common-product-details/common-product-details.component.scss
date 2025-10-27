@@ -1,0 +1,73 @@
+.few-details-sec {
+    background-color: #fff;
+    border: 1px solid hsla(0, 0%, 59%, .22);
+    border-radius: 14px;
+    box-shadow: 0 4px 29px rgba(0, 0, 0, .08);
+    min-height: 100px;
+    padding: 24px;
+    width: 100%;
+}
+
+.selected-value {
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #042181;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+    background: #a6ccff;
+    min-width: 100%;
+}
+
+.border-class {
+    border-right: #333 solid 1px;
+}
+
+:host ::ng-deep .custom-dialog.p-dialog {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden;
+}
+
+:host ::ng-deep .custom-dialog.p-dialog .p-dialog-header {
+  background: #042181 ;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+
+
+
+/* Summary section */
+.few-details-sec {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+}
+
+.few-details-sec .col-12 {
+  transition: all 0.25s;
+}
+.few-details-sec .col-12:hover {
+  transform: translateY(-3px);
+  background: #bbd9ff;
+  border-radius: 12px;
+  border-color: #042181 ;
+  border-width: 2px;
+  color:#042181  !important; 
+
+}
+
+    .few-details-sec h5:hover{
+    color:#042181  !important; 
+    }
+:host ::ng-deep .custom-dialog .p-dialog-content {
+    padding: 0 !important;
+    /* adjust as needed */
+}
+
+.margin-class{
+margin-top: -20px;
+}

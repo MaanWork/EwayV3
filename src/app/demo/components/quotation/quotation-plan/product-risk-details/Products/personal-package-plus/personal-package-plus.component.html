@@ -1,0 +1,131 @@
+<div class="memberDetailCard">
+    <div class="grid">
+        <div class="flex md:flex-row flex-col items-center">
+
+            <div class="h1 mt-3">
+                <div class="grid">
+                    <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                        <b>{{productName}}</b>
+                    </div>
+                    <p-divider />
+                </div>
+                <div class="grid mt-4">
+                    <div class="lg:col-12 md:col-12 col-12">
+                        <div class="grid">
+                            <div class="col-3 mr-4" [ngClass]="{ 'hidden': true, 'lg:block': true,'xl:block':true }">
+                                <div class="card domesticCardCss shadow-4 px-0 py-0">
+                                    <div class="list-group height-css">
+                                        <div class="list-group--header-item"><strong class="ml-3">Cover</strong>
+                                        </div>
+                                        <ng-container *ngFor="let list of personalpackageplusMenus;  index as i">
+                                            <div class="list-group-item"
+                                                (click)="listProceed('PersonalPackagePlus',i,$event)"
+                                                [ngStyle]="{'background': list.menu == currentPersonalPackage ? 'aliceblue' : 'white'}"
+                                                [ngClass]="{ 'active': list == currentPersonalPackage , 'list-completed' : list.filled}">
+                                                <div class="grid mx-0">
+                                                    <div class="col-10">
+                                                        {{ list.menu }}
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <i *ngIf="list.filled" class="pi pi-check float-right "></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <p-button icon="pi pi-sliders-h" class="mt-4" (click)="coverMenuVisible = true"
+                                aria-label="Save"
+                                [ngClass]="{ 'block': true, 'md:hidden': false,'sm:hidden': false, 'lg:hidden': true }" />
+                            <p-sidebar [(visible)]="coverMenuVisible" [showCloseIcon]="false">
+                                <h3>Covers</h3>
+                                <div class="card domesticCardCss shadow-4 px-0 py-0">
+                                    <div class="list-group" style="height: auto;overflow: auto;">
+                                        <ng-container *ngFor="let list of personalpackageplusMenus;  index as i">
+                                            <div class="list-group-item" (click)="listProceed('PersonalPackagePlus',i)"
+                                                [ngStyle]="{'background': list.menu == currentPersonalPackage ? 'aliceblue' : 'white'}"
+                                                [ngClass]="{ 'active': list == currentPersonalPackage , 'list-completed' : list.filled}">
+                                                <div class="grid mx-0">
+                                                    <div class="col-10">
+                                                        {{ list.menu }}
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <i *ngIf="list.filled" class="pi pi-check float-right "></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </p-sidebar>
+                            <div class="col-12 lg:col xl:col sm:p-0 ">
+                                <div class="card sm:px-1 md:px-5 w-full">
+                                    <div>
+                                        <ng-container *ngIf="currentPersonalPackage =='Electronic Equipment'">
+                                            <app-electronic-equipment [form]="form"
+                                                [industryTypeList]="industryTypeList" [locationList]="locationList"
+                                                [locationDetails]="locationDetails" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-electronic-equipment>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="currentPersonalPackage =='House Holders' && industryTypeList.length!=0">
+                                            <app-house-holders [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-house-holders>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="currentPersonalPackage =='Houseowners' && industryTypeList.length!=0">
+                                            <app-houseowners [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-houseowners>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="currentPersonalPackage =='Personal All Risk' && industryTypeList.length!=0">
+                                            <app-personal-all-risks [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="packageSave($event)"
+                                                [renderType]="renderType"></app-personal-all-risks>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12 lg:col-12 md:col-12 xl:col-12">
+
+        <div class="text-center">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+    </div>
+</div>
+<style>
+    .height-css {
+        height: 191px !important;
+        overflow: auto !important;
+    }
+</style>

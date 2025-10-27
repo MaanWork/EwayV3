@@ -1,0 +1,76 @@
+<app-topbar (selectedBranch)="onGetBranch($event)"></app-topbar>
+<div class="m-5 customMarginTop">
+    <ng-container *ngIf="quoteSection">
+        <!-- <h1 class="text-center mb-6">{{ 'PRODUCT.SelecttheBranch' | translate }}</h1> -->
+        <div class="flex justify-content-center">
+            <!-- <ng-container *ngIf="userType==='Issuer'">
+                <button pButton pRipple class="p-button p-button-outlined p-3 mr-2" (click)="selectBranch(branch)"
+                    *ngFor="let branch of branches"
+                    [style.background-color]="branch.BranchCode === selectedBranch ? '#042181':''"
+                    [style.color]="branch.BranchCode === selectedBranch ? '#ffffff':''">{{branch.BranchName}}</button>
+            </ng-container>
+            <ng-container *ngIf="userType!=='Issuer'">
+                <ng-container *ngFor="let branch of branches">
+                    <button pButton pRipple class="p-button p-button-outlined p-3 mr-2" (click)="selectBranch(branch)"
+                        [style.background-color]="checkBranchBg(branch)"
+                        [style.color]="branch.BrokerBranchCode === selectedBranch ? '#ffffff':''">{{branch.BranchName}}</button>
+                </ng-container>
+            </ng-container> -->
+        </div>
+        <ng-container *ngIf="selectedBranch">
+            <div class="grid mt-0 px-5">
+                <div class="col-1 text-start flex align-items-center justify-content-center" *ngIf="userType=='Issuer'">
+                    <button pButton pRipple icon="pi pi-chevron-left" class="p-button-outlined" label="Back" (click)="getBackTo()"></button>  
+                </div>
+                <div class="col">
+                     <h3 class="text-center mb-4 mt-4">{{ 'PRODUCT.ProductYouWishtobuy' | translate }}</h3>
+                </div>
+            </div>
+             <div class="filter-bar mt-3">
+                <div class="p-input-icon-left ml-2">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="Search Products" [(ngModel)]="searchText"
+                        (input)="filterProducts()" />
+                </div>
+
+                <p-inputSwitch [(ngModel)]="isPackageView" (onChange)="filterProducts()"
+                    styleClass="ml-4 mr-2"></p-inputSwitch>
+                <label>{{ isPackageView ? 'Package Product' : 'Individual Product' }}</label>
+            </div>
+
+            <!-- <h3 class="text-center mb-4 mt-4">{{ 'PRODUCT.ProductYouWishtobuy' | translate }}</h3> -->
+            <div class="flex-center mt-8">
+                <div class="product-container mt-4">
+                    <div *ngFor="let product of filteredProducts" class="card" (click)="selectProduct(product)">
+                        <img [src]="getProductUrl(product.ProductId)" />
+                        <p class="m-0">{{ product.ProductName }}</p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="approverSection">
+        <h3 class="text-center mb-4 pt-5">{{ 'PRODUCT.LookingFor' | translate }}</h3>
+        <div class="flex-center">
+            <div class="product-container">
+                <ng-container *ngFor="let product of imageMappings?.userTypes">
+                    <ng-container *ngIf="checkUserType(product)">
+                        <div  class="card" (click)="onSelectUserType(product)">
+                            <img [src]="getUserTypeImage(product?.code)" alt="Card" title="Card" />
+                            <ng-container *ngIf="product.code=='1' || product.code=='3' || product.code=='4'">
+                                    <p class="m-0"><b>{{ 'PRODUCT.' + product.description | translate }}</b></p>
+                            </ng-container>
+                            <ng-container *ngIf="product.code=='2'">
+                                <p class="m-0"><b>
+                                    <ng-container *ngIf="checkUserTypeLabel(product,'Login')">{{ 'PRODUCT.LoginCreation' | translate }}</ng-container>
+                                    <ng-container *ngIf="checkUserTypeLabel(product,'Login') && checkUserTypeLabel(product,'Masters')">{{ 'PRODUCT.And' | translate }}</ng-container>
+                                    <ng-container *ngIf="checkUserTypeLabel(product,'Masters')">{{ 'PRODUCT.Masters' | translate }}</ng-container>
+                                </b></p>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+</div>

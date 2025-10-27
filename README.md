@@ -1,0 +1,2 @@
+# WeCore
+Frontend angular

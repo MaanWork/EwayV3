@@ -1,0 +1,98 @@
+<div class="layout-topbar customColor justify-content-between" [ngClass]="insuranceid!=='100028' ? 'customColor':'customColor2'">
+    <div>
+        <ng-container  *ngIf="insuranceid">
+            <ng-container *ngIf="insuranceid==='100002'">
+                <a class="layout-topbar-logo" (click)="onRedirect()">
+                    <img src="./assets/images/logo-2.png" alt="logo" width="170" style="cursor: pointer !important;"  />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100020'">
+                <a class="layout-topbar-logo" (click)="onRedirect()">
+                    <img src="./assets/images/FirstAssurance.png" alt="logo" width="170" style="cursor: pointer !important;"  />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100004'">
+                <a class="layout-topbar-logo" (click)="onRedirect()">
+                    <img src="./assets/images/mgen-logo.png" alt="logo" width="170" style="cursor: pointer !important;"  />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100027' || insuranceId==='100040' || this.insuranceId==='100042'">
+                <a class="layout-topbar-logo" (click)="onRedirect()">
+                    <img src="./assets/images/sanlam-logo.png" alt="logo" width="170" style="cursor: pointer !important;"  />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100028'">
+                <a style="height: 56px !important;padding: 10px;" (click)="onRedirect()">
+                    <img src="./assets/images/logo.PNG" alt="logo" width="170" height="45" style="cursor: pointer !important;"  />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100046'">
+                <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                    <img src="assets/images/phoenixAlt.png" alt="logo" title="logo" width="170"
+                        style="cursor: pointer !important;padding-left: 10px ;" />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100047'">
+                <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                    <img src="assets/images/cropped-botwa.png" alt="logo" title="logo" width="170"
+                        style="cursor: pointer !important;padding-left: 10px ;" />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100048'">
+                <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                    <img src="assets/images/PhoenixMozambique.png" alt="logo" title="logo" width="170"
+                        style="cursor: pointer !important;padding-left: 10px ;" />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100049'">
+                <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                    <img src="assets/images/cropped-swaziland.png" alt="logo" title="logo" width="170"
+                        style="cursor: pointer !important;padding-left: 10px ;" />
+                </a>
+            </ng-container>
+            <ng-container *ngIf="insuranceid==='100050'">
+                <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                    <img src="assets/images/cropped-NAMIBIA-LOGO-1.png" alt="logo" title="logo" width="170"
+                        style="cursor: pointer !important;padding-left: 10px ;" />
+                </a>
+            </ng-container>
+        </ng-container>
+    </div>
+    
+    <div>
+        <p-button label="B2C Portal" class="productBtn" (click)="onLoginRedirect()"
+        severity="warning"></p-button>
+    </div>
+
+   
+   
+
+
+</div>
+<div class="m-5 customMarginTop">
+
+<ng-container >
+    <h1 class="text-center mb-6"></h1>
+    <div class="flex justify-content-center">
+        <div>
+            <label for="username">Insurance Company Name </label> {{insuranceid}}
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="insuranceid"
+            (onChange)="onChangeCompany()"  [options]="companyList"
+                optionLabel="CompanyName" optionValue="InsuranceId" placeholder="--Select--">
+            </p-dropdown>
+        </div>
+    </div>
+    <ng-container *ngIf="productList.length===0">
+        <h5 class="text-center mb-6">No Product Available </h5>
+    </ng-container>
+    <ng-container *ngIf="productList.length!==0">
+        <h1 class="text-center mb-6">Product </h1>
+        <div class="flex flex-wrap justify-content-center text-center align-items-stretch mx-auto mt-4 product-container">
+            <div *ngFor="let product of productList" class="card m-2" (click) = "selectProduct(product)">
+                <img alt="Card" [src]="getProductUrl(product)"/>
+                <p class="m-0">{{product.ProductName}}</p>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+</div>

@@ -1,0 +1,66 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 lg:col-9 xl:col-9 md:col-9 ">
+        <h3 class="mr-3">Flow Field Details</h3>
+      </div>
+      <div class="flex align-items-center col-6 md:col-4 gap-2">
+        <p-button icon="pi pi-arrow-left cursor-pointer" (click)="ongetBack()"/>
+        <h5 class="m-0">Api Type: {{apiType}}</h5>
+      </div>
+      <div class="col-12 sm:col-6 md:col-8">
+        <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+          <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()"></p-button>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="flowFieldsData.length!=0" class="mt-5">
+      <p-table [value]="flowFieldsData" #dtEmployee [globalFilterFields]="['keyId','jsonKey','headerKeyId',
+      'defaultYn','defaultValue','queryAlias','status']"
+      [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+        <ng-template pTemplate="caption">
+          <div class="flex flex wrap justify-content-end">
+            <div class="table-header">
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Global Search" />
+              </span>
+            </div>
+          </div>
+  
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="column" *ngFor="let column of columnHeader">
+              {{column}}
+              <p-sortIcon [field]="column"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-flowFields>
+          <tr>
+            <td>{{ flowFields.keyId }}</td>
+            <td>{{ flowFields.jsonKey }}</td>
+            <td>{{ flowFields.headerKeyId }}</td>
+            <td>{{ flowFields.defaultYn }}</td>
+            <td>{{ flowFields.defaultValue }}</td>
+            <td>{{ flowFields.queryAlias }}</td>
+            <td>
+              <ng-container *ngIf="flowFields?.status=='N'">DeActive</ng-container>
+              <ng-container *ngIf="flowFields?.status=='Y'">Active</ng-container>
+            </td>
+            <td>
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined mx-1"
+                (click)="onEditSection(flowFields)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+    <ng-container *ngIf="flowFieldsData.length==0">
+      <div class="text-center">
+        No Data Available
+      </div>
+    </ng-container>
+  </div>

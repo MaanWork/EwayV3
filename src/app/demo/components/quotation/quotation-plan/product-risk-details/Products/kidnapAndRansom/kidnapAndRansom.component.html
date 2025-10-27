@@ -1,0 +1,68 @@
+<ng-container>
+    <!-- <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+        <div class="input-control-container">
+            <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+            <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry" [filter]="true"
+                filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId" (onChange)="IndustryChanged()"
+                [options]="industryTypeList" appendTo="body" optionLabel="CodeDesc" optionValue="Code" />
+        </div>
+        <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+    </div> -->
+    <b class="text-xl">Kidnap & Ransom</b>
+    <div class="mt-3">
+        <p-table [value]="KidnapAndRansomTable" class="p-datatable-gridlines">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Coverage</th>
+                    <th>Sum Insured</th>
+                    <th>Coverage</th>
+                    <th>Sum Insured</th>
+                    <!-- <th>Description</th> -->
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td>
+                        <label *ngIf="row[0] && !row[0]?.fieldGroup">{{row[0]?.props?.label}}</label>
+                        <label *ngIf="row[0]?.fieldGroup">{{row[0]?.fieldGroup[0]?.props?.label}}</label>
+                    </td>
+                    <td>
+                        <input *ngIf="row[0]?.type === 'commaSeparator' || row[0]?.type === 'number-input'" pInputText [(ngModel)]="productItem[row[0]?.key]" type="text" class="w-full"
+                            [placeholder]="row[0]?.props?.placeholder" [required]="row[0]?.props?.required" (keyup)="
+                                    CommaFormattedDynamic($event,'LimitOfIndemnity')" styleClass="col-5 p-0  w-full" />
+                    </td>
+
+                    <td>
+                        <!-- If row[1] is a normal field, display its label -->
+                        <label *ngIf="row[1] && !row[1]?.fieldGroup">{{row[1]?.props?.label}}</label>
+                        <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                        <label *ngIf="row[1]?.fieldGroup">{{row[1]?.fieldGroup[0]?.props?.label}}</label>
+                    </td>
+
+                    <td>
+                        <input *ngIf="row[1]?.type === 'commaSeparator'" pInputText styleClass=" w-full"
+                            [(ngModel)]="productItem[row[1]?.key]" [type]="row[1]?.type" class="w-full" (keyup)="
+                                    CommaFormattedDynamic($event,'LimitOfIndemnity')" [placeholder]="row[1]?.props?.placeholder" [required]="row[1]?.props?.required" />
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="text-center" *ngIf="productId=='90'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='102'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small"
+                (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small" (click)="onProceedData('packageData')"></p-button>
+        </div>
+    </div>
+</ng-container>

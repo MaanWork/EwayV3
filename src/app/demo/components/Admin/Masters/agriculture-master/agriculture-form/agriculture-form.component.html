@@ -1,0 +1,112 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 ">
+            <h3 class="mr-3">Agriculture Details</h3>
+        </div>
+        <!-- <div class="col-12 lg:col-3 xl:col-3 md:col-3 ">
+            <label for="username">Select Master <span class="text-danger">*</span></label>
+            <p-dropdown inputId="title" class="w-full" styleClass="w-full" (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" [(ngModel)]="activeMenu" optionLabel="title" optionValue="title">
+            </p-dropdown>
+        </div> -->
+        <div class="col-12 sm:col-6 md:col-4">
+            <!-- <h3 class="mr-3">Bank Details</h3> -->
+            <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div> -->
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Province <span class="text-danger">*</span></label>
+            <p-dropdown inputId="title" class="w-full" styleClass="w-full" [options]="PrivoiceList"
+                (onChange)="getDistrict()" placeholder="---Select---" [(ngModel)]="Privoice" optionLabel="CodeDesc"
+                optionValue="Code">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">District <span class="text-danger">*</span></label>
+            <p-dropdown inputId="title" class="w-full" styleClass="w-full" [options]="districList"
+                placeholder="---Select---" [(ngModel)]="District" optionLabel="CodeDesc" optionValue="Code">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">AEZ Code <span class="text-danger">*</span></label>
+            <input pInputText [(ngModel)]="aez" maxlength="100" class="w-full" styleClass="w-full" maxlength="15"
+                placeholder="Enter AEZ Code" (keypress)="allowOnlyNumbers($event)" />
+        </div>
+        <!-- <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Crop <span class="text-danger">*</span></label><br>
+            <input pInputText [(ngModel)]="Crop" maxlength="100" class="w-full" styleClass="w-full"
+                placeholder="Enter Crop" />
+        </div> -->
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Crop <span class="text-danger">*</span></label>
+            <p-dropdown inputId="title" class="w-full" styleClass="w-full" [options]="CorpList"
+                placeholder="---Select---" [(ngModel)]="Crop" optionLabel="itemValue" optionValue="itemCode">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Cost <span class="text-danger">*</span></label>
+            <input pInputText [(ngModel)]="Cost" maxlength="15"
+                class="w-full" styleClass="w-full" placeholder="Enter Cost" />
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core App Code <span class="text-danger">*</span></label>
+            <input pInputText [(ngModel)]="CoreAppCode" maxlength="100" class="w-full" styleClass="w-full"
+                placeholder="Enter Core App Code" />
+        </div>
+
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date <span class="text-danger">*</span></label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EffectiveDateStart" dateFormat="dd/mm/yy"
+                placeholder="Select Start Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+
+
+        <!-- <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective End Date<span class="text-danger">*</span></label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EffectiveDateEnd" dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+
+        </div> -->
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status <span class="text-danger">*</span></label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="P" [(ngModel)]="Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <!-- <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div> -->
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks <span class="text-danger">*</span></label><br>
+            <textarea pInputTextarea type="text" [(ngModel)]="Remarks" maxlength="200" class="w-full"
+                styleClass="w-full" placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3">
+        <p-button styleClass="p-button-outlined" label="Cancel" size="small" (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()"></p-button>
+    </div>
+</div>

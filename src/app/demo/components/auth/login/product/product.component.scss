@@ -1,0 +1,79 @@
+.product-container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Default: Six columns */
+    gap: 1rem;
+    cursor: pointer !important;
+    justify-content: center; /* Center items when fewer */
+}
+
+.product-container .card {
+    text-align: center;
+    border: 2px solid #ddd;
+    padding: 0.5rem;
+    width: auto;
+}
+
+.product-container .card:hover {
+    border: 2px solid orange;
+}
+
+.product-container .card img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    background-color: #fff;
+}
+
+/* Medium devices (tablets) */
+@media (max-width: 1024px) {
+    .product-container {
+        grid-template-columns: repeat(4, 1fr); /* Four columns */
+    }
+}
+
+/* Small devices (large phones) */
+@media (max-width: 768px) {
+    .product-container {
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+    }
+
+    .product-container .card img {
+        height: 100px;
+    }
+}
+
+/* Extra small devices (small phones) */
+@media (max-width: 480px) {
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;  /* Centering when minimal items */
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .product-container .card {
+        flex: 0 1 150px; /* Minimum card width, adjusts dynamically */
+    }
+
+    .product-container .card img {
+        height: 100px; /* Adjusted for smaller screens */
+    }
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  float: right;
+  input {
+    min-width: 250px;
+  }
+}

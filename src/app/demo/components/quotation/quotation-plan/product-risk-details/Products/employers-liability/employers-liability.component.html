@@ -1,0 +1,107 @@
+<div class="grid" >
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <div class="grid">
+                <div class="col">
+                    <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                        <b>Employer's Liabilitys</b>
+                    </div>
+                </div>
+                <div
+                    class="col flex justify-content-end align-items-center">
+                    <div *ngIf="!endorsementSection">
+                        <p-button label="Add Employers"
+                            styleClass="p-button-outlined"
+                            (click)="addEmployers()"></p-button>
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full"
+                        placeholder="Select Industry" [filter]="true"
+                        filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()"
+                        [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code" />
+                </div>
+                <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+            </div>
+            <div class="row">
+                <div>
+                    <form [formGroup]="employersLiabilityForm">
+                        <div formArrayName="EmployersLiability">
+                            <div *ngFor="let user of EmployersArray.controls; let i = index"
+                                [formGroupName]="i">
+                                <div class="grid px-3">
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Address">Occupation Type</label>
+                                        <p-dropdown class="w-full flex css"
+                                            styleClass="w-full"
+                                            placeholder="Select Occupation Type"
+                                            [options]="occupationList"
+                                            appendTo="body"
+                                            optionLabel="CodeDesc"
+                                            optionValue="Code"
+                                            [filter]="true"
+                                            filterBy="CodeDesc"
+                                            formControlName="OccupationType" />
+                                    </div>
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Address">No Of
+                                            Employees</label>
+                                        <input
+                                            class="w-full p-button-outlined"
+                                            formControlName="NoEmployees"
+                                            placeholder="Enter No Of Employees"
+                                            styleClass="w-full" pInputText
+                                            type="number" />
+                                    </div>
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Address">Sum
+                                            Insured</label>
+                                        <input
+                                            class="w-full p-button-outlined"
+                                            formControlName="EmpSumInsured"
+                                            placeholder="Enter Sum Insured"
+                                            styleClass="w-full" pInputText
+                                            type="commaSeparator"
+                                            (keydown)="onKeyDown($event,user)"
+                                            (keyup)="CommaFormattedDynamic($event,'AdditionalClaimsPreparationCosts')" />
+                                    </div>
+                                    <div class="col-2 lg:col-2 xl:col-2">
+                                        <br>
+                                        <button pButton type="button"
+                                            icon="pi pi-trash"
+                                            (click)="removeEmployersLiability(i)"
+                                            styleClass="p-button-outlined">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center" *ngIf="productId!='92'">
+    <p-button styleClass="p-button-outlined" label="Back" size="small"
+        [routerLink]="['/quotation/plan/quote-details']"
+        routerLinkActive="router-link-active"></p-button>&nbsp;
+        <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)" (click)="onProceedData('Previous')" size="small"
+            class="mr-4 text-l mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+        <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+            (click)="onProceedData('Next')"></p-button>&nbsp;
+    <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+</div>
+<div class="text-center mt-2" *ngIf="productId=='92'">
+    <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+    <p-button class="mr-2" label="Skip" size="small"
+        (click)="skip()"></p-button>
+    <p-button class="mr-2" label="Save & Proceed" size="small"
+        (click)="onProceedData('packageData')"></p-button>
+</div>

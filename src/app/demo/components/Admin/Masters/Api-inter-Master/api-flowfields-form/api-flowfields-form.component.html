@@ -1,0 +1,146 @@
+<div class="card">
+    <p-messages [(value)]="messages" [enableService]="false"
+        style="position: absolute;right: 20px;width: 18rem;"></p-messages>
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 w-full">
+            <h3 class="mr-3">Flow Field Details</h3>
+        </div>
+        <div class="flex align-items-center justify-content-between p-3 w-full col-12 sm:col-6 md:col-4">
+            <h5 class="m-0">Api Type: {{apiType}}</h5>
+            <h6 *ngIf="this.KeyData.KeyId">Key Id: {{this.KeyData.KeyId}}</h6>
+        </div>
+    </div>
+    <form [formGroup]="FlowfiledsDetails">
+        <div class="grid mt-2">
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Json Key <span class="text-danger">*</span></label><br>
+                <input pInputText type="text" formControlName="jsonKey" class="w-full" styleClass="w-full"
+                    maxlength="100" placeholder="Enter Your Json Key" />
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4 gap-2">
+                <label for="username">Header <span class="text-danger">*</span></label>
+                <div class="flex flex-wrap gap-2 my-1">
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="Yes" formControlName="isHeader"
+                        (click)="this.FlowfiledsDetails.controls['isArray'].setValue('Yes')" 
+                        inputId="ingredient2"></p-radioButton>
+                        <span for="ingredient2" class="ml-1">Yes</span>
+                    </div>
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="No" formControlName="isHeader" inputId="ingredient3"
+                        (click)="this.FlowfiledsDetails.controls['isArray'].setValue('No')" 
+                        ></p-radioButton>
+                        <span for="ingredient1" class="ml-1">No</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Select Header key <span class="text-danger">*</span></label>
+                <p-dropdown inputId="title" class="w-full" styleClass="w-full" placeholder="Select"
+                    [options]="HeaderKeyList" formControlName="headerKeyId" optionLabel="codeDesc" optionValue="code">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4 gap-2">
+                <label for="username">Array</label>
+                <div class="flex flex-wrap gap-2 my-1">
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="Yes" formControlName="isArray" inputId="ingredient2"
+                        (click)="this.FlowfiledsDetails.controls['isHeader'].setValue('Yes')" 
+                        ></p-radioButton>
+                        <span for="ingredient2" class="ml-1">Yes</span>
+                    </div>
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="No" formControlName="isArray" inputId="ingredient3"></p-radioButton>
+                        <span for="ingredient1" class="ml-1">No</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Select Data Type</label>
+                <p-dropdown inputId="title" class="w-full" styleClass="w-full" placeholder="Select"
+                    [options]="dataTypeList" formControlName="dataType" optionLabel="codeDesc" optionValue="code">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Pattern</label><br>
+                <input pInputText type="text" formControlName="pattern" class="w-full" styleClass="w-full"
+                    maxlength="100" placeholder="Enter Pattern" />
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4 gap-2">
+                <label for="username">Status <span class="text-danger">*</span></label>
+                <div class="flex flex-wrap gap-2 my-1">
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="Y" formControlName="status" inputId="ingredient2"></p-radioButton>
+                        <span for="ingredient2" class="ml-1">Active</span>
+                    </div>
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="N" formControlName="status" inputId="ingredient3"></p-radioButton>
+                        <span for="ingredient1" class="ml-1">DeActive</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4 gap-2">
+                <label for="username">Default <span class="text-danger">*</span></label>
+                <div class="flex flex-wrap gap-2 my-1">
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="Y" formControlName="defaultYn" inputId="ingredient2"
+                            (click)="checkDefaultYn()"></p-radioButton>
+                        <span for="ingredient2" class="ml-1">Yes</span>
+                    </div>
+                    <div class="flex align-items-center mr-1">
+                        <p-radioButton value="N" formControlName="defaultYn" inputId="ingredient3"
+                            (click)="checkDefaultYn()"></p-radioButton>
+                        <span for="ingredient1" class="ml-1">No</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Default Value
+                    <span *ngIf="checkValidaiton()" class="text-danger">*</span>
+                </label><br>
+                <input pInputText type="text" formControlName="defaultValue" class="w-full" styleClass="w-full"
+                    maxlength="100" placeholder="Enter Default Value" />
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4 gap-2">
+                <label for="username">Select Query Id
+                    <span *ngIf="!checkValidaiton()" class="text-danger">*</span>
+                </label>
+                <p-dropdown inputId="title" class="w-full" styleClass="w-full" placeholder="Select"
+                    [options]="queryIdList" formControlName="queryId" optionLabel="codeDesc" optionValue="code">
+                </p-dropdown>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Query Column
+                    <span *ngIf="!checkValidaiton()" class="text-danger">*</span>
+                </label><br>
+                <textarea pInputText type="text" formControlName="queryCol" class="w-full" styleClass="w-full"
+                    maxlength="100" placeholder="Enter Query Column"></textarea>
+            </div>
+
+            <div class="col-12 md:col-4 lg:col-4">
+                <label for="username">Query Alias
+                    <span *ngIf="!checkValidaiton()" class="text-danger">*</span>
+                </label><br>
+                <input pInputText type="text" formControlName="queryAlias" class="w-full" styleClass="w-full"
+                    maxlength="100" placeholder="Enter Query Alias" />
+            </div>
+
+
+        </div>
+    </form>
+    <div class="flex justify-content-center mt-3">
+        <p-button styleClass="p-button-outlined" label="Cancel" size="small" (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()"></p-button>
+    </div>
+</div>

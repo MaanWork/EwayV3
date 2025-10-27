@@ -1,0 +1,109 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                        [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code" />
+                </div>
+                <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+            </div>
+            <div class="grid justify-content-start">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b class="text-xl">House Holders</b>
+                </div>
+            </div>
+            <div class="">
+                <div>
+                    <div>
+                        <div class="mt-4 mr-3 ml-3">
+                            <img src="./assets/images/content.png" width="40" height="35" />
+                        </div>
+                        <div class="text-right">
+                            <p-button label="Add Contents" styleClass="mr-3 p-button-outlined"
+                                (click)="addHHContents()"></p-button>
+                        </div>
+                        <div>
+                            <form [formGroup]="houseHolderContentForm">
+                                <div formArrayName="HHContents">
+                                    <div *ngFor="
+                                            let user of HHContentsArray.controls;
+                                            let i = index
+                                        " [formGroupName]="i">
+                                        <div class="grid">
+                                            <div class="col-10 lg:col-3 xl:col-3">
+                                                <label for="Address">Content Type</label>
+                                                <p-dropdown class="w-full flex css" styleClass="w-full"
+                                                    placeholder="Select Content Type" [options]="constructionTypes"
+                                                    appendTo="body" optionLabel="CodeDesc" optionValue="Code"
+                                                    [filter]="true" filterBy="CodeDesc"
+                                                    formControlName="HHContentType" />
+                                            </div>
+                                            <div class="col-10 lg:col-3 xl:col-3">
+                                                <label for="Address">Sum Insured</label>
+                                                <input class="w-full p-button-outlined" formControlName="HHSumInsured"
+                                                    placeholder="Enter Sum Insured" styleClass="w-full" pInputText
+                                                    type="commaSeparator" (keydown)="
+                                                        onKeyDown($event, user)
+                                                    " (keyup)="
+                                                        CommaFormattedDynamic(
+                                                            $event,
+                                                            'AdditionalClaimsPreparationCosts'
+                                                        )
+                                                    " />
+                                            </div>
+                                            <div class="col-10 lg:col-3 xl:col-3">
+                                                <label for="Address">Description</label>
+                                                <input class="w-full p-button-outlined" formControlName="HHDescription"
+                                                    placeholder="Enter Description" styleClass="w-full" pInputText
+                                                    type="text" />
+                                            </div>
+
+                                            <div class="col-2 lg:col-2 xl:col-2" *ngIf="i != 0">
+                                                <br />
+                                                <button pButton type="button" icon="pi pi-trash" (click)="
+                                                        removeHHContents(i)
+                                                    " styleClass="p-button-outlined"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                            <form [formGroup]="form">
+                                <formly-form [form]="form" [fields]="fieldHouseHolders"
+                                    [model]="productItem"></formly-form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="input-form-error" *>
+                <div class="error-text text-danger text-center">
+                    Enter Valid Amount
+                </div>
+            </div> -->
+        </div>
+        <div class="text-center" *ngIf="productId=='78'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='92' || productId == '93'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small"
+                (click)="onProceedData('packageData')"></p-button>
+        </div>
+    </div>
+</div>

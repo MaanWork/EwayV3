@@ -1,0 +1,113 @@
+<ng-container>
+    <div class="grid">
+        <div class="col-10 mx-auto coverCard">
+            <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <!-- <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                        [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code" />
+                </div> -->
+                <!-- <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br> -->
+            </div>
+            <div class="px-5">
+                <b class="text-xl">Professional Indemity</b>
+            </div>
+            <!-- <div class="px-5 mx-1 my-3">
+                <form [formGroup]="form" >
+                    <formly-form
+                        [form]="form"
+                        [options]="option"
+                        [fields]="fieldsProfessionalIndeminity"
+                        [model]="productItem"
+                    ></formly-form>
+                </form>
+            </div> -->
+            <div class="grid px-5">
+                <div class="col flex align-items-center">
+                    <p>Do You Like to cover Natural Person</p>
+                </div>
+
+                <div class="col">
+                    <p-selectButton [options]="[{label: 'Yes', value: true}, {label: 'No', value: false}]"
+                        class="custom-select" [(ngModel)]="showIndeminityProfessionals" id="dmlYN" optionLabel="label"
+                        optionValue="value">
+                    </p-selectButton>
+                </div>
+            </div>
+            <div class="row px-5" *ngIf="showIndeminityProfessionals">
+                <div class="text-right">
+                    <p-button label="Add Person" styleClass="mr-3 p-button-outlined"
+                        (click)="addIndeminityProfessional()"></p-button>
+                </div>
+                <div>
+                    <form [formGroup]="IndeminityProfessionalForm">
+                        <div formArrayName="indeminityProfessional">
+                            <div *ngFor="
+                                    let user of IndeminityProfessionalArray.controls;
+                                    let i = index
+                                " [formGroupName]="i">
+                                <div class="grid">
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Address">Name</label>
+                                        <input class="w-full p-button-outlined" formControlName="NickName"
+                                            placeholder="Enter Name" styleClass="w-full" pInputText
+                                            type="commaSeparator" />
+                                    </div>
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Location">Profession
+                                        </label>
+                                        <p-dropdown class="w-full flex css" styleClass="w-full"
+                                            placeholder="Select Profession" [filter]="true" filterBy="CodeDesc"
+                                            [options]="occupationList" formControlName="DomesticServantType"
+                                            appendTo="body" optionLabel="CodeDesc" optionValue="Code" />
+                                    </div>
+                                    <div class="col-10 lg:col-2 xl:col-2">
+                                        <label for="Address">No Of Years</label>
+                                        <input class="w-full p-button-outlined" formControlName="BuildingBuildYear"
+                                            placeholder="Enter Years" styleClass="w-full" pInputText
+                                            type="commaSeparator" (keydown)="onKeyDown($event, user)" (keyup)="
+                                                CommaFormattedDynamic($event,'AdditionalClaimsPreparationCosts')" />
+                                    </div>
+                                    <div class="col-10 lg:col-3 xl:col-3">
+                                        <label for="Location">Sum Insured
+                                        </label>
+                                        <input class="w-full p-button-outlined" formControlName="IndeminitySumInsured"
+                                            placeholder="Enter SumInsured" styleClass="w-full" pInputText
+                                            type="commaSeparator" (keydown)="onKeyDown($event, user)" (keyup)="
+                                                CommaFormattedDynamic( $event,'LimitOfIndemnity')" />
+                                    </div>
+
+                                    <div class="col-1 lg:col-1 xl:col-1" *ngIf="i !== 0">
+                                        <br />
+                                        <button pButton type="button" icon="pi pi-trash" (click)="
+                                                removeIndeminityProfessional(i)"
+                                            styleClass="p-button-outlined"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div></div>
+            <div class="text-center" *ngIf="productId == '87'">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                    (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0"
+                    styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                    (click)="onProceedData('Next')"></p-button>&nbsp;
+                <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+            </div>
+            <div class="text-center mt-2" *ngIf="productId == '102'">
+                <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+                <!-- <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button> -->
+                <p-button class="mr-2" label="Save & Proceed" size="small" (click)="onProceedData('packageData')"></p-button>
+            </div>
+        </div>
+    </div>
+</ng-container>

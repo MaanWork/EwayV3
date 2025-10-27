@@ -1,0 +1,150 @@
+<div class="layout-topbar customColor" [ngClass]="insuranceid!=='100028' ? 'customColor':'customColor2'">
+    <ng-container *ngIf="insuranceid">
+        <ng-container *ngIf="insuranceid==='100002'">
+            <a class="layout-topbar-logo" (click)="onRedirect()">
+                <img src="assets/images/logo-2.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100020'">
+            <a class="layout-topbar-logo" (click)="onRedirect()">
+                <img src="assets/images/FirstAssurance.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100046'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                <img src="assets/images/phoenixAlt.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;padding-left: 10px ;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100047'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                <img src="assets/images/cropped-botwa.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;padding-left: 10px ;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100048'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                <img src="assets/images/PhoenixMozambique.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;padding-left: 10px ;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100049'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                <img src="assets/images/cropped-swaziland.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;padding-left: 10px ;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100050'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" style="background-color: #042181">
+                <img src="assets/images/cropped-NAMIBIA-LOGO-1.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;padding-left: 10px ;" />
+            </a>
+        </ng-container>
+
+        <ng-container *ngIf="insuranceid==='100004'">
+            <a class="layout-topbar-logo" (click)="onRedirect()">
+                <img src="assets/images/mgen-logo.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100042' || insuranceid=='100027'">
+            <a class="layout-topbar-logo" (click)="onRedirect()" >
+                <img src="assets/images/sanlam-logo.png" alt="logo" title="logo" width="170"
+                    style="cursor: pointer !important;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100040'">
+            <a class="layout-topbar-logo-ivory" (click)="onRedirect()" style="height: 34px !important;padding: 10px;">
+                <img src="assets/images/Sanlam_Ivory.png" alt="logo" title="logo" width="195"
+                    style="height: 55px !important;cursor: pointer !important;" />
+            </a>
+        </ng-container>
+        <ng-container *ngIf="insuranceid==='100028'">
+            <a style="height: 34px !important;padding: 10px;" (click)="onRedirect()">
+                <img src="assets/images/logo.PNG" alt="logo" title="logo" width="170" height="45"
+                    style="cursor: pointer !important;" />
+            </a>
+        </ng-container>
+    </ng-container>
+
+
+   <button *ngIf="showUserDetails() || showBtn" #menubutton class="p-link layout-menu-button layout-topbar-button"
+        (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
+        (click)="layoutService.showProfileSidebar()">
+        <i class="pi pi-ellipsis-v"></i>
+    </button>
+
+    <div #topbarmenu class="layout-topbar-menu"
+        [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+
+        <ng-container>
+             <button class="CRMbtn"
+                    *ngIf="showCRMbtn"
+                (click)="CRM()" severity="warning">CRM</button>&nbsp;
+            <!-- <button class="CRMbtn"
+                    *ngIf="userDetails?.Result?.UserType == 'Broker' && userDetails?.Result?.SubUserType == 'Bidder'"
+                (click)="Salvage()" severity="warning">Salvage</button>&nbsp; -->
+            <p-button *ngIf="showUserDetails()" [label]="productname" icon="pi pi-home" class="productBtn" (click)="onProductRedirect()"
+                severity="warning"></p-button>&nbsp;
+            <ng-container *ngIf="showUserDetails() && typeList.length!==0 && typeValue!=='B2C Broker'">
+                <p-dropdown inputId="make" class="w-full min300" styleClass="w-full"
+                    (onChange)="finaliseTypeValue(null,'change')" [options]="typeList" optionLabel="label"
+                    optionValue="CodeDesc" [(ngModel)]="typeValue">
+                </p-dropdown>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="branchList.length > 0 && typeValue !== 'B2C Broker'">
+                <p-dropdown inputId="make" class="w-full min300" styleClass="w-full"
+                    (onChange)="onSelectBranch(null,'change')" optionLabel="label" optionValue="BranchName"
+                    [options]="branchList" [(ngModel)]="branchName">
+                </p-dropdown>&nbsp;&nbsp;
+            </ng-container>
+        </ng-container>
+         <div class="flex justify-content-center align-items-center username-section">
+            <ng-container *ngIf="showBtn">
+            <p-button *ngFor="let item of header" [label]="item.label" styleClass="p-button-text"
+                (click)="item.command()" [style]="{'width':'7rem','color': '#ffff'}"></p-button>
+            &nbsp;&nbsp;
+            </ng-container>
+            <p-overlayPanel #op>
+                <p-button *ngFor="let userOption of userOptions" [icon]="userOption.icon" [label]="userOption.label"
+                    styleClass="p-button-text" (click)="userOption.command()" [style]="{'width':'15rem'}"></p-button>
+            </p-overlayPanel>
+            <p-avatar image="assets/demo/images/login/userIcon.png" styleClass="mr-2" size="medium"
+                shape="circle"></p-avatar>
+            <p-button styleClass="mr-2" (click)="op.toggle($event)" [label]="loginId"></p-button>
+            <p-button icon="pi pi-language" [label]="lang" mat-icon-button [matMenuTriggerFor]="menu" shape="circle"
+                severity="danger" />&nbsp;&nbsp;
+            <p-button *ngIf="showBtn" #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="bookmarkMenu" icon="pi pi-star"
+                matTooltip="Add Quick Link" mat-icon-button shape="circle" severity="warning"
+                styleClass="p-button-rounded p-button-warning" />
+        </div>
+
+         <mat-menu #bookmarkMenu="matMenu" [overlapTrigger]="false">
+            <ng-template matMenuContent>
+                <div class="p-4" style="width: 19vw;">
+                    <h2 class="text-sm font-semibold text-gray-800 mb-2">Add to Quick link</h2>
+                <input type="text" [(ngModel)]="newBookmarkTitle" pInputText class="w-full text-sm mb-3" placeholder="Enter name"
+                    (click)="$event.stopPropagation()"/>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <p-button label="Done" (onClick)="addBookmark(); menuTrigger.closeMenu()"
+                            styleClass="p-button-sm p-button-rounded p-button-primary"></p-button>
+                    </div>
+                </div>
+            </ng-template>
+        </mat-menu>
+            
+        <mat-menu #menu="matMenu">
+            <ng-container *ngFor="let obj of langList">
+                <button mat-menu-item (click)="setLanguage(obj.Code)">
+                    <span>{{getLangCodeDesc(obj)}}</span>
+                </button>
+            </ng-container>
+        </mat-menu>
+    </div>
+</div>

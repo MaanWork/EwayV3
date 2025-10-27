@@ -1,0 +1,503 @@
+<div class="card">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Customer -->
+        <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Customer
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.CustomerName }}
+            </div>
+        </div>
+
+        <!-- Quote No -->
+        <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Quote No
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.QuoteNo }}
+            </div>
+        </div>
+
+        <!-- Product -->
+        <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Product
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.ProductDesc }}
+            </div>
+        </div>
+
+        <!-- Policy Period -->
+        <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Policy Period
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.PolicyStartDate | date:'dd/MM/yyyy' }} to
+                {{ headerDetails?.PolicyEndDate | date:'dd/MM/yyyy' }}
+            </div>
+        </div>
+        <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Currency
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.CurrencyId }}
+            </div>
+        </div>
+        <div *ngIf="reInsurance =='Yes'" class="grid grid-cols-1 md:grid-cols-2 gap-4" style="margin-top: -2px;">
+            <!-- RI Basis Dropdown -->
+            <div class="p-4 bg-white shadow rounded-xl">
+                <label class="font-bold block mb-2" style="color:#042181; font-size:15px;">
+                    RI Basis
+                </label>
+                <p-dropdown [options]="riBasisOptionsList" [(ngModel)]="selectedRiBasis" placeholder="Select RI Basis"
+                    optionLabel="label" appendTo="body" class="w-full" optionLabel="CodeDesc" optionValue="Code">
+                </p-dropdown>
+            </div>
+
+            <!-- Fac % Input -->
+            <div class="p-4 bg-white shadow rounded-xl">
+                <label class="font-bold block mb-2" style="color:#042181; font-size:15px;">
+                    Fac %
+                </label>
+                <input type="text" style="height: 35px;" maxlength="4" pInputText id="facPercentage"
+                    [(ngModel)]="facPercentage" />
+                <!-- <p-inputNumber [(ngModel)]="facPercentage" mode="decimal" suffix="%" [min]="0" [max]="100" [step]="0.01"
+                    class="w-full">
+                </p-inputNumber> -->
+            </div>
+            <div class="p-4 bg-white shadow rounded-xl" style="margin-top: auto;">
+                <div class="flex justify-content-end">
+                    <button (click)="getReInsurance()" type="button" pButton class="btn btn-primary">Get ReInsurance
+                        Data</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Exchange Rate -->
+        <!-- <div class="p-4 bg-white shadow rounded-xl">
+            <div class="font-bold" style="color:#042181; font-size:15px;">
+                Exchange Rate
+            </div>
+            <div style="font-size:14px; color:#333;">
+                {{ headerDetails?.ExchangeRate || '-' }}
+            </div>
+        </div> -->
+    </div>
+
+
+    <p-accordion [activeIndex]="tabIndex">
+        <p-accordionTab>
+
+            <ng-template pTemplate="header">
+                <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <span class="fw-bold">Co-Insurance:</span>
+
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <p-radioButton name="coInsurance" value="Yes" [(ngModel)]="coInsurance" inputId="coYes"
+                                (click)="$event.stopPropagation();CoInsurance()">
+                            </p-radioButton>
+                            <label for="coYes" style="margin:0;">Yes</label>
+
+                            <p-radioButton name="coInsurance" value="No" [(ngModel)]="coInsurance" inputId="coNo"
+                                (click)="$event.stopPropagation();CoInsurance()">
+                            </p-radioButton>
+                            <label for="coNo" style="margin:0;">No</label>
+                        </div>
+                    </div>
+                    <h3 style="margin:0;">Shared Percentage :{{ getTotal('SharePrecentage') }} %</h3>
+                </div>
+            </ng-template>
+            <div class="flex justify-content-center">
+                <div class="card p-4 bg-white shadow rounded-xl">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <!-- <table class="w-full text-sm border-collapse">
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Customer</td>
+                                        <td style="font-size:14px;" class="p-2">{{ headerDetails?.CustomerName }}</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Quote No</td>
+                                        <td style="font-size:14px;" class="p-2">{{ headerDetails?.QuoteNo }}</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Product</td>
+                                        <td style="font-size:14px;" class="p-2">{{ headerDetails?.ProductDesc }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Policy Period</td>
+                                        <td style="font-size:14px;" class="p-2">
+                                            {{ headerDetails?.PolicyStartDate | date:'dd/MM/yy' }} to
+                                            {{ headerDetails?.PolicyEndDate | date:'dd/MM/yy' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Exchange Rate</td>
+                                        <td style="font-size:14px;" class="p-2">
+                                            {{ headerDetails?.ExchangeRate || '-' }}
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            <!-- </div>
+
+                        <div> -->
+                            <table class="w-full text-sm border-collapse">
+                                <thead>
+                                    <tr class="text-left border-b">
+                                        <th class="p-2"></th>
+                                        <th style="font-size: 15px;" class="p-2 text-right">LC - <span
+                                                style="color:#042181 !important;font-size: 15px;">({{
+                                                headerDetails?.CurrencyId }})</span></th>
+                                        <th style="font-size: 15px;" class="p-2 text-right">FC- <span
+                                                style="color:#042181 !important;font-size: 15px;">({{
+                                                headerDetails?.CurrencyId }})</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Sum
+                                            Insured</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">{{
+                                            headerDetails?.SumInsuredLc | number:'1.2-2'}}</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">{{
+                                            headerDetails?.SumInsuredFc | number:'1.2-2' }}</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">
+                                            Total Premium</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">{{
+                                            headerDetails?.TotalPremiumLc | number:'1.2-2'}}</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">{{
+                                            headerDetails?.TotalPremiumFc | number:'1.2-2' }}</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">Tax
+                                        </td>
+                                        <td style="font-size:14px;" class="p-2  text-right ">{{
+                                            headerDetails?.TaxAmountLc | number:'1.2-2'}}</td>
+                                        <td style="font-size:14px;" class="p-2  text-right ">{{
+                                            headerDetails?.TaxAmountFc | number:'1.2-2' }}</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="p-2 font-bold" style="color:#042181 !important;font-size: 15px;">
+                                            Exchange Rate</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">{{
+                                            headerDetails?.ExchangeRate }}</td>
+                                        <td style="font-size:14px;" class="p-2  text-right">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <!-- <div class="card"> -->
+                <div class="flex justify-between items-center justify-content-end mb-3">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Global Search" />
+                    </span>&nbsp;&nbsp;
+                    <button pButton type="button" label="Add New" icon="pi pi-plus" class="p-button-sm p-button-primary"
+                        (click)="onAddNewItem()">
+                    </button>
+                </div>
+                <p-table #dt [value]="companyList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]">
+
+                    <!-- Header -->
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Role</th>
+                            <th class="text-right">Percentage(%)</th>
+                            <th class="text-right">Percentage Amount</th>
+                            <th class="text-right">Premium (LC)</th>
+                            <th class="text-right">Tax Amount (LC)</th>
+                            <th class="text-right">Commission(%)</th>
+                            <th class="text-right">Commission Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Body -->
+                    <ng-template pTemplate="body" let-company>
+                        <tr>
+                            <td>{{ company.CompanyDesc || company.InsuranceCompanyDesc }}</td>
+                            <td>{{ company.CoInsuranceRole }}</td>
+
+                            <!-- Share % -->
+                            <td class="text-right">
+                                {{ company.SharePrecentage ? (company.SharePrecentage | number:'1.2-2') : '-' }}
+                            </td>
+
+                            <!-- Sum Insured -->
+                            <td class="text-right">
+                                {{ company.SumInsuredLc ? (company.SumInsuredLc | number:'1.2-2') : '-' }}
+                            </td>
+
+                            <!-- Premium -->
+                            <td class="text-right">
+                                {{ company.PremiumLc ? (company.PremiumLc | number:'1.2-2') : '-' }}
+                            </td>
+
+                            <!-- Tax -->
+                            <td class="text-right">
+                                {{ company.TaxAmountLc ? (company.TaxAmountLc | number:'1.2-2') : '-' }}
+                            </td>
+
+                            <!-- Commission % -->
+                            <td class="text-right">
+                                {{ company.CommissionPercentage ? (company.CommissionPercentage | number:'1.2-2') : '-'
+                                }}
+                            </td>
+
+                            <!-- Commission Amount -->
+                            <td class="text-right">
+                                {{ company.CommissionAmount ? (company.CommissionAmount | number:'1.2-2') : '-' }}
+                            </td>
+
+                            <!-- Actions -->
+                            <td>
+                                <button pButton type="button" icon="pi pi-pencil" class="p-button-text"
+                                    (click)="EditCoInsurance(company)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <!-- Footer Totals -->
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="2" class="text-right font-bold">Total:</td>
+
+                            <!-- Totals -->
+                            <td class="text-right">{{ getTotal('SharePrecentage') | number:'1.2-2' }}%</td>
+                            <td class="text-right">{{ getTotal('SumInsuredLc') | number:'1.2-2' }}</td>
+                            <td class="text-right">{{ getTotal('PremiumLc') | number:'1.2-2' }}</td>
+                            <td class="text-right">{{ getTotal('TaxAmountLc') | number:'1.2-2' }}</td>
+                            <td class="text-right">{{ getTotal('CommissionPercentage') | number:'1.2-2' }}%</td>
+                            <td class="text-right">{{ getTotal('CommissionAmount') | number:'1.2-2' }}</td>
+                            <td></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+
+            </div>
+        </p-accordionTab>
+        <p-accordionTab>
+            <ng-template pTemplate="header">
+                <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                    <div style="display:flex; align-items:center; gap:16px;">
+                        <span class="fw-bold">ReInsurance:</span>
+
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <p-radioButton name="reInsurance" value="Yes" [(ngModel)]="reInsurance" inputId="reYes"
+                                (click)="$event.stopPropagation()">
+                            </p-radioButton>
+                            <label for="reYes" style="margin:0;">Yes</label>
+
+                            <p-radioButton name="reInsurance" value="No" [(ngModel)]="reInsurance" inputId="reNo"
+                                (click)="$event.stopPropagation()">
+                            </p-radioButton>
+                            <label for="reNo" style="margin:0;">No</label>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <div *ngIf="tableList?.RiskList?.length != 0">
+                <p-table #table [value]="tableList?.RiskList" dataKey="SectionId" [paginator]="true" [rows]="5"
+                    [rowsPerPageOptions]="[5,10,20]" style="margin-top:5px;">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem"></th>
+                            <th>Risk Id</th>
+                            <th>Risk Ref No</th>
+                            <th>Location</th>
+                            <th>Section Id</th>
+                            <th>Section Name</th>
+                            <th>PML %</th>
+                            <th>Risk Category</th>
+                            <!-- <th>DAF Treaty %</th> -->
+                            <th>Cover Fac %</th>
+                            <th>Action</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-risk let-expanded="expanded">
+                        <tr>
+                            <td>
+                                <a href="javascript:void(0)" (click)="table.toggleRow(risk)">
+                                    <i class="pi" [ngClass]="expanded ? 'pi-angle-down' : 'pi-angle-right'"></i>
+                                </a>
+                            </td>
+                            <td>{{ risk.RiskId }}</td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="risk.RiskRefNo" class="cell-input" />
+                            </td>
+                            <td>{{ risk.LocationName }}</td>
+                            <td>{{ risk.SectionId }}</td>
+                            <td>{{ risk.SectionName }}</td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="risk.PMLPerc"
+                                    (input)="CoverPMLCalculate(risk, cover)" class="cell-input" />
+                            </td>
+                            <td>
+                                <p-dropdown [options]="riCategoryList" [(ngModel)]="risk.RiskCategory"
+                                    placeholder="Risk Category" optionLabel="CodeDesc" optionValue="Code"
+                                    appendTo="body" class="w-full cell-input">
+                                </p-dropdown>
+                            </td>
+                            <!-- <td>
+                                <input type="text" pInputText [(ngModel)]="risk.DAFTreartyPerc" class="cell-input" />
+                            </td> -->
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="risk.CoverFACPerc" class="cell-input" />
+                            </td>
+                            <td>
+                                <button pButton type="button" label="Apply to all Covers" icon="pi pi-check-square"
+                                    class="p-button-sm p-button-success" (click)="onApplyAllCover(risk)">
+                                </button>&nbsp;
+                                <button pButton type="button" label="" icon="pi pi-save"
+                                    class="p-button-sm p-button-primary" (click)="save(risk)">
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="rowexpansion" let-risk>
+                        <tr>
+                            <td colspan="11">
+                                <p-table [value]="risk.CoverDetails" dataKey="CoverId" [paginator]="true" [rows]="5"
+                                    [rowsPerPageOptions]="[5,10,20]">
+                                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Cover Id</th>
+                            <th>Cover Name</th>
+                            <th>Sum Insured</th>
+                            <th>PML Sum Insured</th>
+                            <th>Premium</th>
+                            <th>DAF Treaty %</th>
+                            <th>FAC %</th>
+                            <th>FAC Sum Insured</th>
+                            <th>FAC PML</th>
+                            <th>FAC Premium</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-cover>
+                        <tr>
+                            <td>{{ cover.CoverId }}</td>
+                            <td>{{ cover.CoverName }}</td>
+                            <td>{{ cover.SumInsured }}</td>
+                            <td>{{ cover.PMLSumInsured }}</td>
+                            <td>{{ cover.Premium }}</td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="cover.DAFTreartyPerc"
+                                    class="cell-input" />
+                            </td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="cover.FACPerc"
+                                    (input)="CoverFacCalculate(risk, cover, 'perc')" class="cell-input" />
+                            </td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="cover.FACSumInsured"
+                                    (input)="CoverFacCalculate(risk, cover, 'sumInsured')" class="cell-input" />
+                            </td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="cover.FACPML"
+                                    (input)="CoverFacCalculate(risk, cover, 'pml')" class="cell-input" />
+                            </td>
+                            <td>
+                                <input type="text" pInputText [(ngModel)]="cover.FACPermium"
+                                    (input)="CoverFacCalculate(risk, cover, 'premium')" class="cell-input" />
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                </td>
+                </tr>
+                </ng-template>
+                </p-table>
+            </div>
+
+        </p-accordionTab>
+    </p-accordion>
+    <div class="flex justify-content-center" style="margin-top: 4px;">
+        <p-button [label]="'MOTORQUOTE.Back' | translate" (click)="back()" class="p-3 mr-2 text-l mr-0"
+            styleClass="p-button-outlined mb-4" icon="pi pi-chevron-left"></p-button>
+        <p-button [label]="'MOTORQUOTE.Next' | translate" (click)="nextPage()" class="p-3 text-l mr-0"
+            styleClass="mb-4"></p-button>
+    </div>
+
+</div>
+<p-dialog header="Co-Insurance" [(visible)]="sidebarVisible2" [modal]="true" [draggable]="false" [resizable]="false"
+    position="top" [style]="{ width: '25vw', marginTop: '20px' }">
+
+    <form [formGroup]="coInsuranceForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="mb-3">
+            <label for="company" class="form-label">Company Name <span class="text-danger">*</span></label>
+            <p-dropdown [options]="dropCompanyList" formControlName="company" optionLabel="CodeDesc" optionValue="Code"
+                [filter]="true" filterBy="CodeDesc" placeholder="Select Company"
+                [style]="{'width':'100%','height':'35px'}">
+            </p-dropdown>
+            <div *ngIf="coInsuranceForm.get('company')?.touched && coInsuranceForm.get('company')?.invalid"
+                class="text-danger">
+                Company is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+            <p-dropdown [options]="roleList" formControlName="role" placeholder="Select Role" [filter]="true"
+                filterBy="CodeDesc" [style]="{'width':'100%','height':'35px'}" optionLabel="CodeDesc"
+                optionValue="Code">
+            </p-dropdown>
+            <div *ngIf="coInsuranceForm.get('role')?.touched && coInsuranceForm.get('role')?.invalid"
+                class="text-danger">
+                Role is required
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="percentage" class="form-label">Percentage(%) <span class="text-danger">*</span></label>
+            <input type="number" style="height: 35px;" maxlength="3" pInputText id="percentage"
+                formControlName="percentage" class="form-control" />
+            <div *ngIf="coInsuranceForm.get('percentage')?.touched && coInsuranceForm.get('percentage')?.invalid"
+                class="text-danger">
+                Percentage must be between 0 and 100
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="commissionPercentage" class="form-label">Commission Percentage(%) <span
+                    class="text-danger">*</span></label>
+            <input type="number" style="height: 35px;" maxlength="3" pInputText id="commissionPercentage"
+                formControlName="commissionPercentage" class="form-control" />
+            <div *ngIf="coInsuranceForm.get('commissionPercentage')?.touched && coInsuranceForm.get('commissionPercentage')?.invalid"
+                class="text-danger">
+                Commission Percentage must be between 0 and 100
+            </div>
+        </div>
+
+        <div class="flex justify-content-end">
+            <button type="submit" pButton class="btn btn-primary" [disabled]="coInsuranceForm.invalid">Submit</button>
+        </div>
+    </form>
+
+</p-dialog>

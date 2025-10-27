@@ -1,0 +1,89 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <!-- <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                        [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code"></p-dropdown>
+                </div>
+                <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+            </div> -->
+            <div class="grid">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10 mt-2">
+                    <b class="text-xl">House
+                        Owners</b>
+                </div>
+            </div>
+            <p-table [value]="fieldHouseowner" class="p-datatable-gridlines">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Coverage</th>
+                        <th>Sum Insured </th>
+                        <th>Description</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                    <tr>
+                        <td>
+                            <label>{{
+                                row.props?.label
+                                }}</label>
+                        </td>
+                        <td>
+                            <div *ngIf="row.props?.label !='No Claim Bonus'">
+                                <ng-container *ngIf="row.type=='commaSeparator'">
+                                    <p-inputNumber [(ngModel)]="productItem[row?.key]" class="w-full"
+                                        styleClass="w-full" [formlyAttributes]="row" inputId="integeronly"
+                                        placeholder="Sum Insured" (keydown)="onKeyDown($event,row)">
+                                    </p-inputNumber>
+                                    <div class="text-danger" *ngIf="form.errors==true">
+                                        This
+                                        field is
+                                        Required
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="row.type!='commaSeparator'">
+                                    <input pInputText type="text" [(ngModel)]="prouctItem[row?.key]"
+                                        placeholder="Enter Sum Insured" class="p-inputtext p-ml-2" />
+                                </ng-container>
+                            </div>
+                            <div *ngIf="row.props?.label =='No Claim Bonus'">
+                                <p-dropdown [options]="row.props.options" appendTo="body" class="flex css"
+                                    [(ngModel)]="productItem[row?.key]" placeholder="Select No Claim Bonus" [filter]="true" bindValue="Code"
+                                    bindLabel="CodeDesc" styleClass="col-5 p-0 w-full flex css">
+                                </p-dropdown>
+                            </div>
+                        </td>
+                        <td>
+                            <div
+                                *ngIf="row.props?.label !='Power Surge' && row.props?.label!='Subsidence and Landslip (Full Value Cover)'&& row.props?.label!='No Claim Bonus'">
+                                <textarea class="p-inputtext p-ml-2 w-100 p-3" rows="1" placeholder="Description"
+                                    [(ngModel)]="productItem[row?.fieldGroup[0]?.key]" (keyup)="onTextArea($event,row?.fieldGroup[0]?.key)" cols="50"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="text-center" *ngIf="productId=='76'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='92' || productId == '93'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small"
+                (click)="onProceedData('packageData')"></p-button>
+        </div>
+    </div>
+</div>

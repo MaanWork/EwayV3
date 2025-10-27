@@ -1,0 +1,96 @@
+<div class="grid">
+    <div class="col-10 mx-auto coverCard">
+        <div class="px-5">
+            <b class="text-xl">Pension Fund Trustee</b>
+        </div>
+
+        <div class="grid px-5">
+            <div class="col">
+                <p>Do You Like to cover Natural Person</p>
+            </div>
+
+            <div class="col">
+                <p-selectButton [options]="[
+                        { label: 'Yes', value: true },
+                        { label: 'No', value: false },
+                    ]" [(ngModel)]="showIndeminityProfessionals" optionLabel="label" optionValue="value"
+                    class="custom-select">
+                </p-selectButton>
+            </div>
+        </div>
+        <div class="row px-5" *ngIf="showIndeminityProfessionals">
+            <div class="text-right">
+                <p-button label="Add Person" styleClass="mr-3 p-button-outlined"
+                    (click)="addPensionTrustee()"></p-button>
+            </div>
+            <div>
+                <form [formGroup]="PensionTrusteeForm">
+                    <div formArrayName="PensionTrustee">
+                        <div *ngFor="
+                                let user of PensionTrusteeArray.controls;
+                                let i = index
+                            " [formGroupName]="i">
+                            <div class="grid">
+                                <div class="col-10 lg:col-3 xl:col-3">
+                                    <label for="Address">Name</label>
+                                    <input class="w-full p-button-outlined" formControlName="NickName"
+                                        placeholder="Enter Name" styleClass="w-full" pInputText type="commaSeparator" />
+                                </div>
+                                <div class="col-10 lg:col-3 xl:col-3">
+                                    <label for="Location">Profession </label>
+                                    <p-dropdown class="w-full flex css" styleClass="w-full"
+                                        placeholder="Select Profession" [filter]="true" filterBy="CodeDesc"
+                                        [options]="occupationList" formControlName="DomesticServantType" appendTo="body"
+                                        optionLabel="CodeDesc" optionValue="Code" />
+                                </div>
+                                <div class="col-10 lg:col-2 xl:col-2">
+                                    <label for="Address">No Of Years</label>
+                                    <input class="w-full p-button-outlined" formControlName="BuildingBuildYear"
+                                        placeholder="Enter Years" styleClass="w-full" pInputText type="commaSeparator"
+                                        (keydown)="onKeyDown($event, user)" (keyup)="
+                                            CommaFormattedDynamic(
+                                                $event,
+                                                'AdditionalClaimsPreparationCosts'
+                                            )
+                                        " />
+                                </div>
+                                <div class="col-10 lg:col-3 xl:col-3">
+                                    <label for="Location">Sum Insured </label>
+                                    <input class="w-full p-button-outlined" formControlName="IndividualSumInsured"
+                                        placeholder="Enter SumInsured" styleClass="w-full" pInputText
+                                        type="commaSeparator" (keydown)="onKeyDown($event, user)" (keyup)="
+                                            CommaFormattedDynamic(
+                                                $event,
+                                                'LimitOfIndemnity'
+                                            )
+                                        " />
+                                </div>
+
+                                <div class="col-1 lg:col-1 xl:col-1" *ngIf="i !== 0">
+                                    <br />
+                                    <button pButton type="button" icon="pi pi-trash" (click)="removePensionTrustee(i)"
+                                        styleClass="p-button-outlined"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div></div>
+    </div>
+</div>
+<div class="text-center" *ngIf="productId == '89'">
+    <p-button styleClass="p-button-outlined" label="Back" size="small" [routerLink]="['/quotation/plan/quote-details']"
+        routerLinkActive="router-link-active"></p-button>&nbsp;
+    <p-button label="Previous" *ngIf="locationList.length > 1 && tabIndex != 0" (click)="onProceedData('Previous')"
+        size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+    <p-button label="Next" size="small" *ngIf="locationList.length > 1 && tabIndex + 1 != locationList.length"
+        (click)="onProceedData('Next')"></p-button>&nbsp;
+    <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+</div>
+<div class="text-center mt-2" *ngIf="productId == '102'">
+    <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+    <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+    <p-button class="mr-2" label="Save & Proceed" size="small" (click)="onProceedData('packageData')"></p-button>
+</div>

@@ -1,0 +1,103 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1">
+    </div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div>
+            <div class="grid">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b class="text-xl">Cash In Transit</b>
+                </div>
+            </div>
+            <div class="mt-3">
+                <p-table [value]="CashInTransitTable" class="p-datatable-gridlines">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Coverage</th>
+                            <th>Sum Insured </th>
+                            <th>Coverage</th>
+                            <th>Sum Insured </th>
+                            <!-- <th>Description</th> -->
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>
+                                <label *ngIf="row[0] && !row[0]?.fieldGroup">{{
+                                    row[0]?.props?.label
+                                    }}</label>
+                                <label *ngIf="row[0]?.fieldGroup">{{
+                                    row[0]?.fieldGroup[0]?.props?.label
+                                    }}</label>
+                            </td>
+                            <td>
+                                <input *ngIf="row[0]?.type === 'commaSeparator' || row[0]?.type === 'number-input'"
+                                    pInputText [(ngModel)]="productItem[row[0]?.key]" type="text" class="w-full"
+                                    [placeholder]="row[0]?.props?.placeholder"
+                                    (keyup)="CommaFormattedDynamic($event,'LimitOfIndemnity')"
+                                    [required]="row[0]?.props?.required" styleClass="col-5 p-0  w-full" />
+                                <div
+                                    *ngIf="form.controls[row[0]?.key]?.hasError('required') && form.controls[row[0]?.key]?.touched">
+                                    <small class="error-text">This
+                                        field is
+                                        required.</small>
+                                </div>
+                            </td>
+
+
+                            <td>
+                                <!-- If row[1] is a normal field, display its label -->
+                                <label *ngIf="row[1] && !row[1]?.fieldGroup">{{
+                                    row[1]?.props?.label
+                                    }}</label>
+
+                                <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                <label *ngIf="row[1]?.fieldGroup">{{
+                                    row[1]?.fieldGroup[0]?.props?.label
+                                    }}</label>
+                            </td>
+
+                            <td>
+
+                                <input *ngIf="row[1]?.type === 'commaSeparator'" pInputText styleClass=" w-full"
+                                    [(ngModel)]="productItem[row[1]?.key]" [type]="row[1]?.type" class=" w-full"
+                                    (keyup)="CommaFormattedDynamic($event,'LimitOfIndemnity')"
+                                    [placeholder]="row[1]?.props?.placeholder" [required]="row[1]?.props?.required" />
+                                <div
+                                    *ngIf="form.controls[row[1]?.key]?.hasError('required') && form.controls[row[1]?.key]?.touched">
+                                    <small class="error-text">This
+                                        field is
+                                        required.</small>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div class="input-form-error" *ngIf="productItem?.ContentSuminsuredError">
+
+                <div class="error-text text-danger text-center">
+                    Enter Valid Amount
+                </div>
+            </div>
+        </div>
+        <!-- button -->
+        <div class="text-center" *ngIf="productId=='91'">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+            <!-- <button pButton pRipple label="Submit" class="p-button-success" (click)="onfinalsave()"></button> -->
+        </div>
+        <div class="text-center mt-2" *ngIf="productId=='102'">
+            <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+            <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+            <p-button class="mr-2" label="Save & Proceed" size="small"
+                (click)="onProceedData('packageData')"></p-button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,253 @@
+<div class="memberDetailCard">
+    <div class="grid">
+        <div class="flex md:flex-row flex-col items-center">
+            <div class="h1 mt-3">
+                <div class="grid">
+                    <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                        <b>{{productName}}</b>
+                    </div>
+                    <p-divider />
+                </div>
+                <div class="grid mt-4">
+                    <div class="lg:col-12 md:col-12 col-12">
+                        <div class="grid">
+                            <div class="col-3 mr-4" [ngClass]="{ 'hidden': true, 'lg:block': true,'xl:block':true }">
+                                <div class="card domesticCardCss shadow-4 px-0 py-0">
+                                    <div class="list-group height-css">
+                                        <div class="list-group--header-item"><strong class="ml-3">Cover</strong>
+                                        </div>
+                                        <ng-container *ngFor="let list of commercialpackageplusMenus;  index as i">
+                                            <div class="list-group-item"
+                                                (click)="listProceed('CommercialPackagePlus',i,$event)"
+                                                [ngStyle]="{'background': list.menu == currentCommercial ? 'aliceblue' : 'white'}"
+                                                [ngClass]="{ 'active': list == currentCommercial , 'list-completed' : list.filled}">
+                                                <div class="grid mx-0">
+                                                    <div class="col-10">
+                                                        {{ list.menu }}
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <i *ngIf="list.filled" class="pi pi-check float-right "></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <p-button icon="pi pi-sliders-h" class="mt-4" (click)="coverMenuVisible = true"
+                                aria-label="Save"
+                                [ngClass]="{ 'block': true, 'md:hidden': false,'sm:hidden': false, 'lg:hidden': true }" />
+                            <p-sidebar [(visible)]="coverMenuVisible" [showCloseIcon]="false">
+                                <h3>Covers</h3>
+                                <div class="card domesticCardCss shadow-4 px-0 py-0">
+                                    <div class="list-group" style="height: auto;overflow: auto;">
+                                        <ng-container *ngFor="let list of commercialpackageplusMenus;  index as i">
+                                            <div class="list-group-item"
+                                                (click)="listProceed('CommercialPackagePlus',i)"
+                                                [ngStyle]="{'background': list.menu == currentCommercial ? 'aliceblue' : 'white'}"
+                                                [ngClass]="{ 'active': list == currentCommercial , 'list-completed' : list.filled}">
+                                                <div class="grid mx-0">
+                                                    <div class="col-10">
+                                                        {{ list.menu }}
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <i *ngIf="list.filled" class="pi pi-check float-right "></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </p-sidebar>
+                            <div class="col-12 lg:col xl:col sm:p-0 ">
+                                <div class="card sm:px-1 md:px-5 w-full">
+                                    <div>
+                                        <ng-container *ngIf="currentCommercial =='Deterioration'">
+                                            <app-detoriation-of-stock [form]="form"
+                                                [industryTypeList]="industryTypeList" [locationList]="locationList"
+                                                [locationDetails]="locationDetails" [tabIndex]="tabIndex"
+                                                [productItem]="productItem" (finalProceed)="onProceed($event)"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-detoriation-of-stock>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Fire'">
+                                            <app-fire [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-fire>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='BuildingCombined'">
+                                            <app-building [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-building>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Glass'">
+                                            <app-glass [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (saveSection)="packageSave($event)" (previousSection)="Previous($event)"
+                                                [renderType]="renderType"></app-glass>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Stated Benefits'">
+                                            <app-state-benefits [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-state-benefits>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Employers Liability'">
+                                            <app-employers-liability [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                (saveSection)="packageSave($event)" [tabIndex]="tabIndex"
+                                                [productItem]="productItem" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)"></app-employers-liability>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Fidelity'">
+                                            <app-fidelity [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                (saveSection)="packageSave($event)" [tabIndex]="tabIndex"
+                                                [productItem]="productItem" (finalProceed)="packageSave($event)"
+                                                [renderType]="renderType" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)"></app-fidelity>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Accidental Damage'">
+                                            <app-accidental-damage [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-accidental-damage>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Accounts Recievable'">
+                                            <app-accounts-recivable [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-accounts-recivable>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Electronic Equipment'">
+                                            <app-electronic-equipment [form]="form"
+                                                [industryTypeList]="industryTypeList" [locationList]="locationList"
+                                                [locationDetails]="locationDetails" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-electronic-equipment>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='House Holders'">
+                                            <app-house-holders [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-house-holders>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="currentCommercial =='Machinery Breakdown' && industryTypeList.length!=0">
+                                            <app-machinery-breakdown [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-machinery-breakdown>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Business All Risk'">
+                                            <app-business-all-risk [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" [tabIndex]="tabIndex"
+                                                [productItem]="productItem" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-business-all-risk>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Goods In Transit'">
+                                            <app-goods-in-transit [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-goods-in-transit>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='House Owners'">
+                                            <app-houseowners [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-houseowners>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Group Personal Accident'">
+                                            <app-group-personal-accident [form]="form"
+                                                [industryTypeList]="industryTypeList" [locationList]="locationList"
+                                                [locationDetails]="locationDetails" [tabIndex]="tabIndex"
+                                                [productItem]="productItem" (finalProceed)="onProceed($event)"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-group-personal-accident>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Money'">
+                                            <app-money [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (skipSection)="skip($event)" (previousSection)="Previous($event)"
+                                                (saveSection)="packageSave($event)" (finalProceed)="onProceed($event)"
+                                                [renderType]="renderType"></app-money>
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="currentCommercial =='Office contents' && industryTypeList.length!=0">
+                                            <app-office-contents [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-office-contents>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Theft'">
+                                            <app-theft [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-theft>
+                                        </ng-container>
+                                        <ng-container *ngIf="currentCommercial =='Public Liability'">
+                                            <app-public-liability [form]="form" [industryTypeList]="industryTypeList"
+                                                [locationList]="locationList" [locationDetails]="locationDetails"
+                                                [tabIndex]="tabIndex" [productItem]="productItem"
+                                                (finalProceed)="onProceed($event)" (skipSection)="skip($event)"
+                                                (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                                [renderType]="renderType"></app-public-liability>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12 lg:col-12 md:col-12 xl:col-12">
+        <div class="text-center">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+            <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+                icon="pi pi-chevron-left"></p-button>
+            <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+        </div>
+    </div>
+</div>

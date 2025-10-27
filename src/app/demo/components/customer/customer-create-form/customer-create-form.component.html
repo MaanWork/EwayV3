@@ -1,0 +1,234 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-6">
+            <h3 class="mr-3">{{ 'HOME.CreateCustomer' | translate }}</h3>
+            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="col-12 sm:col-6">
+            <div class="flex justify-content-start xl:justify-content-end align-items-center flex-wrap">
+                <div class="flex align-items-center mr-4 flex-wrap">
+                    <!-- <h5 class="mr-3 mb-2" *ngIf="insuranceId=='100027' || insuranceId=='100040'">Customer Type :</h5>
+                    <h5 class="mr-3 mb-2" *ngIf="insuranceId!='100027' && insuranceId!='100040'">Account Type :</h5> -->
+                    <h5 class="mr-3 mb-2">{{ 'HOME.AccountType' | translate }}</h5>
+                    <p-selectButton [options]="policyHolderList" (onChange)="setPolicyType()"
+                        [(ngModel)]="productItem.IdType" [optionLabel]="getDisplayName()"
+                        optionValue="Code"></p-selectButton>
+                </div>
+                <!-- <p-button class="mt-4 lg:mt-0" label="Change Customer" size="small" (click)="navigateToCustomer()"></p-button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<p-messages [(value)]="messages" [enableService]="false"></p-messages>
+<!-- <div class="grid mb-2 ml-2">
+    <div class="col-12 md:col-6 lg:col-6 xl:col-6 offset-3">
+        <p-selectButton
+        [options]="stateOptions"
+        [(ngModel)]="value1"
+        optionLabel="label"
+        optionValue="value"
+        (change)="onLanguageChange($event)"></p-selectButton><br>
+    </div>
+</div> -->
+<div class="grid">
+    <div class="col-12 lg:col-6 md:col-6 py-0">
+        <div class="card p-1">
+            <h4 class="ml-3">{{ 'HOME.PersonalInformation' | translate }}</h4>
+            <div class="m-2 p-2">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="personalInfoFields" [model]="productItem"></formly-form>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12 lg:col-6 md:col-6 py-0">
+        <div class="card p-1">
+            <h4 class="ml-3">{{ 'HOME.AdditionalInformation' | translate }}</h4>
+            <div class="m-2 p-2">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="additionalInfoFields" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 lg:col-12 py-0">
+        <div class="card">
+            <h4 class="ml-3">{{ 'HOME.AddressDetails' | translate }}</h4>
+            <div class="m-2 p-2">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="addressInfoFields" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-wrap gap-3 justify-start m-4" *ngIf="(insuranceId=='100046' || insuranceId=='100047' || insuranceId=='100048' || insuranceId=='100049' || insuranceId=='100050') && customerReferenceNo">
+        <p-button label="{{'LOCATIONDETAILS.AddLocation' | translate}}" icon="pi pi-plus" (click)="openLocationDialog('new')"></p-button>
+
+        <p-button label="{{'DASHBOARD.Quotes' | translate}}" icon="pi pi-file" (click)="openQuoteDialog()"></p-button>
+        <p-button label="{{'DASHBOARD.Policies' | translate}}" icon="pi pi-briefcase" (click)="openPolicyDialog()"></p-button>
+        <p-button label="{{'MOTORQUOTE.Claims' | translate}}" icon="pi pi-file-edit" (click)="openClaimDialog()"></p-button>
+    </div>
+</div>
+    <p-table [value]="locationList" [paginator]="false" [rows]="5" *ngIf="locationList.length > 0"
+        class="p-datatable-striped p-datatable-sm p-datatable-gridlines" styleClass="p-mb-4"
+        [tableStyle]="{ 'min-width': '40rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-left">Location Name</th>
+                <th class="text-left">Address</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-location let-i="rowIndex">
+            <tr>
+                <td>{{ location.locationName }}</td>
+                <td>{{ location.address }}</td>
+                <td class="text-center">
+                    <button pButton icon="pi pi-pencil" class="p-button-sm p-button-outlined"
+                        (click)="editLocation(i)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-sm p-button-outlined"
+                        (click)="deleteLocation(i, location?.locationId)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+<div class="flex justify-content-center">
+    <p-button [label]="'PREMIUM.Back' | translate" (click)="ongetBack()" class="p-3 mr-0" styleClass="p-button-outlined"
+        icon="pi pi-chevron-left"></p-button>
+    <p-button class="p-3 text-l pi-button mr-0" [label]="'LOGIN.Submit' | translate"
+        (keyup)="onsavedatas('direct',productItem)" (click)="onsavedatas('direct',productItem)"></p-button>
+</div>
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+
+<p-dialog [(visible)]="locationDialogVisible" modal="modal" header="{{ 'LOCATIONDETAILS.LocationDetails' | translate }}" [style]="{width: '500px'}"
+    [closable]="false">
+   <div class="p-fluid">
+  <div class="field">
+    <label for="locationName">{{ 'HOME.LocationName' | translate }}</label>
+    <input pInputText id="locationName" [(ngModel)]="newLocation.locationName" />
+    <small *ngIf="locationNameError" class="p-error">{{ locationNameError }}</small>
+  </div>
+  <div class="field">
+    <label for="buildingAddress">{{ 'HOME.Address' | translate }}</label>
+    <input pInputText id="buildingAddress" [(ngModel)]="newLocation.address" />
+    <small *ngIf="addressError" class="p-error">{{ addressError }}</small>
+  </div>
+</div>
+    <div class="p-dialog-footer">
+        <button pButton label="{{ 'PREMIUM.Cancel' | translate }}" icon="pi pi-times" class="p-button-text"
+            (click)="locationDialogVisible = false"></button>
+        <button pButton label="{{ 'PREMIUM.AddNew' | translate }}" icon="pi pi-check" (click)="AddLocation()"></button>
+    </div>
+</p-dialog>
+
+
+<p-dialog header="{{ 'HOME.QuoteList' | translate }}" [(visible)]="quoteDialogVisible" [style]="{width: '70vw'}" [modal]="true"
+    [closable]="true">
+    <!-- <div class="p-input-icon-left mb-2">
+        <i class="pi pi-search"></i>
+      <input pInputText type="text" [(ngModel)]="quoteGlobalFilter" placeholder="Global Search" (ngModelChange)="onQuoteGlobalFilterChange()" />
+    </div> -->
+    <p-table [value]="quoteList" [filters]="quoteFilters" [paginator]="true" [rows]="5" [lazy]="false"
+        [virtualScroll]="false" responsiveLayout="scroll"
+        [globalFilterFields]="['QuoteNo', 'ReferenceNo', 'CustomerName', 'StartDate', 'EndDate', 'Premium', 'CurrencyCode']"
+        [filterDelay]="0">
+        <ng-template pTemplate="header">
+            <tr style="background-color: #40589d; color: white;">
+                <th>{{ 'QUOTEGRID.QuoteNo' | translate }}</th>
+                <th>{{ 'QUOTEGRID.ReferenceNo' | translate }}</th>
+                <th>{{ 'QUOTEGRID.CustomerName' | translate }}</th>
+                <th>{{ 'QUOTEGRID.StartDate' | translate }}</th>
+                <th>{{ 'QUOTEGRID.EndDate' | translate }}</th>
+                <th>{{ 'QUOTEGRID.Premium' | translate }}</th>
+                <th>{{ 'QUOTEGRID.CurrencyCode' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-quote>
+            <tr>
+                <td>{{ quote.QuoteNo }}</td>
+                <td>{{ quote.RequestReferenceNo }}</td>
+                <td>{{ quote.CustomerName }}</td>
+                <td>{{ quote.EffectiveDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ quote.ExpiryDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ quote.PremiumLc }}</td>
+                <td>{{ quote.Currency }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+
+<p-dialog header="{{ 'HOME.PolicyList' | translate }}" [(visible)]="policyDialogVisible" [style]="{width: '80vw'}" [modal]="true"
+    [closable]="true">
+    <!-- <div class="p-input-icon-left mb-2">
+        <i class="pi pi-search"></i>
+       <input pInputText type="text" [(ngModel)]="policyGlobalFilter" placeholder="Global Search" (ngModelChange)="onPolicyGlobalFilterChange()" />
+    </div> -->
+    <p-table [value]="policyList" [filters]="policyFilters" [paginator]="true" [rows]="5" [lazy]="false"
+        [virtualScroll]="false" responsiveLayout="scroll"
+        [globalFilterFields]="['PolicyNo', 'QuoteNo', 'CustomerName', 'Currency', 'StartDate', 'EndDate', 'Premium']"
+        [filterDelay]="0">
+        <ng-template pTemplate="header">
+            <tr style="background-color: #40589d; color: white;">
+                <th>{{ 'PolicyGrid.PolicyNo' | translate }}</th>
+                <th>{{ 'QUOTEGRID.QuoteNo' | translate }}</th>
+                <th>{{ 'MOTORQUOTE.CustomerName' | translate }}</th>
+                <th>{{ 'MOTORQUOTE.Currency' | translate }}</th>
+                <th>{{ 'QUOTEGRID.StartDate' | translate }}</th>
+                <th>{{ 'QUOTEGRID.EndDate' | translate }}</th>
+                <th>{{ 'QUOTEGRID.Premium' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-policy>
+            <tr>
+                <td>{{ policy.PolicyNo }}</td>
+                <td>{{ policy.QuoteNo }}</td>
+                <td>{{ policy.CustomerName }}</td>
+                <td>{{ policy.Currency }}</td>
+                <td>{{ policy.EffectiveDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{ policy.ExpiryDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ policy.PremiumLc }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+
+<p-dialog header="{{ 'HOME.ClaimList' | translate }}" [(visible)]="claimDialogVisible" [style]="{width: '80vw'}" [modal]="true"
+    [closable]="true">
+    <!-- <div class="p-input-icon-left mb-2">
+        <i class="pi pi-search"></i>
+       <input pInputText type="text" [(ngModel)]="policyGlobalFilter" placeholder="Global Search" (ngModelChange)="onPolicyGlobalFilterChange()" />
+    </div> -->
+    <p-table [value]="claimList" [filters]="claimFilters" [paginator]="true" [rows]="5" [lazy]="false"
+        [virtualScroll]="false" responsiveLayout="scroll"
+        [globalFilterFields]="['ClaimReferenceNo', 'ClaimNo', 'IntimationDate', 'LossDate', 'Currency', 'ReserveAmount', 'SettlementAmount', 'OutstandingAmount']"
+        [filterDelay]="0">
+        <ng-template pTemplate="header">
+            <tr style="background-color: #40589d; color: white;">
+                <th>{{ 'HOME.ClaimReferenceNo' | translate }}</th>
+                <th>{{ 'HOME.ClaimNo' | translate }}</th>
+                <th>{{ 'HOME.IntimationDate' | translate }}</th>
+                <th>{{ 'HOME.LossDate' | translate }}</th>
+                <th>{{ 'MOTORQUOTE.Currency' | translate }}</th>
+                <th>{{ 'HOME.ReserveAmount' | translate }}</th>
+                <th>{{ 'HOME.SettlementAmount' | translate }}</th>
+                <th>{{ 'HOME.OutstandingAmount' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-policy>
+            <tr>
+                <td>{{ policy.PolicyNo }}</td>
+                <td>{{ policy.QuoteNo }}</td>
+                <td>{{ policy.CustomerName }}</td>
+                <td>{{ policy.Currency }}</td>
+                <td>{{ policy.EffectiveDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{ policy.ExpiryDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ policy.PremiumLc }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>

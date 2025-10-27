@@ -1,0 +1,133 @@
+.card {
+  border-radius: 1rem;
+}
+
+.textStyle {
+  color: #062aa2;
+}
+
+.hover-border-blue:hover {
+  border: 0.5px solid #2563eb !important;
+  // border-top: 2px solid #062aa2 !important;
+  // border-right: 2px solid #062aa2 !important;
+  color: #2563eb !important;
+}
+
+.group {
+  position: relative;
+}
+
+.group:hover .text-hover {
+  color: #2563eb !important;
+}
+
+.text-hover {
+  color: white !important;
+  transition: color 0.3s ease;
+}
+
+::ng-deep .quicklink-menu {
+  top: 10px !important;
+  right: 12px !important;
+}
+
+// ::ng-deep .cdk-overlay-connected-position-bounding-box {
+//   left: 1em !important;
+// }
+
+.link-list {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.arrow-svg {
+  display: block;
+}
+
+.uparrow-svg {
+  display: none;
+}
+
+.group:hover .uparrow-svg {
+  display: block;
+}
+
+.group:hover .arrow-svg {
+  display: none;
+}
+
+.product-container {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default: Six columns */
+    gap: 1rem;
+    cursor: pointer !important;
+    justify-content: center; /* Center items when fewer */
+}
+
+.product-container .card {
+    text-align: center;
+    border: 2px solid #ddd;
+    padding: 0.5rem;
+    width: auto;
+}
+
+.product-container .card:hover {
+    border: 2px solid orange;
+}
+
+.product-container .card img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    background-color: #fff;
+}
+
+/* Medium devices (tablets) */
+@media (max-width: 1024px) {
+    .product-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Small devices (large phones) */
+@media (max-width: 768px) {
+    .product-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .product-container .card img {
+        height: 100px;
+    }
+}
+
+/* Extra small devices (small phones) */
+@media (max-width: 480px) {
+    .product-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;  /* Centering when minimal items */
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .product-container .card {
+        flex: 0 1 150px; /* Minimum card width, adjusts dynamically */
+    }
+
+    .product-container .card img {
+        height: 100px; /* Adjusted for smaller screens */
+    }
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
+    width: auto;
+    height: auto;
+    padding: 12px;
+    // margin-top: 6rem;
+}

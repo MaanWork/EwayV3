@@ -1,0 +1,893 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 sm:col-6 md:col-4">
+        <h3 class="mr-3">Work Flow</h3>
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-12 sm:col-6 md:col-8">
+        <!-- <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+          <span class="p-input-icon-right mr-3 mb-3">
+            <i class="pi pi-search"></i>
+            <p-dropdown [options]="branches" [(ngModel)]="selectedBranch" optionLabel="label" placeholder="Select a Branch"></p-dropdown>
+          </span>
+          <p-selectButton [options]="quoteOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+        </div> -->
+        <!-- <p-button (click)="showDialog()" label="Show" /> -->
+      </div>
+    </div>
+    
+    <p-divider></p-divider>
+    <p-tabView>
+      <!-- <p-tabPanel header="All">
+      </p-tabPanel> -->
+      <p-tabPanel header="Incoming">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <!-- <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes()"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div> -->
+        <ng-container *ngIf="incomingList.length!=0">
+          <p-table #dtEmployeePending1 [value]="incomingList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending1.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-pencil" (click)="IncomingQuote(customer)" title="Edit" class="p-button-outlined"></button>
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of incomingList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr> 
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr> 
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <p>{{quote.ActionTakenOn}}({{ getDuration(quote.ActionTakenOn)}})</p>
+                    </td>
+                  </tr>              
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                       
+                        <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(quote)" title="Edit" class="p-button-outlined"></button>
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="incomingList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+      <p-tabPanel header="Assigned">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <!-- <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes()"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div> -->
+        <ng-container *ngIf="assignedList.length!=0">
+          <p-table #dtEmployeePending2 [value]="assignedList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending2.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                   
+                    <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of assignedList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr>   
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <p>{{quote.ActionTakenOn}}({{ getDuration(quote.ActionTakenOn)}})</p>
+                    </td>
+                  </tr>             
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                       
+                        <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(quote)" title="Edit" class="p-button-outlined"></button>
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="assignedList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+      <p-tabPanel header="Revoked">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <!-- <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes()"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div> -->
+        <ng-container *ngIf="revokedList.length!=0">
+          <p-table #dtEmployeePending3 [value]="revokedList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending3.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                   
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+                    
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of revokedList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr> 
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <p>{{quote.ActionTakenOn}}({{ getDuration(quote.ActionTakenOn)}})</p>
+                    </td>
+                  </tr>               
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="revokedList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+
+      <p-tabPanel header="Approved">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <!-- <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes()"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div> -->
+        <ng-container *ngIf="approvedList.length!=0">
+          <p-table #dtEmployeePending4 [value]="approvedList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending4.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of approvedList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr> 
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <p>{{quote.ActionTakenOn}}({{ getDuration(quote.ActionTakenOn)}})</p>
+                    </td>
+                  </tr>               
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="approvedList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+
+      <p-tabPanel header="Rejected">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <!-- <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes()"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div> -->
+        
+        <ng-container *ngIf="RejectedList.length!=0">
+          <p-table #dtEmployeePending5 [value]="RejectedList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending5.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of RejectedList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <p>{{quote.ActionTakenOn}}({{ getDuration(quote.ActionTakenOn)}})</p>
+                    </td>
+                  </tr>              
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="RejectedList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+
+      <p-tabPanel header="Escalated" *ngIf="tabStatusList.length>5">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <ng-container *ngIf="escalatedList.length!=0">
+          <p-table #dtEmployeePending6 [value]="escalatedList" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending6.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <!-- ({{ getDuration(customer.ActionTakenOn)}}) -->
+                <td>{{customer.ActionTakenOn}}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+                <td>{{ customer.CreatedOn }}</td>
+                <td>{{ customer.FinalizedOn }}</td>
+                <td>
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-eye" (click)="getView(customer)" title="View" class="p-button-outlined"></button>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of escalatedList">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between">
+                    <td><b>Issued Date</b>
+                    <p>{{quote.CreatedOn}}</p>
+                    </td>
+                    <td class=""><b>Quote Finalised</b>
+                    <p>{{quote.FinalizedOn}}</p></td>
+                  </tr>  
+                  <tr class="justify-content-between" *ngIf="quote.ActionTakenOn">
+                    <td><b>Duration</b>
+                      <!-- ({{ getDuration(quote.ActionTakenOn)}}) -->
+                      <p>{{quote.ActionTakenOn}}</p>
+                    </td>
+                  </tr>              
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                        <button pButton pRipple icon="pi pi-eye" (click)="getView(quote)" title="View" class="p-button-outlined"></button>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="escalatedList.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+    </p-tabView>
+  </div>  
+
+
+
+ 
+<p-dialog header="Status Tracking Level" [modal]="true" [(visible)]="visible" [style]="{ width: '60rem' }">
+  <div class="grid justify-content-end">
+    <div class="col-12 lg:col-3 md:col-3"><b>Quote No : {{ quoteNumber == null || '' ? "N/A" : quoteNumber }}</b> </div>
+    <div class="col-12 lg:col-3 md:col-3"><b>Ref No : {{ RefNo == null ? "N/A" : RefNo }}</b> </div>
+  </div>
+    <!-- <li class="list-group-item">
+        <div class="row">
+           
+        </div>
+    </li> -->
+    <!-- <li class="list-group-item">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 bg-label" *ngIf="losstypeId">Loss ID</div>
+            <div class="col-lg-3 col-md-3 bg-value" *ngIf="losstypeId">
+                {{ losstypeId == null ? "N/A" : losstypeId }}
+            </div>
+            <div class="col-lg-3 col-md-3 bg-label" *ngIf="partyId">Party ID</div>
+            <div class="col-lg-3 col-md-3 bg-value" *ngIf="partyId">
+                {{ partyId == null ? "N/A" : partyId }}
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 bg-label">Current Status</div>
+            <div class="col-lg-3 col-md-3 bg-value">
+                {{ currentStatus == null ? "N/A" : currentStatus }}
+            </div>
+            <div class="col-lg-3 col-md-3 bg-label">Last Updated Date</div>
+            <div class="col-lg-3 col-md-3 bg-value">
+                {{ currentStatusUpdatedTime == null ? "N/A" : currentStatusUpdatedTime }}
+            </div>
+        </div>
+    </li> -->
+<!-- </ul> -->
+  <!-- <div class="mt-2 grid ">
+    <div class="col-12 lg:col-3 md:col-3"></div>
+    <div class="col-12 lg:col-6 md:col-6">
+      <div class="flex justify-content-between">
+        <div class="square card-color-1">Assigned</div>
+        <div class="square card-color-2">Approved</div>
+        <div class="square card-color-3">Escalated</div>
+        <div class="square card-color-4">Revoked</div>
+        <div class="square card-color-5">Rejected</div>
+      </div>
+  </div>
+  <div class="col-12 lg:col-3 md:col-3"></div>
+  </div> -->
+
+  
+
+<div class="grid justify-content-between mt-2 p-4">
+      <!-- Phase 1 -->
+      <ng-container *ngFor="let item of workflowlevelList">
+      <div class="phase mt-3 m-2" >
+          <div class="description" (click)="getTrackedStatus(item.HierarchyValue)" >{{item.HierarchyLevel}}</div>
+        </div>
+      </ng-container>
+</div>
+</p-dialog>
+
+
+<p-dialog header="Status Tracking" [modal]="true" [(visible)]="statusTracking" [style]="{ width: '70rem' }">
+  <div class="grid justify-content-end">
+    <div class="col-12 lg:col-3 md:col-3"><b>Quote No : {{ quoteNumber == null || '' ? "N/A" : quoteNumber }}</b> </div>
+    <div class="col-12 lg:col-3 md:col-3"><b>Ref No : {{ RefNo == null ? "N/A" : RefNo }}</b> </div>
+  </div>
+     <div class="mt-2 grid ">
+    <div class="col-12 lg:col-2 md:col-2"></div>
+    <div class="col-12 lg:col-8 md:col-8">
+      <div class="flex justify-content-between">
+        <div class="square card-color-6">Incoming</div>
+        <div class="square card-color-1">Assigned</div>
+        <div class="square card-color-2">Approved</div>
+        <div class="square card-color-3">Escalated</div>
+        <div class="square card-color-4">Revoked</div>
+        <div class="square card-color-5">Rejected</div>
+      </div>
+  </div>
+  <div class="col-12 lg:col-2 md:col-2"></div>
+  </div>
+  <section class="section-timeline">
+    <div class="container">
+        <ul class="timeline">
+            <ng-container *ngFor="let item of workflowData;let i=index;">
+                <li class="customList">
+                  <div class=" content"> 
+                      <div class="card" [ngClass]="{'card-color-6':item.ActionTaken=='NEWQUOTE','card-color-1':item.ActionTaken=='AS','card-color-2':item.ActionTaken=='AP','card-color-3':item.ActionTaken=='ES','card-color-4':item.ActionTaken=='RV','card-color-5':item.ActionTaken=='RJ'}">
+                          <div class="card-header">{{item.LoginId}}</div>
+                          <div class="card-content">
+                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;<p-badge [value]="item.WorkflowOrder" badgeSize="xlarge" severity="danger" /> -->
+                             <div class="flex justify-content-between">
+                              <label for="Level" class="mt-1">Level :</label>
+                              <span > {{item.HierarchyLevel}} </span>
+                             </div>
+                          
+                          <hr>
+                          <div class="flex justify-content-between">
+                            <label for="Level" class="mt-1">Date :</label>
+                            <!-- - ({{calculateDateDuration1(item.ActionDateTime,workflowData[i + 1].ActionDateTime)}}) -->
+                             <span *ngIf="i < workflowData.length - 1">{{item.ActionDateTime}}</span>
+                            <span *ngIf="i == workflowData.length - 1">{{item.ActionDateTime == null ? "N/A" : item.ActionDateTime}}</span><span *ngIf="item.ActionTaken=='AP'"> - (Approved)</span>
+                           </div>
+                         <hr *ngIf="item.CommissionModifyYN=='Y'">
+                         <div class="flex justify-content-between" *ngIf="item.CommissionModifyYN=='Y'">
+                          <label for="Level" class="mt-1">Modified Rate(%) :</label>
+                          <span > {{item.CommissionPercent}} </span>
+                         </div>
+                         <hr >
+                         <div class="flex justify-content-between" >
+                          <label for="Level" class="mt-1">Premium :</label>
+                          <span *ngIf="item.TotalPremium"> {{item.TotalPremium}}</span> <span *ngIf="item.TotalPremium==null">N/A</span>
+                         </div>
+                         <hr >
+                         <div class="flex justify-content-between">
+                          <label for="Level" class="mt-1">Remarks :</label>
+                          <span > {{item.ActionRemarks}} </span><span *ngIf="item.ActionRemarks==null">N/A</span>
+                         </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                </li>
+                <!-- <li class="customList">
+                  <div class="content">
+                    <ng-container *ngIf="rejected.length==0" >
+                      <div class="card card-color-5" >
+                          <div class="card-header">Rejected</div>
+                              <div class="card-content">
+                              <span>Level: N/A </span>
+                              <hr>
+                      </div>
+                      </div>
+                  </ng-container>
+                  </div>
+                </li> -->
+                
+                    <!-- <div class="content">
+                       <ng-container *ngIf="assigned.length==0">
+                          <div class="card card-color-1" >
+                              <div class="card-header">Assigned</div>
+                              <div class="card-content">
+                              <span>Level: N/A</span>
+                              <hr>
+                          </div>
+                      </div>
+                      </ng-container>
+                      <ng-container *ngIf="approved.length==0">
+                          <div class="card card-color-2">
+                              <div class="card-header">Approved</div>
+                              <div class="card-content">
+                              <span>Level: N/A</span>
+                              <hr>
+                          </div>
+                      </div>
+                      </ng-container>
+                      <ng-container *ngIf="revoked.length==0">
+                          <div class="card card-color-4" >
+                              <div class="card-header">Revoked</div>
+                              <div class="card-content">
+                              <span>Level: N/A</span>
+                              <hr>
+                          </div>
+                      </div>
+                      </ng-container>
+                    
+                    <ng-container *ngIf="escalation.length==0">
+                      <div class="card card-color-3">
+                          <div class="card-header">Escalation</div>
+                          <div class="card-content">
+                            <span>Level: N/A</span>
+                            <hr>
+                        </div>
+                    </div>
+                    </ng-container>
+                     
+                    <ng-container *ngIf="rejected.length==0" >
+                        <div class="card card-color-5" >
+                            <div class="card-header">Rejected</div>
+                                <div class="card-content">
+                                <span>Level: N/A </span>
+                                <hr>
+                        </div>
+                        </div>
+                    </ng-container>
+                    </div> -->
+            </ng-container>
+            <ng-container *ngIf="workflowData.length==0">
+              <div class="text-center mt-2">
+                <div class="card card-color-1" >
+                  <div class="card-header">No Data Available</div>
+                  <div class="card-content">
+                  <span >Level: N/A</span>
+                  <hr>
+                  <span>N/A</span>
+                    
+                </div>
+              </div>
+              </div>
+            </ng-container>
+        </ul>
+    </div>
+  </section>
+</p-dialog>
+

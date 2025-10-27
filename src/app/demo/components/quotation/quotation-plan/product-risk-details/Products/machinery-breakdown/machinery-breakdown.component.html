@@ -1,0 +1,83 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                <div class="input-control-container">
+                    <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                    <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                        [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                        (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                        optionLabel="CodeDesc" optionValue="Code" />
+                </div>
+                <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+            </div>
+            <div class="grid justify-content-start">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b class="text-xl">Machinery Breakdown</b>
+                </div>
+            </div>
+            <div>
+                <div style="display: flex !important;justify-content: space-between !important;">
+                    <div class="mt-4 mr-3 ml-3">
+                        <img src="./assets/images/content.png" width="40" height="35" alt="img">
+                    </div>
+                    <div style="width: 100%;">
+                        <!-- <form [formGroup]="form">
+                            <formly-form [form]="form" [fields]="fieldMachinery" [model]="productItem"></formly-form>
+                        </form> -->
+                        <p-table [value]="fieldMachinery" class="p-datatable-gridlines">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Coverage</th>
+                                    <th>Sum Insured </th>
+                                    <!-- <th>Description</th> -->
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-row let-i="rowIndex">
+                                <tr>
+                                    <td>
+                                        <label>{{ row.props?.label }}</label>
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="row.type=='commaSeparator'">
+                                            <p-inputNumber [(ngModel)]="productItem[row?.key]" class="w-full"
+                                                styleClass="w-full" [formlyAttributes]="row" inputId="integeronly"
+                                                placeholder="Sum Insured" (keydown)="onKeyDown($event,row)"
+                                                (keyup)="CommaFormattedCorp($event,'HouseOwner')">
+                                            </p-inputNumber>
+                                        </ng-container>
+                                        <ng-container *ngIf="row.type!='commaSeparator'">
+                                            <ng-select class="custom" [items]="row.props.options"
+                                                [(ngModel)]="productItem[row?.key]" placeholder="Select"
+                                                appendTo="body" [ngModelOptions]="{standalone: true}" bindValue="Code"
+                                                bindLabel="CodeDesc">
+                                            </ng-select>
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2" *ngIf="productId!='92'">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+                    (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0"
+                    styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+                    (click)="onProceedData('Next')"></p-button>&nbsp;
+                <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+            </div>
+            <div class="text-center mt-2" *ngIf="productId=='92'">
+                <p-button class="mr-2" label="Previous" size="small" (click)="previous()"></p-button>
+                <p-button class="mr-2" label="Skip" size="small" (click)="skip()"></p-button>
+                <p-button class="mr-2" label="Save & Proceed" size="small"
+                    (click)="onProceedData('packageData')"></p-button>
+            </div>
+        </div>
+    </div>

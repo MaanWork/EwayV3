@@ -1,0 +1,13 @@
+<div class="card">
+    <p-tabView [activeIndex]="tabIndex"  (onChange)="onTabClicked($event)">
+        <p-tabPanel header="Broker">
+           <app-broker></app-broker>
+        </p-tabPanel>
+        <p-tabPanel header="User">
+           <app-user></app-user>
+        </p-tabPanel>
+        <p-tabPanel header="Insurance Employee" >
+            <app-insurence-emp></app-insurence-emp>
+        </p-tabPanel>
+    </p-tabView>
+</div>

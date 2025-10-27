@@ -1,0 +1,368 @@
+<div class="card">
+    
+    <ng-container *ngIf="gridSection">
+      <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4">
+          <h3 class="mr-3">{{ 'PolicyGrid.ClaimIntimation' | translate}}</h3>
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="col-12 sm:col-6 md:col-8" *ngIf="gridSection">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+              <p-button icon="pi pi-plus"  [label]="'PolicyGrid.AddNewClaim' | translate" (click)="gridSection=!gridSection" severity="warning" size="small"></p-button>
+          </div>
+        </div>
+      </div>
+      <p-divider></p-divider>
+        <p-tabView [activeIndex]="tabIndex"  (onChange)="onTabClicked($event)">
+            <p-tabPanel header="Search Claim">
+                  <div class="grid">
+                    <div class="col-12 sm:col-4 md:col-4"></div>
+                    <div class="col-12 sm:col-4 md:col-4">
+                      <label for="username">Search Value *</label>
+                      <input pInputText id="username" class="w-full" [(ngModel)]="claimSearchValue" type="text" placeholder="Search By Claim No/Reference No" />
+                    </div>
+                    <div class="col-12 sm:col-4 md:col-4 mt-3">
+                      <p-button icon="pi pi-search"  label="Search" severity="warning" size="small"></p-button>
+                    </div>
+                  </div>
+                  <div class="grid">
+                    <div class="lg:col-12 md:col-12 col-12">
+                      <p-table #dtEmployeeExist2 [value]="existingClaimList2" >
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th [pSortableColumn]="column" *ngFor="let column of columns3">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-claim let-ri="rowIndex">
+                          <tr>
+                            <td>{{claim.ClaimNo}}</td>
+                            <td>{{claim.ClaimType}}</td>
+                            <td>{{claim.LossName}}</td>
+                            <td>{{claim.LossDate}}</td>
+                            <td>{{claim.AccidentNo}}</td>
+                            <td>
+                              <ng-container >
+                                  <div class="flex align-items-center justify-content-start gap-2" >
+                                      <button  pButton type="button" icon="pi pi-eye"  (click)="viewClaimStatus(claim)"
+                                          styleClass="p-button-outlined" >
+                                      </button>
+                                  </div>
+                              </ng-container>
+                          </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+            </p-tabPanel>
+            <p-tabPanel [header]="'PolicyGrid.IntimatedClaim' | translate">
+              <div class="grid">
+                <div class="lg:col-12 md:col-12 col-12">
+                  <p-table #dtEmployeeExist3 [value]="existingClaimList" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="column" *ngFor="let column of columns3">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-claim let-ri="rowIndex">
+                      <tr>
+                        <td>{{claim.ClaimNo}}</td>
+                        <td>{{claim.ClaimType}}</td>
+                        <td>{{claim.LossName}}</td>
+                        <td>{{claim.LossDate}}</td>
+                        <td>{{claim.AccidentNo}}</td>
+                        <td>
+                          <ng-container >
+                              <div class="flex align-items-center justify-content-start" >
+                                  <button  pButton type="button" icon="pi pi-eye"  (click)="viewClaimStatus(claim)"
+                                      styleClass="p-button-outlined" >
+                                  </button>
+                              </div>
+                          </ng-container>
+                      </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </p-tabPanel>
+        </p-tabView>
+        <div class="text-center mt-2">
+          <p-button label="Back" class="mr-4 text-l mr-0" [routerLink]="['/portfolio']" styleClass="p-button-outlined"></p-button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!gridSection">
+      <!-- <h3 class="mr-3">Basic Information</h3>
+      <div class="grid">
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">UserName *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Your UserName" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Current Branch *</label>
+            <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Origin Branch *</label>
+            <input pInputText id="originBranch" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Consumer Tracking ID *</label>
+            <input pInputText id="TrackingId" class="w-full" type="text" placeholder="Enter Tracking ID" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">IP Address *</label>
+            <input pInputText id="IpAddress" class="w-full" type="text" placeholder="Enter IP Address" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Requested Data *</label>
+            <input pInputText id="requestedData" class="w-full" type="text" placeholder="Enter Requested Data" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Requested Service *</label>
+            <input pInputText id="requestedService" class="w-full" type="text" placeholder="Enter Requested Service" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Source Code *</label>
+            <input pInputText id="sourceCode" class="w-full" type="text" placeholder="Enter Source Code" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Generated Date & Time *</label>
+            <input pInputText id="generatedDate" class="w-full" type="text" placeholder="Enter Generated Date" />
+          </div>
+      </div>
+      <p-divider></p-divider> -->
+      <h3 class="mr-3">Loss Information</h3>
+        <div class="grid">
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Claim Type *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Claim Category *</label>
+            <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+            <label for="username">Party Type *</label>
+            <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">At Fault *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Loss Date *</label>
+              <p-calendar class="w-full" styleClass="w-full" dateFormat="dd/mm/yy" placeholder="Select Loss Date">
+              </p-calendar>
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Loss Location *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Loss Location" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Loss Description *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Loss Description" />
+          </div>
+          <div class="lg:col-1 md:col-1 col-12">
+            <label for="username">Code *</label>
+            <input pInputText id="username" class="w-full" type="text" placeholder="--Select--" />
+        </div>
+        <div class="lg:col-2 md:col-2 col-12">
+            <label for="username">Contact Person Mobile No *</label>
+            <input pInputText id="username" class="w-full" type="text" placeholder="Enter Contact Person Number" />
+        </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Police Station *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Police Station" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Police Report No *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Police Report Number" />
+          </div>
+          <div class="lg:col-2 md:col-2 col-12">
+              <label for="username">Accident No *</label>
+              <input pInputText id="username" class="w-full" type="text" placeholder="Enter Accident Number" />
+          </div>
+          <div class="lg:col-3 md:col-3 col-12">
+              <label for="username">Is Third Party Involved(Y/N) *</label>
+              <p-selectButton [options]="partyInvolvedList" [(ngModel)]="isThirdPartyYN" id="driverType2"
+                  optionLabel="CodeDesc" optionValue="Code"></p-selectButton>
+          </div>
+        </div>
+        <p-divider></p-divider>
+        <div class="grid">
+          <div class="col-12 sm:col-6 md:col-4">
+            <h3 class="mr-3">Third Party Information</h3>
+          </div>
+          <div class="col-12 sm:col-6 md:col-8">
+            <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                <p-button icon="pi pi-plus"  label="Add New" (click)="addTPRow()" severity="warning" size="small"></p-button>
+            </div>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="lg:col-12 md:col-12 col-12">
+            <p-table #dtEmployeeExist [value]="thirdPartyList" >
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th pSortableColumn="Driver Name" >Driver Name </th>
+                      <th pSortableColumn="Driver Name" >License No </th>
+                      <th pSortableColumn="Driver Name" >Nationality </th>
+                      <th pSortableColumn="Driver Name" >Mobile No </th>
+                      <th pSortableColumn="Driver Name" >DriverLiability </th>
+                      <th pSortableColumn="Driver Name" >Vehicle Insurer </th>
+                      <th pSortableColumn="Driver Name" >Make </th>
+                      <th pSortableColumn="Driver Name" >Model </th>
+                      <th pSortableColumn="Driver Name" >Plate No </th>
+                      <th pSortableColumn="Driver Name" *ngIf="isThirdPartyYN=='Y'">Third Party Reference </th>
+                      <th pSortableColumn="Driver Name" *ngIf="isThirdPartyYN=='Y'">ThirdParty Type </th>
+                      <th pSortableColumn="Driver Name" >Actions</th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-claim let-ri="rowIndex">
+                <tr>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Driver Name" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPDriverName" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter License Number" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPDriverLicenceNo" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Nationality" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPDriverNationalityCode" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Mobile No" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPMobileNumber" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Liability" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPDriverLiability" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Current Insurer" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPVehicleCurrentInsurer" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Vehicle Make" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPVehicleMakeCode" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Vehicle Model" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPVehicleModelCode" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter Plate No" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.TPVehiclePlateNo" />
+                  </td>
+                  <td *ngIf="isThirdPartyYN=='Y'">
+                    <input class="w-full p-button-outlined" placeholder="Enter Third Party Reference" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.ThirdPartyReference" />
+                  </td>
+                  <td *ngIf="isThirdPartyYN=='Y'">
+                    <input class="w-full p-button-outlined" placeholder="Enter Third Party Type" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.ThirdPartyType" />
+                  </td>
+                  <td>
+                      <ng-container >
+                          <div class="flex align-items-center justify-content-center gap-2" >
+                              <button  pButton type="button"    icon="pi pi-trash"  (click)="deleteTP(ri)"
+                                  styleClass="p-button-outlined" >
+                              </button>
+                          </div>
+                      </ng-container>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <p-divider></p-divider>
+        <div class="grid">
+          <div class="col-12 sm:col-6 md:col-4">
+            <h3 class="mr-3">Document Information</h3>
+          </div>
+          <div class="col-12 sm:col-6 md:col-8">
+            <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                <p-button icon="pi pi-plus"  label="Add New" (click)="addDocument()" severity="warning" size="small"></p-button>
+            </div>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="lg:col-12 md:col-12 col-12">
+            <p-table #dtEmployeeExist [value]="documentList" >
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th [pSortableColumn]="column" *ngFor="let column of columns2">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-claim let-ri="rowIndex">
+                <tr>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Select File" styleClass="w-full"  pInputText type="file" 
+                        [(ngModel)]="claim.DocumentData" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter File Format" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.DocumentFormat" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Enter File Name" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.DocumentName" />
+                  </td>
+                  <td>
+                    <input class="w-full p-button-outlined" placeholder="Select Document Type" styleClass="w-full"  pInputText type="text" 
+                        [(ngModel)]="claim.DocumentType" />
+                  </td>
+                  <td>
+                      <ng-container >
+                          <div class="flex align-items-center justify-content-center gap-2" >
+                              <button  pButton type="button"    icon="pi pi-trash"  (click)="deleteDocument(ri)"
+                                  styleClass="p-button-outlined" >
+                              </button>
+                          </div>
+                      </ng-container>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-content-center mt-4">
+            <div class="mb-4">
+                <p-button label="Back" (click)="gridSection=!gridSection" class="mr-4 text-l mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                <ng-container>
+                    <p-button label="Proceed"  class="text-l pi-button mr-0"></p-button>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<p-dialog header="Claim Status Details" [(visible)]="viewStatus" [modal]="true" styleClass="w-10 md:w-8 lg:w-6"
+[draggable]="false" [resizable]="false">
+<div class="grid">
+  <div class="col-12 sm:col-6 md:col-8">
+    <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+      <h5 class="mr-3">Claim No- {{claimRefNo}}</h5>
+    </div>
+  </div>
+</div>
+<div class="grid">
+  <div class="col-12 sm:col-3 md:col-3"></div>
+  <div class="col-12 sm:col-6 md:col-6">
+    <label for="username">Claim Status</label><span class="text-danger">*</span>
+    <p-dropdown inputId="make" class="w-full" styleClass="w-full"  appendTo="body" [(ngModel)]="claimStatusValue"  [options]="statusList"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+    </p-dropdown>
+  </div>
+</div>
+<div class="flex flex-wrap justify-content-center mt-4">
+  <div class="mb-4">
+      <p-button label="Cancel" (click)="viewStatus=!viewStatus" class="mr-4 text-l mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+      <ng-container>
+          <p-button label="Update Status" (click)="viewStatus=!viewStatus" class="text-l pi-button mr-0"></p-button>
+      </ng-container>
+  </div>
+</div>
+</p-dialog>
