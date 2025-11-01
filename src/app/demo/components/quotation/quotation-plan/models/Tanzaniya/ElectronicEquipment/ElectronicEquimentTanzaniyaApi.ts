@@ -27,7 +27,7 @@ export class ElectronicEquipmentTanzaniyaApi{
                     ContentId: ele.ContentId
                   }
                   obj['EETanzaniya'].push(data);
-                  obj['IndustryType'] = Section[0].IndustryType
+                 if(Section[0].IndustryType) obj['IndustryType'] = Section[0].IndustryType
                   // if(ele.CoverId == 290 || ele.CoverId=='290'){
                   //       let houseData =  {
                   //           ContentInsured: ele.CoverId == 290 || ele.CoverId == "290" ? ele.SumInsured : null,

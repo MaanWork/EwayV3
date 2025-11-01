@@ -11,6 +11,68 @@
                                 <b>Plate Glass</b>
                             </div>
                         </div>
+                        <div style="width: 100%;">
+                            <div class="text-right">
+                                <p-button label="Add New"
+                                    styleClass="mr-3 p-button-outlined"
+                                    (click)="addPlateGlass()"></p-button>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <form [formGroup]="plateGlassForm">
+                                        <div formArrayName="plateglass">
+                                            <div *ngFor="let user of PlateGlassArray.controls; let i = index"
+                                                [formGroupName]="i">
+                                                <div class="grid ">
+                                                    <div
+                                                        class="col-12 lg:col-5 md:col-5">
+                                                        <label
+                                                            for="BuildingType">Plate
+                                                            Glass Type</label>
+                                                        <p-dropdown
+                                                            class="w-full flex css"
+                                                            styleClass="w-full"
+                                                            placeholder="Select Glass Type"
+                                                            [filter]="true"
+                                                            filterBy="CodeDesc"
+                                                            formControlName="CategoryId"
+                                                            [options]="PlateGlassType"
+                                                            appendTo="body"
+                                                            optionLabel="CodeDesc"
+                                                            optionValue="Code" />
+                                                    </div>
+                                                    <div
+                                                        class="col-12 lg:col-3 md:col-3">
+                                                        <label
+                                                            for="SumInsured">Sum
+                                                            Insured</label>
+                                                        <input
+                                                            class="w-full p-button-outlined"
+                                                            (keydown)="onSIValueChange($event)"
+                                                            (keyup)="CommaFormattedDynamic($event,'PG')"
+                                                            placeholder="Enter SumInsured"
+                                                            styleClass="w-full"
+                                                            formControlName="SumInsured"
+                                                            pInputText
+                                                            type="text" />
+                                                    </div>
+                                                    <div class="col-2 lg:col-2 xl:col-2"
+                                                        *ngIf="i != 0">
+                                                        <br>
+                                                        <button pButton
+                                                            type="button"
+                                                            icon="pi pi-trash"
+                                                            (click)="removePlateGlass(i)"
+                                                            styleClass="p-button-outlined">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

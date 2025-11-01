@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ElectronicEquipmentNew } from '../../../models/Tanzaniya/ElectronicEquipmentNew';
 import { SharedService } from '@app/_services/shared.service';
 import * as Mydatas from '../../../../../../../app-config.json';
+import { ElectronicEquipmentTanzaniyaApi } from '../../../models/Tanzaniya/ElectronicEquipment/ElectronicEquimentTanzaniyaApi';
 @Component({
   selector: 'electronic-equipment-tza',
   templateUrl: './electronic-equipment.component.html',
@@ -14,8 +15,8 @@ export class ElectronicEquipmentTZAComponent {
   branchCode: any = null; agencyCode: any = null; countryId: any = null; brokerbranchCode: any = null; fields: any[] = [];
   @Input() form: FormGroup; @Input() productItem: any; @Input() locationList: any[] = []; @Input() tabIndex: any = null; @Input() industryTypeList: any[] = [];
   @Output() finalProceed = new EventEmitter<any>(); @Input() locationDetails: any[] = []; @Input() renderType: any = null;
-  public AppConfig: any = (Mydatas as any).default; employersLiabilityForm: FormGroup; IndustryError: boolean = false; electronicPortableEquipmentForm: FormGroup;
-  public ApiUrl1: any = this.AppConfig.ApiUrl1; endorsementSection: boolean = false; electronicEquipmentForm: FormGroup;
+  public AppConfig: any = (Mydatas as any).default; employersLiabilityForm: FormGroup; IndustryError: boolean = false;
+  public ApiUrl1: any = this.AppConfig.ApiUrl1; endorsementSection: boolean = false; EETanzaniyaForm:any;
   public MarineApiUrl: any = this.AppConfig.MarineApi;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
   public motorApiUrl: any = this.AppConfig.MotorApiUrl;
@@ -23,6 +24,7 @@ export class ElectronicEquipmentTZAComponent {
   @Output() previousSection = new EventEmitter<any>();
   @Output() saveSection = new EventEmitter<any>();
   fieldEE: any[] = []; claimCostList: any; electronicEquipList: any[] = [];
+  dropList: any[]=[];
   constructor(private sharedService: SharedService, private fb: FormBuilder,) {
     let homeObj = JSON.parse(sessionStorage.getItem('homeCommonDetails') || null);
     this.coversreuired = sessionStorage.getItem('coversRequired');
@@ -36,12 +38,11 @@ export class ElectronicEquipmentTZAComponent {
     this.countryId = this.userDetails.Result.CountryId;
     this.brokerbranchCode = this.userDetails.Result.BrokerBranchCode;
     this.branchCode = this.userDetails.Result.BranchCode;
-    let  contentData4 = new ElectronicEquipmentNew();
-    this.fieldEE[0] = contentData4?.fields;
-    this.electronicEquipmentForm = this.fb.group({ ElectronicEquipment: this.fb.array([]) });
-    this.electronicPortableEquipmentForm = this.fb.group({ ElectronicPortableEquipment: this.fb.array([]) });
-    this.addElectronicEquipment(); this.addElectronicPortableEquipment()
-    this.getClaimPreparationList(); this.getElectronicEquipmentList();
+    this.EETanzaniyaForm = this.fb.group({ EETanzaniya: this.fb.array([]) });
+     const EETanzaniyaArray = this.EETanzaniyaForm.get('EETanzaniya') as FormArray;
+      EETanzaniyaArray.clear();
+      this.addEETanzaniya();
+    this.getdropList();
   }
   ngOnInit() {
     if (this.locationList.length != 0) {
@@ -69,170 +70,70 @@ export class ElectronicEquipmentTZAComponent {
     }
   }
   onEditData() {
-    if (this.renderType == 'Direct') {
       let i = 0;
       for (let obj of this.locationList) {
-        if (this.locationDetails[i]) {
-          let subDetails = this.locationDetails[i].SectionList
-          let electronicEquipment = new ElectronicEquipmentApiTanzaniya();
-          if (electronicEquipment && electronicEquipment.getEditDetails(subDetails, obj)) {
-            if (obj && this.tabIndex == i) {
-              obj = electronicEquipment.getEditDetails(subDetails, obj);
-              console.log('editobj', obj);
-              if (obj?.IndustryType) this.productItem.IndustryId = obj?.IndustryType
-              if (obj?.ElectronicEquipment) {
-                const electronicEquipmentArray = this.electronicEquipmentForm.get('ElectronicEquipment') as FormArray;
-                electronicEquipmentArray.clear();
-                for (let i = 0; i < obj.ElectronicEquipment.length; i++) {
-                  electronicEquipmentArray.push(
-                    this.fb.group({
-                      CategoryId: obj.ElectronicEquipment[i].CategoryId,
-                      SumInsured: this.CommaFormattedValue(obj.ElectronicEquipment[i].SumInsured),
-                      Description: obj.ElectronicEquipment[i].Description
-                    })
-                  );
-                }
+        let subDetails = null;
+        if (obj.SectionList) {
+          subDetails = obj.SectionList;
+          let Api = new ElectronicEquipmentTanzaniyaApi();
+          const electronicEquipmentResult = Api.getEditDetails(subDetails, obj);
+          if (electronicEquipmentResult !== undefined) {
+            obj = electronicEquipmentResult;
+          }
+        }
+       if(this.tabIndex==i && subDetails){
+            this.productItem.IndustryId = obj?.IndustryType;
+            if (obj.EETanzaniya && obj.EETanzaniya.length > 0) {
+              const EETanzaniyaArray = this.EETanzaniyaForm.get('EETanzaniya') as FormArray;
+              EETanzaniyaArray.clear();
+              for (let entry of obj.EETanzaniya) {
+                const userGroup = this.fb.group({
+                  ContentId: entry.ContentId,
+                  SerialNo: entry.SerialNo,
+                  SumInsured: this.CommaFormattedValue(entry.SumInsured),
+                  DescriptionOfRisk: entry.DescriptionOfRisk
+                });
+                EETanzaniyaArray.push(userGroup);
               }
-              if (obj?.ElectronicPortableEquipment) {
-                const electronicEquipmentPortableArray = this.electronicPortableEquipmentForm.get('ElectronicPortableEquipment') as FormArray;
-                electronicEquipmentPortableArray.clear();
-                for (let i = 0; i < obj.ElectronicPortableEquipment.length; i++) {
-                  electronicEquipmentPortableArray.push(
-                    this.fb.group({
-                      SumInsured: this.CommaFormattedValue(obj.ElectronicPortableEquipment[i].SumInsured),
-                      Description: obj.ElectronicPortableEquipment[i].Description
-                    })
-                  );
-                }
-              }
-              if (obj?.IncreasedCostofWorking) this.productItem.IncreasedCostofWorking = obj?.IncreasedCostofWorking;
-              if (obj?.IncompatibilityCover) this.productItem.IncompatibilityCover = obj?.IncompatibilityCover;
-              if (obj?.EEclaimsPreparationCosts) this.productItem.EEclaimsPreparationCosts = obj?.EEclaimsPreparationCosts;
-              if (obj?.ElectronicEquipmentDesc) this.productItem.ElectronicEquipmentDesc = obj?.ElectronicEquipmentDesc;
-              if (obj?.VariousPortableEquipmentDesc) this.productItem.VariousPortableEquipmentDesc = obj?.VariousPortableEquipmentDesc;
-              if (obj?.IncreasedCostofWorkingDesc) this.productItem.IncreasedCostofWorkingDesc = obj?.IncreasedCostofWorkingDesc;
-              if (obj?.IncompatibilityCoverDesc) this.productItem.IncompatibilityCoverDesc = obj?.IncompatibilityCoverDesc;
-              if (obj?.EEclaimsPreparationCostsDesc) this.productItem.EEclaimsPreparationCostsDesc = obj?.EEclaimsPreparationCostsDesc;
             }
-          }
         }
         i += 1;
       }
-    }
-    else {
-      let i = 0;
-      console.log("On Edit Location", this.locationList)
-      for (let obj of this.locationList) {
-        if (obj && this.tabIndex == i) {
-          if (obj.SectionList) {
-           let electronicEquipment = new ElectronicEquipmentApiTanzaniya();
-            obj = electronicEquipment.getEditDetails(obj.SectionList, obj);
-            if (obj?.IndustryType) this.productItem.IndustryId = obj?.IndustryType
-            if (obj?.ElectronicEquipment) {
-                const electronicEquipmentArray = this.electronicEquipmentForm.get('ElectronicEquipment') as FormArray;
-                electronicEquipmentArray.clear();
-                for (let i = 0; i < obj.ElectronicEquipment.length; i++) {
-                  electronicEquipmentArray.push(
-                    this.fb.group({
-                      CategoryId: obj.ElectronicEquipment[i].CategoryId,
-                      SumInsured: this.CommaFormattedValue(obj.ElectronicEquipment[i].SumInsured),
-                      Description: obj.ElectronicEquipment[i].Description
-                    })
-                  );
-                }
-              }
-              if (obj?.ElectronicPortableEquipment) {
-                const electronicEquipmentPortableArray = this.electronicPortableEquipmentForm.get('ElectronicPortableEquipment') as FormArray;
-                electronicEquipmentPortableArray.clear();
-                for (let i = 0; i < obj.ElectronicPortableEquipment.length; i++) {
-                  electronicEquipmentPortableArray.push(
-                    this.fb.group({
-                      SumInsured: this.CommaFormattedValue(obj.ElectronicPortableEquipment[i].SumInsured),
-                      Description: obj.ElectronicPortableEquipment[i].Description
-                    })
-                  );
-                }
-              }
-            if (obj?.IncreasedCostofWorking) this.productItem.IncreasedCostofWorking = obj?.IncreasedCostofWorking;
-            if (obj?.IncompatibilityCover) this.productItem.IncompatibilityCover = obj?.IncompatibilityCover;
-            if (obj?.EEclaimsPreparationCosts) this.productItem.EEclaimsPreparationCosts = obj?.EEclaimsPreparationCosts;
-            if (obj?.ElectronicEquipmentDesc) this.productItem.ElectronicEquipmentDesc = obj?.ElectronicEquipmentDesc;
-            if (obj?.VariousPortableEquipmentDesc) this.productItem.VariousPortableEquipmentDesc = obj?.VariousPortableEquipmentDesc;
-            if (obj?.IncreasedCostofWorkingDesc) this.productItem.IncreasedCostofWorkingDesc = obj?.IncreasedCostofWorkingDesc;
-            if (obj?.IncompatibilityCoverDesc) this.productItem.IncompatibilityCoverDesc = obj?.IncompatibilityCoverDesc;
-            if (obj?.EEclaimsPreparationCostsDesc) this.productItem.EEclaimsPreparationCostsDesc = obj?.EEclaimsPreparationCostsDesc;
-          }
-        }
-        i += 1;
-      }
-    }
-  } CommaFormattedValue(data) {
+  }
+  CommaFormattedValue(data) {
     if (data) data = String(data).replace(/[^0-9.]|(?<=\-..*)\./g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return data
   }
-  getElectronicEquipmentList() {
+  getdropList() {
     let ReqObj = {
       "InsuranceId": this.insuranceId,
-      "ItemType": "Electronic Items"
+      "BranchCode": this.branchCode
     }
-    let urlLink = `${this.CommonApiUrl}master/getbyitemvalue`;
+    let urlLink = `${this.CommonApiUrl}dropdown/content`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
-        let defaultObj = [{ 'CodeDesc': '-Select-', 'Code': null }]
-        this.electronicEquipList = defaultObj.concat(data.Result);
-      })
-  }
-  getClaimPreparationList() {
-    let ReqObj = {
-      "InsuranceId": this.insuranceId,
-      "ItemType": "CLAIM_COST"
-    }
-    let urlLink = `${this.CommonApiUrl}master/getbyitemvalue`;
-    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
-      (data: any) => {
-        let defaultObj = [{ 'CodeDesc': '-Select-', 'Code': null }]
-        this.claimCostList = defaultObj.concat(data.Result);
-        console.log(this.claimCostList);
-        for (let i = 0; i < this.claimCostList.length; i++) {
-          this.claimCostList[i].label = this.claimCostList[i]['CodeDesc'];
-          this.claimCostList[i].value = this.claimCostList[i]['Code'];
-          if (i == this.claimCostList.length - 1) {
-            if (this.productId != '68') {
-              let field4 = this.fieldEE[0]?.fieldGroup[0]?.fieldGroup;
-              if (field4) {
-                for (let field of field4) { if (field.key == 'AdditionalClaimsPreparationCosts') { field.templateOptions.options = this.claimCostList; } }
-              }
-            }
-            let field5 = this.fieldEE[0]?.fieldGroup[0]?.fieldGroup[0]?.fieldGroup[1]?.fieldGroup;
-            if (field5) {
-              for (let field of field5) {
-                for (let field1 of field.fieldGroup)
-                  if (field1.key == 'EEclaimsPreparationCosts') { field1.templateOptions.options = this.claimCostList; }
-              }
-            }
-          }
+        if (data.Result) {
+          let defaultObj = [{ 'label': '-Select-', 'value': null, 'CodeDesc': '-Select-', 'Code': null }]
+          this.dropList = defaultObj.concat(data.Result);
         }
-      })
+      },
+      (err) => { },
+    );
   }
-  get ElectronicEquipmentArray(): FormArray {
-    return this.electronicEquipmentForm.get('ElectronicEquipment') as FormArray;
+  addEETanzaniya() {
+    const userGroup = this.fb.group({
+      ContentId: [''],
+      SerialNo: [''],
+      SumInsured: [''],
+      DescriptionOfRisk: ['']
+    });
+    this.EETanzaniyaArray.push(userGroup);
   }
-  get ElectronicPortableEquipmentArray(): FormArray {
-    return this.electronicPortableEquipmentForm.get('ElectronicPortableEquipment') as FormArray;
+  get EETanzaniyaArray(): FormArray {
+    return this.EETanzaniyaForm.get('EETanzaniya') as FormArray;
   }
-  addElectronicEquipment() {
-    const userGroup = this.fb.group({ CategoryId: [''], Description: [''], SumInsured: [''] });
-    this.ElectronicEquipmentArray.push(userGroup);
-  }
-  addElectronicPortableEquipment() {
-    const userGroup = this.fb.group({ Description: [''], SumInsured: [''] });
-    this.ElectronicPortableEquipmentArray.push(userGroup);
-  }
-  removeElectronicPortableEquipment(index: number) {
-    this.ElectronicPortableEquipmentArray.removeAt(index);
-  }
-  removeElectronicEquipment(index: number) {
-    this.ElectronicEquipmentArray.removeAt(index);
+  removeEmployersLiability(index: number) {
+    this.EETanzaniyaArray.removeAt(index);
   }
   onProceedData(type) {
     console.log("Final Location List", this.locationList)
@@ -251,32 +152,37 @@ export class ElectronicEquipmentTZAComponent {
           "CoversRequired": entry.CoversRequired,
           "BuildingOwnerYn": entry.BuildingOwnerYn,
           "Address": entry.BuildingAddress,
+          "BuildingAddress": entry.BuildingAddress,
           "SectionList": []
         }
         if (j == this.tabIndex) {
-          entry['ElectronicEquipment'] = this.electronicEquipmentForm.value.ElectronicEquipment
-          entry['ElectronicPortableEquipment'] = this.electronicPortableEquipmentForm.value.ElectronicPortableEquipment
-          entry['IncreasedCostofWorking'] = this.productItem.IncreasedCostofWorking
-          entry['IncompatibilityCover'] = this.productItem.IncompatibilityCover
-          entry['EEclaimsPreparationCosts'] = this.productItem.EEclaimsPreparationCosts
-          entry['ElectronicEquipmentDesc'] = this.productItem.ElectronicEquipmentDesc
-          entry['VariousPortableEquipmentDesc'] = this.productItem.VariousPortableEquipmentDesc
-          entry['IncreasedCostofWorkingDesc'] = this.productItem.IncreasedCostofWorkingDesc
-          entry['IncompatibilityCoverDesc'] = this.productItem.IncompatibilityCoverDesc
-          entry['EEclaimsPreparationCostsDesc'] = this.productItem.EEclaimsPreparationCostsDesc;
-          entry['IndustryType'] = this.productItem.IndustryId;
-        }
-        if (entry['ElectronicEquipment'] || entry['VariousPortableEquipment'] || entry['IncreasedCostofWorking'] ||
-          entry['IncompatibilityCover'] || entry['EEclaimsPreparationCosts'] || entry['ElectronicEquipmentDesc'] ||
-          entry['VariousPortableEquipmentDesc'] || entry['IncreasedCostofWorkingDesc'] || entry['IncompatibilityCoverDesc'] || entry['EEclaimsPreparationCostsDesc']) {
-          let elecEquipment = new ElectronicEquipmentApiTanzaniya();
-          let elecEquipmentList: any = elecEquipment.getSaveDetails(entry, this.industryTypeList, this.claimCostList, obj, []);
-          if (elecEquipmentList) {
-            let list = [];
-            if (entry.SectionList) list = entry.SectionList.filter(ele => ele.SectionId != '76');
-            if (elecEquipmentList.SectionList) elecEquipmentList.SectionList = elecEquipmentList.SectionList.concat(list)
-            obj = elecEquipmentList
-          }
+         entry['IndustryType'] = obj['IndustryType'] = this.productItem.IndustryId;
+         entry['EETanzaniya'] = obj['EETanzaniya'] = this.EETanzaniyaForm.value.EETanzaniya;
+         let Form = this.EETanzaniyaForm.value.EETanzaniya;
+            let result: any[] = [];
+            if (Form) {
+              obj['SectionList'] = [];
+              for (let i = 0; i < Form.length; i++) {
+                if (Form[i].SumInsured != '0' && Form[i].SumInsured != 0 && Form[i].SumInsured != null && Form[i].SumInsured != 'null') {
+                  let d = {
+                    "ElecEquipSuminsured": String(Form[i].SumInsured).replaceAll(',', ''),
+                    "SumInsured": String(Form[i].SumInsured).replaceAll(',', ''),
+                    "SectionId": "76",
+                    "SectionName": "Electronic Equipment",
+                    "CoverId": '90',
+                    "ContentId": Form[i].ContentId,
+                    "ContentDesc": this.dropList.find(ele => ele.Code == Form[i].ContentId)?.CodeDesc,
+                    "DescriptionOfRisk": Form[i].DescriptionOfRisk,
+                    "SerialNo": Form[i].SerialNo,
+                    "IndustryType": entry.IndustryType,
+                    "IndustryId": entry.IndustryType,
+                    "OtherOccupation":j,
+                    "IndustryTypeDesc": this.industryTypeList.find(ele => ele.Code == entry.IndustryId)?.CodeDesc
+                  }
+                  obj.SectionList.push(d);
+                }
+              }
+            }
         }
         else if (entry.SectionList) { obj.SectionList = entry['SectionList'] }
         locationList.push(obj);

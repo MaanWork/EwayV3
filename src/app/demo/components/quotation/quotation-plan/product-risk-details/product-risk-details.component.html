@@ -447,7 +447,7 @@
                                     <ng-container *ngIf="ElectronicEquipmentTZA && industryTypeList.length!=0">
                                         <electronic-equipment-tza [form]="form" [industryTypeList]="industryTypeList"
                                             [locationList]="locationList" [locationDetails]="locationDetails"
-                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
                                             (finalProceed)="onProceed($event)"
                                             [renderType]="renderType"></electronic-equipment-tza>
                                     </ng-container>

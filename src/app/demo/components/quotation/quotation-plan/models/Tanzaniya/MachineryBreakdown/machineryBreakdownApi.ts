@@ -46,6 +46,7 @@ export class MachineryBreakdownApiTanzaniya{
               "SumInsured": MachineryTanzaniyaList[i].PowerPlantSi,
               'BusinessInterruption': MachineryTanzaniyaList[i].BusinessName,
               "IndustryId": IndustryId,
+              "IndustryType": IndustryId,
               "CoverId": "339",
               'BusinessNameDesc': this.getBusinessNameDesc(MachineryTanzaniyaList[i].BusinessName,dropList),
               'BuildingSumInsured': MachineryTanzaniyaList[i].BusinessSI,
@@ -71,6 +72,7 @@ export class MachineryBreakdownApiTanzaniya{
                 'BusinessNameDesc': this.getBusinessNameDesc(MachineryTanzaniyaList[i].BusinessName,dropList),
                 'BuildingSumInsured': MachineryTanzaniyaList[i].BusinessSI,
                 "IndustryId": IndustryId,
+                "IndustryType": IndustryId,
                 "RiskId": null,
                 "CoverId": "337"
               }

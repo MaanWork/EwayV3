@@ -50,7 +50,6 @@ export class AccidentalDamageTZAComponent {
       }
       onEditData() {
         console.log("Locations On Edit", this.locationList);
-        if (this.renderType == 'Direct') {
           let i = 0;
           for (let obj of this.locationList) {
               let subDetails = null;
@@ -72,7 +71,6 @@ export class AccidentalDamageTZAComponent {
               }
               i+=1;
           }
-        }
       }
       getClaimPreparationList() {
         let ReqObj = {

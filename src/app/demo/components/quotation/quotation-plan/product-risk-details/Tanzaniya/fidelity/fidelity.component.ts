@@ -41,6 +41,9 @@ export class FidelityTZAComponent {
               this.FidelityTanzaniyaForm = this.fb.group({ FidelityTanzaniya: this.fb.array([]) });
               let contentData4 = new Fidelitytwo()
               this.fieldFidelityPhoenix[0] = contentData4?.fields[0];
+               const fidelityArray = this.FidelityTanzaniyaForm.get('FidelityTanzaniya') as FormArray;
+              fidelityArray.clear();
+              this.addFidelityTanzaniya()
               this.getOccupationEmployers();this.getFidelitySIList();
       }
   ngOnInit(){
@@ -77,7 +80,10 @@ export class FidelityTZAComponent {
                 }
                 if(obj['IndustryType']) this.productItem.IndustryId = obj['IndustryType'];
             }
-            else{this.addFidelityTanzaniya()}
+            else if(this.tabIndex==i){
+              const fidelityArray = this.FidelityTanzaniyaForm.get('FidelityTanzaniya') as FormArray;
+              fidelityArray.clear();
+              this.addFidelityTanzaniya()}
             i+=1;
         }
   }
@@ -184,6 +190,7 @@ export class FidelityTZAComponent {
                       "RiskId": null,
                       "OccupationId": Form[i].OccupationId,
                       "FidEmpCount": Form[i].Count,
+                      "Count": Form[i].Count,
                       "SumInsured": Form[i].SumInsured,
                       "OtherOccupation": i,
                       "IndustryType": this.productItem.IndustryId,

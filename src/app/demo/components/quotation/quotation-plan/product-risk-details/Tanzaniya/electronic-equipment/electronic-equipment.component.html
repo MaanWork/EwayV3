@@ -19,133 +19,92 @@
                 </div>
                 <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
             </div>
-            <div class="row w-full">
-                    <div class="text-right"
-                        *ngIf="!endorsementSection">
-                        <p-button
-                            label="Add Electronic Equipment"
-                            styleClass="mr-3 p-button-outlined"
-                            (click)="addElectronicEquipment()"></p-button>
-                    </div>
-                    <div class="px-3">
-                        <form [formGroup]="electronicEquipmentForm">
-                            <div formArrayName="ElectronicEquipment">
-                                <div *ngFor="let user of ElectronicEquipmentArray.controls; let i = index"
-                                    [formGroupName]="i">
-                                    <div
-                                        class="grid ">
-                                        <div
-                                            class="col-10 lg:col-3 xl:col-3">
-                                            <label for="Address">Electronic Equipment</label>
-                                            <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Electronic Equipment Type" [options]="electronicEquipList"
-                                                appendTo="body" optionLabel="CodeDesc" optionValue="Code" [filter]="true" filterBy="CodeDesc" formControlName="CategoryId" />
-                                        </div>
-                                        <div
-                                            class="col-10 lg:col-3 xl:col-3">
-                                            <label
-                                                for="Address">Description</label>
-                                            <input class="w-full p-button-outlined" formControlName="Description" placeholder="Enter Description" styleClass="w-full" pInputText type="text" />
-                                        </div>
-                                        <div
-                                            class="col-10 lg:col-3 xl:col-3">
-                                            <label for="Address">Sum Insured</label>
-                                            <input class="w-full p-button-outlined" formControlName="SumInsured" placeholder="Enter Sum Insured" styleClass="w-full" pInputText type="commaSeparator" (keydown)="onKeyDown($event,user)" (keyup)="CommaFormattedDynamic($event,'ElectronicEquipment')" />
-                                        </div>
-                                        <div
-                                            class="col-2 lg:col-2 xl:col-2">
-                                            <br>
-                                            <ng-container *ngIf="i != 0">
-                                                <button pButton type="button" class="mt-3" icon="pi pi-trash" (click)="removeElectronicEquipment(i)" styleClass="p-button-outlined">
-                                                </button>
-                                            </ng-container>
+            <div class="grid">
+                <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+                <div class="col-12 lg:col-10 xl:col-10">
+                    <div class="memberDetailCard">
+                        <div class="grid justify-content-start">
+                            <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                <b>Electronic Equipment</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="text-right" >
+                                <p-button label="Add New"
+                                    styleClass="mr-3 p-button-outlined"
+                                    (click)="addEETanzaniya()"></p-button>
+                            </div>
+                            <div>
+                                <form [formGroup]="EETanzaniyaForm">
+                                    <div formArrayName="EETanzaniya">
+                                        <div *ngFor="let user of EETanzaniyaArray.controls; let i = index"
+                                            [formGroupName]="i">
+                                            <div class="grid ">
+                                                <div class="col-10 lg:col-3 xl:col-3">
+                                                    <label for="Address">Equipment
+                                                        Type</label>
+                                                    <p-dropdown class="w-full flex css"
+                                                        styleClass="w-full"
+                                                        placeholder="Select Content Type"
+                                                        [options]="dropList"
+                                                        appendTo="body"
+                                                        optionLabel="CodeDesc"
+                                                        optionValue="Code"
+                                                        [filter]="true"
+                                                        filterBy="CodeDesc"
+                                                        formControlName="ContentId" />
+                                                </div>
+                                                <div class="col-10 lg:col-2 xl:col-2">
+                                                    <label for="Address">Serial
+                                                        No</label>
+                                                    <input
+                                                        class="w-full p-button-outlined"
+                                                        formControlName="SerialNo"
+                                                        placeholder="Enter Serial No"
+                                                        styleClass="w-full" pInputText
+                                                        type="number" />
+                                                </div>
+                                                <div class="col-10 lg:col-3 xl:col-3">
+                                                    <label
+                                                        for="Address">Description</label>
+                                                    <input
+                                                        class="w-full p-button-outlined"
+                                                        formControlName="DescriptionOfRisk"
+                                                        placeholder="Enter Description"
+                                                        styleClass="w-full" pInputText
+                                                        type="input" />
+                                                </div>
+                                                <div class="col-10 lg:col-3 xl:col-3">
+                                                    <label for="Address">Sum
+                                                        Insured</label>
+                                                    <input
+                                                        class="w-full p-button-outlined"
+                                                        formControlName="SumInsured"
+                                                        placeholder="Enter Sum Insured"
+                                                        styleClass="w-full" pInputText
+                                                        type="commaSeparator"
+                                                        (keydown)="onKeyDown($event,user)"
+                                                        (keyup)="CommaFormattedDynamic($event,'AdditionalClaimsPreparationCosts')" />
+                                                </div>
+                                                <div class="col-2 lg:col-1 xl:col-1">
+                                                    <br>
+                                                    <button pButton type="button"
+                                                        icon="pi pi-trash"
+                                                        class="mt-2"
+                                                        (click)="removeEmployersLiability(i)"
+                                                        styleClass="p-button-outlined">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- <button mat-icon-button color="warn" (click)="removeUser(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button> -->
                                         </div>
                                     </div>
-                                </div>
+                                    <!-- <button mat-raised-button color="primary" (click)="addUser()">Add User</button> -->
+                                    <!-- <button mat-raised-button color="accent" (click)="saveForm()">Save</button> -->
+                                </form>
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div
-                    class="mb-2 col-12 lg:col-10 xl:col-10 mt-4">
-                    <b>Electronic Portable Equipment</b>
-                </div>
-                <div class="row w-full">
-                    <div class="text-right"
-                        *ngIf="!endorsementSection">
-                        <p-button label="Add Portable Equipment" styleClass="mr-3 p-button-outlined" (click)="addElectronicPortableEquipment()"></p-button>
-                    </div>
-                    <div class="px-3">
-                        <form [formGroup]="electronicPortableEquipmentForm">
-                            <div
-                                formArrayName="ElectronicPortableEquipment">
-                                <div *ngFor="let user of ElectronicPortableEquipmentArray.controls; let i = index"
-                                    [formGroupName]="i">
-                                    <div
-                                        class="grid">
-                                        <!-- Description Field -->
-                                        <div
-                                            class="col-12 md:col-5 lg:col-4">
-                                            <label
-                                                for="Address">Description</label>
-                                            <input
-                                                class="w-full p-button-outlined"
-                                                formControlName="Description"
-                                                placeholder="Enter Description"
-                                                styleClass="w-full"
-                                                pInputText
-                                                type="text" />
-                                        </div>
-                                        <!-- Sum Insured Field -->
-                                        <div
-                                            class="col-12 md:col-5 lg:col-4">
-                                            <label
-                                                for="Address">Sum
-                                                Insured</label>
-                                            <input
-                                                class="w-full p-button-outlined"
-                                                formControlName="SumInsured"
-                                                placeholder="Enter Sum Insured"
-                                                styleClass="w-full"
-                                                pInputText
-                                                type="commaSeparator"
-                                                (keydown)="onKeyDown($event,user)"
-                                                (keyup)="CommaFormattedDynamic($event,'ElectronicPortableEquipment')" />
-                                        </div>
-                                        <!-- Delete Button -->
-                                        <div
-                                            class="col-2 lg:col-2 xl:col-2">
-                                            <br>
-                                            <ng-container
-                                                *ngIf="i != 0">
-                                                <button
-                                                    pButton
-                                                    type="button"
-                                                    icon="pi pi-trash"
-                                                    class="mt-3"
-                                                    (click)="removeElectronicPortableEquipment(i)"
-                                                    styleClass="p-button-outlined">
-                                                </button>
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <button mat-raised-button color="primary" (click)="addUser()">Add User</button> -->
-                            <!-- <button mat-raised-button color="accent" (click)="saveForm()">Save</button> -->
-                        </form>
-                    </div>
-                </div>
-            <div class="">
-                <div style="width: 100%;">
-                    <div>
-                        <!-- <div class="mt-4 mr-3 ml-3">
-                            <img src="./assets/images/content.png" width="40"
-                                height="35">
-                        </div> -->
-                        <div>
-                            <form [formGroup]="form">
-                                <formly-form [form]="form" [fields]="fieldEE" [model]="productItem"></formly-form>
-                            </form>
                         </div>
                     </div>
                 </div>

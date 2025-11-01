@@ -5369,32 +5369,77 @@ export class CoverDetailsComponent {
     }
     // this.discountDetailModal = true; this.excessDetailModal = false;
   }
+  // groupDataBySectionId(data: any[]): any {
+  //   const mergedObject = data.reduce((acc, currentItem) => {
+  //     const sectionId = currentItem.SectionId;
+  //     const locationId = currentItem.LocationId;
+  //     if (!acc[sectionId]) {
+  //       console.log("Initializing section: ", sectionId,acc[sectionId],acc);
+  //       acc[sectionId] = {
+  //         ...currentItem,
+  //         CoverList: [],
+  //         OverallPremiumLc: 0
+  //       };
+  //     }
+  //     acc[sectionId].CoverList = acc[sectionId].CoverList.concat(currentItem.CoverList.filter(ele => ele.CoverageType != 'A'));
+  //     const coverPremium = currentItem.CoverList.filter(ele => ele.CoverageType != 'A').reduce(
+  //       (sum, cover) => cover.isSelected !== 'N'
+  //         ? sum + (Number(cover.PremiumIncludedTaxLC) || 0)
+  //         : sum,
+  //       0
+  //     );
+  //     acc[sectionId].OverallPremiumLc += coverPremium;
+  //     console.log('Returning',acc)
+  //     return acc;
+  //   }, {});
+  //   this.tableList = Object.values(mergedObject);
+  //   // let baseCovers = mergedObject.filter(ele=>ele.CoverageType=='B')
+  //   // let optionalCovers = mergedObject.filter(ele=>ele.CoverageType=='O')
+  //   // this.tableList = Object.values(baseCovers.concat(optionalCovers));
+  //   // console.log(this.tableList, "Final Table List with OverallPremiumLc");
+  // }
   groupDataBySectionId(data: any[]): any {
-    const mergedObject = data.reduce((acc, currentItem) => {
-      const sectionId = currentItem.SectionId;
-      if (!acc[sectionId]) {
-        acc[sectionId] = {
-          ...currentItem,
-          CoverList: [],
-          OverallPremiumLc: 0
-        };
-      }
-      acc[sectionId].CoverList = acc[sectionId].CoverList.concat(currentItem.CoverList.filter(ele => ele.CoverageType != 'A'));
-      const coverPremium = currentItem.CoverList.filter(ele => ele.CoverageType != 'A').reduce(
-        (sum, cover) => cover.isSelected !== 'N'
+  const mergedObject = data.reduce((acc, currentItem) => {
+    const sectionId = currentItem.SectionId;
+    const locationId = currentItem.LocationId;
+    const key = `${sectionId}_${locationId}`; // unique key for Section + Location
+
+    if (!acc[key]) {
+      acc[key] = {
+        ...currentItem,
+        CoverList: [],
+        OverallPremiumLc: 0
+      };
+    }
+
+    const filteredCovers = currentItem.CoverList.filter(
+      ele => ele.CoverageType !== 'A'
+    );
+
+  
+    acc[key].CoverList = acc[key].CoverList.concat(filteredCovers);
+
+    const coverPremium = filteredCovers.reduce(
+      (sum, cover) =>
+        cover.isSelected !== 'N'
           ? sum + (Number(cover.PremiumIncludedTaxLC) || 0)
           : sum,
-        0
-      );
-      acc[sectionId].OverallPremiumLc += coverPremium;
-      return acc;
-    }, {});
-    this.tableList = Object.values(mergedObject);
-    // let baseCovers = mergedObject.filter(ele=>ele.CoverageType=='B')
-    // let optionalCovers = mergedObject.filter(ele=>ele.CoverageType=='O')
-    // this.tableList = Object.values(baseCovers.concat(optionalCovers));
-    // console.log(this.tableList, "Final Table List with OverallPremiumLc");
+      0
+    );
+
+    acc[key].OverallPremiumLc += coverPremium;
+
+    return acc;
+  }, {});
+
+  this.tableList = Object.values(mergedObject);
+
+  if (this.tableList.length > 0) {
+    const first = this.tableList[0];
+    this.expandedRowKeys[`${first.SectionId}_${first.LocationId}`] = true;
   }
+}
+
   onSelectCover1(cover: any, checked: boolean, vehicleId: any, row: any, coverListKey: string, action: string) {
     cover.isSelected = checked ? 'Y' : 'N';
     row.OverallPremiumLc = row.CoverList.reduce(

@@ -83,7 +83,7 @@ export class MachineryBreakdownTZAComponent {
                     DescriptionOfRiskBI: BusineessSection[i].DescriptionOfRisk
                   };
                   this.MachineryTanzaniyaList.push(newItem);
-                  if(BusineessSection[i].IndustryType) this.productItem.IndustryId = BusineessSection[i].IndustryType;
+                  if(MachinerySection[i].IndustryType) this.productItem.IndustryId = BusineessSection[i].IndustryType;
                 }
               }
               console.log(this.MachineryTanzaniyaList);
