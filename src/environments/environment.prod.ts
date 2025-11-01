@@ -3,6 +3,7 @@ export const environment = {
   "MotorApiUrl": "http://65.0.113.151:8085/EwayMotorApi/",
   "CommonApiUrl": "http://65.0.113.151:8085/EwayCommonApi/",
   "CustomCommonApiUrl": "http://65.0.113.151:8085/EwayCommonApi/",
+  "CustomCommonCalcApiUrl": "http://102.69.166.162:8585/",
   "ExcelUrl": "http://65.0.113.151:8085/EwayAdminApi/",
   "PreExceptionUrl": "http://65.0.113.151:8085/WhatsAppApiLive/",
   "CustomApiUrl1": "http://65.0.113.151:8085/EwayAdminApi/",

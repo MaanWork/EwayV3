@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem, Message, MessageService } from 'primeng/api';
 import { SharedService } from '@app/_services/shared.service';
 import * as Mydatas from '../../../app-config.json';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ProductData } from '../quotation/quotation-plan/models/product';
@@ -109,7 +109,7 @@ export class CommonQuoteDetailsComponent implements OnInit {
   public AppConfig: any = (Mydatas as any).default;
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
-  public motorApiUrl: any = this.AppConfig.MotorApiUrl;
+  public motorApiUrl: any = this.AppConfig.MotorApiUrl;public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl
   public customApiUrl1: any = this.AppConfig.CustomApiUrl1;
   vehicleDetails: any; customerData: any[] = []; licenseNo: any = null;
   havePromoCodeYN: any = null; typeList: any[] = [];
@@ -4199,7 +4199,7 @@ export class CommonQuoteDetailsComponent implements OnInit {
       "PolicyEndDate": endDate,
       "CoverModification": coverModificationYN
     }
-    let urlLink = `${this.CommonApiUrl}calculator/calc`;
+    let urlLink = `${this.CalcApiUrl}calculator/calc`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
         let res: any = data;
@@ -5981,7 +5981,7 @@ export class CommonQuoteDetailsComponent implements OnInit {
       "CoverModification": "N",
       "PDRefNo": res?.PDRefNo
     }
-    let urlLink = `${this.CommonApiUrl}calculator/policy/calc`;
+    let urlLink = `${this.CalcApiUrl}calculator/policy/calc`;
     if (this.insuranceId != '100028' && this.insuranceId!='100002' && this.insuranceId != '100027' && this.insuranceId != '100040' && this.insuranceId != '100042' && this.insuranceId != '100019') {
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
         (data: any) => {
@@ -6056,7 +6056,7 @@ export class CommonQuoteDetailsComponent implements OnInit {
       "PolicyEndDate": endDate,
       "CoverModification": coverModificationYN
     }
-    let urlLink = `${this.CommonApiUrl}calculator/calc`;
+    let urlLink = `${this.CalcApiUrl}calculator/calc`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
         this.individualCalcIndex += 1;

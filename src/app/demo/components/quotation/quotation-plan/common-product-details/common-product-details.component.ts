@@ -94,7 +94,7 @@ export class CommonProductDetailsComponent {
   userType: any = null; insuranceId: any = null; brokerCode: any = null; customers: any[] = [];
   public AppConfig: any = (Mydatas as any).default; customerDetails: any = null;
   public ApiUrl1: any = this.AppConfig.ApiUrl1; quoteRefNo: any = null; customerData: any = null;
-  public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
+  public CommonApiUrl: any = this.AppConfig.CommonApiUrl;public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl;
   public CommonCalcApiUrl: any = this.AppConfig.CommonCalcApiUrl; currencyCode: any = null;
   public motorApiUrl: any = this.AppConfig.MotorApiUrl; EmployeeListNew: any[] = [];
   public customApiUrl1: any = this.AppConfig.CustomApiUrl1;
@@ -1678,7 +1678,7 @@ export class CommonProductDetailsComponent {
           "PolicyEndDate": endDate,
           "CoverModification": coverModificationYN
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if (data) {
@@ -3780,7 +3780,7 @@ export class CommonProductDetailsComponent {
           "RequestReferenceNo": coverListObj?.RequestReferenceNo,
           "CoverModification": 'N'
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         let coverModificationYN = 'N';
         let entry = this.enableFieldsList.some(ele => ele == 'Covers');
         if (entry) coverModificationYN = 'Y';
@@ -3828,7 +3828,7 @@ export class CommonProductDetailsComponent {
           "RequestReferenceNo": coverListObj?.RequestReferenceNo,
           "CoverModification": 'N'
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         let coverModificationYN = 'N';
         let entry = this.enableFieldsList.some(ele => ele == 'Covers');
         if (entry) coverModificationYN = 'Y';
@@ -5674,7 +5674,7 @@ export class CommonProductDetailsComponent {
       else if (this.productId == '32') { ReqObj.SectionId = '43'; urlLink = `${this.motorApiUrl}api/slide8/getfidelityemp`; }
       // else if(this.productId=='1'){ReqObj.SectionId='52';urlLink=`${this.motorApiUrl}api/slide3/getburglaryandhouse`;}
       else if (this.productId == '21' && this.insuranceId != '100046' && this.insuranceId != '100047' && this.insuranceId != '100048' && this.insuranceId != '100049' && this.insuranceId != '100050' && this.insuranceId != '100002') { ReqObj.SectionId = '3'; urlLink = `${this.motorApiUrl}api/slide2/getallriskdetails`; }
-      else if (this.productId == '26' && this.insuranceId != '100046' && this.insuranceId != '100047' && this.insuranceId != '100048' && this.insuranceId != '100049' && this.insuranceId != '100050') { ReqObj.SectionId = '3'; urlLink = `${this.motorApiUrl}api/slide2/getallriskdetails`; }
+      //else if (this.productId == '26' && this.insuranceId != '100046' && this.insuranceId != '100047' && this.insuranceId != '100048' && this.insuranceId != '100049' && this.insuranceId != '100050') { ReqObj.SectionId = '3'; urlLink = `${this.motorApiUrl}api/slide2/getallriskdetails`; }
       //else if(this.productId=='25' && this.insuranceId!='100046' && this.insuranceId!='100047' && this.insuranceId!='100048'){ReqObj.SectionId='76';urlLink=`${this.motorApiUrl}api/slide6/getelectronicequip`;}
       //else if(this.productId=='42'){ReqObj.SectionId=this.ProductCode;urlLink=`${this.motorApiUrl}api/slide6/getelectronicequip`;}
       else if (this.productId == '43') { ReqObj.SectionId = '70'; urlLink = `${this.motorApiUrl}api/slide12/getpublicliability`; }
@@ -6679,7 +6679,7 @@ export class CommonProductDetailsComponent {
         if (sections.some(ele => ele == '41')) { this.getMachineryBreakDownDetails(sections) }
         //if(sections.some(ele=>ele=='42')){ this.getMoneyDetails(sections)}
         //if(sections.some(ele=>ele=='52')){ this.getBurglaryDetails(sections) }
-        if (sections.some(ele => ele == '69')) { this.getBusinessAllRiskDetails(sections) }
+        //if (sections.some(ele => ele == '69')) { this.getBusinessAllRiskDetails(sections) }
         if (sections.some(ele => ele == '75')) { this.getBusinessInterruptionDetails(sections) }
         //if(sections.some(ele=>ele=='76')){ this.getElectronicEquipment(sections)}
         if (sections.some(ele => ele == '54')) { this.getPublicLiabilityDetails(sections) }
@@ -8789,7 +8789,7 @@ if(this.insuranceId == '100046' || this.insuranceId == '100047'||this.insuranceI
     sessionStorage.setItem('coversRequired',this.coversRequired)
     if(((this.productId=='75' || this.productId=='66' || this.productId=='67' || this.productId=='14' || this.productId=='25' || this.productId=='32' || this.productId == '83' ||
         this.productId == '74' || this.productId == '92' || this.productId == '39' || this.productId == '70' || this.productId == '69' || this.productId == '71' || this.productId == '73' || this.productId == '26' || this.productId == '16' || this.productId == '68' || this.productId == '76' || this.productId == '49'  || this.productId == '80' || this.productId == '88' || this.productId == '90' || this.productId == '91' || this.productId == '27' || this.productId == '78' || this.productId == '89' || this.productId == '81' || this.productId == '79' || this.productId == '87' || this.productId == '87' || this.productId == '99' || this.productId == '100' || this.productId == '106' || this.productId == '21' || this.productId == '98' || this.productId == '97' || this.productId == '72' || this.productId == '93' || this.productId == '102' || this.productId == '104'  || this.productId == '96') && (this.insuranceId=='100046' || this.insuranceId=='100047' ||this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050')) || 
-        ((this.productId == '49' || this.productId == '105' || this.productId == '82' || this.productId == '83') && this.insuranceId=='100002')){this.router.navigate(['/quotation/plan/common-risk-page']);}
+        ((this.productId == '49' || this.productId == '105' || this.productId == '82' || this.productId == '83' || this.productId == '84' || this.productId == '6' || this.productId == '70' || this.productId == '1' || this.productId == '59' || this.productId == '26'  || this.productId == '86' || this.productId=='25' || this.productId=='16' || this.productId=='14' || this.productId=='32' || this.productId=='39' || this.productId=='61' || this.productId=='21' || this.productId=='103') && this.insuranceId=='100002')){this.router.navigate(['/quotation/plan/common-risk-page']);}
     else{this.router.navigate(['/quotation/plan/risk-page']);}
   }
   onSaveplantaLLrisk(type, formType) {
@@ -9649,7 +9649,7 @@ if(this.insuranceId == '100046' || this.insuranceId == '100047'||this.insuranceI
             "PolicyEndDate": endDate,
             "CoverModification": coverModificationYN
           }
-          let urlLink = `${this.CommonApiUrl}calculator/calc`;
+          let urlLink = `${this.CalcApiUrl}calculator/calc`;
           this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
             (data: any) => {
               if (data) {
@@ -9766,7 +9766,7 @@ if(this.insuranceId == '100046' || this.insuranceId == '100047'||this.insuranceI
       "EffectiveDate": effectiveDate,
       "PolicyEndDate": endDate,
     }
-    let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+    let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
         if (data) {
@@ -9878,7 +9878,7 @@ if(this.insuranceId == '100046' || this.insuranceId == '100047'||this.insuranceI
       sessionStorage.setItem('customerLocationDetails',JSON.stringify(this.customerDetails));
       if(((this.productId=='75' || this.productId=='66' || this.productId=='67' || this.productId=='14' || this.productId=='25' || this.productId=='32' || this.productId == '83' ||
         this.productId == '74' || this.productId == '92' || this.productId == '39' || this.productId == '70' || this.productId == '69' || this.productId == '71' || this.productId == '73' || this.productId == '26' || this.productId == '16' || this.productId == '68' || this.productId == '76' || this.productId == '49'  || this.productId == '80' || this.productId == '88' || this.productId == '90' || this.productId == '91' || this.productId == '27' || this.productId == '78' || this.productId == '89' || this.productId == '81' || this.productId == '79' || this.productId == '87' || this.productId == '87' || this.productId == '99' || this.productId == '100' || this.productId == '106' || this.productId == '21' || this.productId == '98' || this.productId == '97' || this.productId == '72' || this.productId == '93' || this.productId == '102' || this.productId == '104'  || this.productId == '96') && (this.insuranceId=='100046' || this.insuranceId=='100047' ||this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050')) || 
-        ((this.productId == '49' || this.productId == '105' || this.productId == '82' || this.productId == '83') && this.insuranceId=='100002')){this.router.navigate(['/quotation/plan/common-risk-page']);}
+        ((this.productId == '49' || this.productId == '105' || this.productId == '82' || this.productId == '83' || this.productId == '84' || this.productId == '6' || this.productId == '70' || this.productId == '1' || this.productId == '59' || this.productId == '26' || this.productId == '86' || this.productId=='25' || this.productId=='16' || this.productId=='14' || this.productId=='32' || this.productId=='39' || this.productId=='26' || this.productId=='61' || this.productId=='21' || this.productId=='103') && this.insuranceId=='100002')){this.router.navigate(['/quotation/plan/common-risk-page']);}
       else this.router.navigate(['/quotation/plan/risk-page']);
     }
     // if (this.uwQuestionList.length != 0) {
@@ -9975,7 +9975,7 @@ if(this.insuranceId == '100046' || this.insuranceId == '100047'||this.insuranceI
       "CoverModification": "N",
       "PDRefNo": res?.PDRefNo
     }
-    let urlLink = `${this.CommonApiUrl}calculator/policy/calc`;
+    let urlLink = `${this.CalcApiUrl}calculator/policy/calc`;
     if (this.insuranceId != '100028' && this.insuranceId != '100027' && this.insuranceId != '100040' && this.insuranceId != '100042' && this.insuranceId != '100019') {
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
         (data: any) => {

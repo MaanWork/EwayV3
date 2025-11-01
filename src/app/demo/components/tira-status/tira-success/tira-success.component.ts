@@ -34,7 +34,7 @@ export class TiraSuccessComponent implements OnInit {
     loginId: any;
     insuranceList: any[] = [];
     branchValue: any;
-    branchList: any;
+    branchList: any[]=[];
     loginType: any;
     countryId: any;
     brokerbranchCode: any;
@@ -70,6 +70,7 @@ export class TiraSuccessComponent implements OnInit {
         this.insuranceId = this.userDetails.Result.InsuranceId;
         this.branchList = this.userDetails.Result.LoginBranchDetails;
         this.loginType = this.userDetails.Result.LoginType;
+        this.productList = this.userDetails.Result.BrokerCompanyProducts;
         const d = new Date();
         this.maxDate = d;
     }
@@ -152,7 +153,6 @@ export class TiraSuccessComponent implements OnInit {
         if (type == 'change') {
             this.branchValue = null;
         }
-
         const ReqObj = {
             InsuranceId: this.insuranceId,
         };
@@ -230,7 +230,6 @@ export class TiraSuccessComponent implements OnInit {
                     this.tiradetails = data?.Result;
                     this.outergrid = [];
                     this.innergrid = [];
-
                     for (let i = 0; i <= this.tiradetails.length; i++) {
                         this.innergrid = this.tiradetails.filter(
                             (ele) =>

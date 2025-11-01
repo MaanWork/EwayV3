@@ -1,0 +1,125 @@
+<div class="col-12 pl-3 pr-2 pb-0">
+    <div>
+        <h4 class="m-0 p-0">Section Modification</h4>
+    </div>
+    <div class="grid mt-1">
+        <!-- <div class="lg:col-2 md:col-2 col-2"></div> -->
+        <div class="lg:col-12 md:col-12 col-12">
+            <div class="grid">
+                <div class="lg:col-4 md:col-4 col-12">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Ownership Status&nbsp;<span class="text-danger">*</span></label>
+                        <div class="input-form-radio-box mt-2">
+                            <div class="radio-toolbar">
+                                <input [id]="'claims_Own'" type="radio"
+                                    [name]="'rentOwnHome'"
+                                    (change)="setBuildingOwnerYN()"
+                                    [(ngModel)]="BuildingOwnerYn" value="Y">
+                                <label [for]="'claims_Own'" class="yes_alt"><img
+                                        style="max-width: 30px;max-height: 10px;">LANDLORD</label>
+                                <input [id]="'claims_Rent'" type="radio"
+                                    [name]="'rentOwnHome'"
+                                    (change)="setBuildingOwnerYN()"
+                                    [(ngModel)]="BuildingOwnerYn" value="N">
+                                <label [for]="'claims_Rent'" class="no"><img
+                                        style="max-width: 30px;max-height: 10px;">TENANT</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-8 md:col-8 col-12">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Cover Required&nbsp;<span class="text-danger">*</span></label>
+                        <div class="input-form-radio-box mt-2">
+                            <div class="radio-toolbar2" style="width: fit-content;">
+                                <input id="Content" type="radio"
+                                    name="Content" value="C"
+                                    [(ngModel)]="CoversRequired">
+                                <label for="Content" class="yes_alt"
+                                    (click)="menuSelection('C','Domestic')"><img
+                                        style="max-width: 30px;max-height: 10px;">&nbsp;CONTENTS</label>
+                                <ng-container *ngIf="BuildingOwnerYn=='Y'">
+                                    <input id="Building" type="radio"
+                                        name="Content" value="B"
+                                        [(ngModel)]="CoversRequired">
+                                    <label for="Building" class="no"
+                                        (click)="menuSelection('B','Domestic')"><img
+                                            style="max-width: 30px;max-height: 10px;">&nbsp;BUILDING</label>
+                                    <input id="Building_Contents" type="radio"
+                                        name="Content"
+                                        [(ngModel)]="CoversRequired"
+                                        value="BC">
+                                    <label for="Building_Contents" class="no"
+                                        (click)="menuSelection('BC','Domestic')"><img
+                                            style="max-width: 30px;max-height: 10px;"
+                                            src="./assets/images/houseContents.png">&nbsp;BUILDING
+                                        & CONTENTS</label>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="lg:col-12 md:col-12 col-12">
+            <div class="grid flex flex-nowrap">
+                <div class="col-xl-2 col-sm-3 col-md-3 col-lg-3">
+                    <div class="card domesticCardCss shadow-4 px-0 py-0">
+                        <div class="list-group">
+                            <div class="list-group--header-item"><strong
+                                    class="ml-3">Cover</strong></div>
+                            <ng-container
+                                *ngFor="let list of domesticMenus;  index as i">
+                                <div class="list-group-item"
+                                    (click)="listProceed('Domestic',i)"
+                                    [ngStyle]="{'background': list.menu == currentDomestic ? 'aliceblue' : 'white'}"
+                                    [ngClass]="{ 'active': list == currentDomestic , 'list-completed' : list.filled}">
+                                    <div class="grid mx-0">
+                                        <div class="col-10">
+                                            {{ list.menu }}
+                                        </div>
+                                        <div class="col-1">
+                                            <i *ngIf="list.filled"
+                                                class="pi pi-check float-right "></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="card">
+                        <ng-container *ngIf="currentDomestic =='BuildingDetails' && (CoversRequired=='B' || CoversRequired=='BC')">
+                                 <building-pp-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                    [tabIndex]="tabIndex" [CoversRequired]="CoversRequired" [productItem]="productItem" [engineerData]="engineerData"
+                                    (finalProceed)="onProceed($event)" [renderType]="renderType"></building-pp-tza>
+                        </ng-container>
+                        <ng-container *ngIf="currentDomestic =='ContentRisk' && (CoversRequired=='C' || CoversRequired=='BC')">
+                            <content-pp-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                    [tabIndex]="tabIndex" [CoversRequired]="CoversRequired" [productItem]="productItem" [engineerData]="engineerData"
+                                    (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></content-pp-tza>
+                        </ng-container>
+                         <ng-container *ngIf="currentDomestic =='AllRisk'">
+                                <all-risk-pp-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                    [tabIndex]="tabIndex" [CoversRequired]="CoversRequired" [productItem]="productItem" [engineerData]="engineerData"
+                                    (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></all-risk-pp-tza>
+                         </ng-container>
+                         <ng-container *ngIf="currentDomestic =='OwnersLiability'">
+                                <owners-liability-pp-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                    [tabIndex]="tabIndex" [CoversRequired]="CoversRequired" [productItem]="productItem" [engineerData]="engineerData"
+                                    (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></owners-liability-pp-tza>
+                         </ng-container>
+                         <ng-container *ngIf="currentDomestic =='ElectronicEquipment'">
+                                <electronic-equipment-pp-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                    [tabIndex]="tabIndex" [CoversRequired]="CoversRequired" [productItem]="productItem" [engineerData]="engineerData"
+                                    (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></electronic-equipment-pp-tza>
+                         </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

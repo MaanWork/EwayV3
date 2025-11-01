@@ -17,6 +17,7 @@ export class PlantAllRiskTanzaniyaApi{
           let building = plantSection.filter(ele=>ele.CoverId==647 || ele.CoverId=='647')
           if(building.length!=0){
            obj['plantallrisk'] = [];
+           obj['IndustryType'] = building[0].IndustryType;  
            for(let ele of building){
             let data = {
               SumInsured: ele.SumInsured,

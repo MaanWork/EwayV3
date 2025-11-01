@@ -232,6 +232,11 @@ otheroption:any='';otherFioption:any='';FidEmpCount:any='0';IndustryBussinessAll
   //Bid Tendor
   BTPrincipal:any=null;BTDescription:any=null;BTPeriodType:any=null;BTPeriodOfActivity:any=null; BTStartDate:any=null;
   ProjectSite:any=null;GrossProfitLc:any=null;BidTensionSumInsured:any=null;BTCollateralType:any=null;CollateralName:any=null;
+  //EAR
+  EARAnnual:any=null;EARPrincipal:any=null;EARDescription:any=null;EARLocationName:any=null;EARStartDate:any=null;
+  EARPeriodOfActivity:any=null;
+  //FarmCare
+  Crop:any=null;NoOfAcres:any=null;YaraPackageYN:any='N';farmCareSumInsured:any=null;
   constructor(data?) {
 		this.id = data?.id ?? ''
 		this.CustomerName = data?.CustomerName ?? '';

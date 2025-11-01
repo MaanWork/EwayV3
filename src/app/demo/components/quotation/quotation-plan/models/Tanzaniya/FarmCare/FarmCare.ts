@@ -1,11 +1,9 @@
 import { FormlyFieldConfig } from "@ngx-formly/core";
-
 export class FarmCareTanzaniya{
     customerDetails: any;
     commonDetails: any[]=[];
     endorsementSection: boolean=false;subuserType:any=null;
     enableFieldsList: any[]=[];finalizeYN:any='N';
-
     constructor() {
         let finalize = sessionStorage.getItem('FinalizeYN');
         if(finalize) this.finalizeYN = finalize;
@@ -20,11 +18,9 @@ export class FarmCareTanzaniya{
               this.enableFieldsList = endorseObj.FieldsAllowed;
             }
         }
-      
         this.CARuptofields = {
           fieldGroupClassName: 'grid',
           fieldGroup: [
-            
             {
               key: 'DistributorCode',
               type: 'group',
@@ -146,7 +142,6 @@ export class FarmCareTanzaniya{
                   options:[]
                 },
               },
-              
                {
               key: 'YaraPackageYN',
               type: 'radioList',
@@ -172,8 +167,6 @@ export class FarmCareTanzaniya{
                 //validation: ['numeric'],  
               },
             },
-           
-            
             {
               key: 'farmCareSumInsured',
               type: 'commaSeparator',
@@ -185,10 +178,8 @@ export class FarmCareTanzaniya{
                 maxLength:2
               },
             },
-            
           ]
         }
-      
     }
     CARuptofields:FormlyFieldConfig;
     constructionCARuptofields:FormlyFieldConfig;
@@ -200,7 +191,5 @@ export class FarmCareTanzaniya{
         }
         else if(this.subuserType=='low') return this.finalizeYN=='Y'; 
         else return false;
-      
       }
-      
 }

@@ -45,6 +45,7 @@ export class CustomerInfoComponent implements OnInit {
     policyHolderList: any[] = [];
     private readonly ApiUrl1: string = environment.ApiUrl1;
     private readonly CommonApiUrl: string = environment.CommonApiUrl;
+    public readonly CalcApiUrl: any = environment.CustomCommonCalcApiUrl; 
     private readonly motorApiUrl: string = environment.MotorApiUrl;
     customerReferenceNo: any = null;
     titleList: any[] = [];
@@ -203,12 +204,10 @@ export class CustomerInfoComponent implements OnInit {
             { label: 'English', value: 'en' },
             { label: 'Portugese', value: 'po' },
         ];
-
         this.getTitleList();
         this.getCurrencyList();
         this.getMobileCodeList();
         this.getPolicyHolderList();
-
         const referenceNo = sessionStorage.getItem('quoteReferenceNo');
         if (referenceNo) {
             this.requestReferenceNo = referenceNo;
@@ -220,10 +219,8 @@ export class CustomerInfoComponent implements OnInit {
                 this.customerReferenceNo = refNo;
             } else {
                 this.customerReferenceNo = null;
-
                 this.productItem.IdType = '1';
             }
-
             this.getmotorDetails();
             //this.setCommonFormValues();
         }
@@ -412,7 +409,6 @@ export class CustomerInfoComponent implements OnInit {
             }
         }
     }
-
     setPolicyType() {
         const value = this.productItem.IdType;
         if (value == 2 || value == '2') {
@@ -422,7 +418,6 @@ export class CustomerInfoComponent implements OnInit {
     getDisplayName() {
         return 'CodeDesc';
     }
-
     onStartDateChange(type) {
         if (type == 'change') {
             if (this.vehicleDetailsList.length != 0) {
@@ -621,11 +616,9 @@ export class CustomerInfoComponent implements OnInit {
                 ) {
                     const today = new Date();
                     today.setHours(0, 0, 0, 0); // midnight
- 
                     // 14 days before today
                     const twoWeeksBefore = new Date(today);
                     twoWeeksBefore.setDate(today.getDate() - 13);
- 
                     if (
                         (this.productId == '5' ||
                             this.productId == '4' ||
@@ -652,7 +645,6 @@ export class CustomerInfoComponent implements OnInit {
                 }
             }
         }
- 
         if (
             this.currencyCode == null ||
             this.currencyCode == '' ||
@@ -725,7 +717,6 @@ export class CustomerInfoComponent implements OnInit {
             InsuranceId: this.insuranceId,
             BranchCode: this.branchCode,
         };
-
         const urlLink = `${this.CommonApiUrl}dropdown/policyholdertype`;
         this.sharedService
             .onPostMethodSync(urlLink, ReqObj)
@@ -1062,7 +1053,6 @@ export class CustomerInfoComponent implements OnInit {
                     }
                 }
             }
-
             if (this.motorTypeList.length != 0)
                 this.bodyTypeId = this.motorTypeList.find(
                     (ele) =>
@@ -1245,7 +1235,6 @@ export class CustomerInfoComponent implements OnInit {
                                                         this.motordetails
                                                             ?.Vehcilemodel,
                                                     );
-
                                                     const entry =
                                                         this.modelList.find(
                                                             (ele) =>
@@ -1809,7 +1798,6 @@ export class CustomerInfoComponent implements OnInit {
                     this.productItem.MobileCode = customerDetails.MobileCode1;
                     this.productItem.MobileCodeDesc =
                         customerDetails.MobileCodeDesc1;
-
                     this.productItem.PolicyHolderTypeid =
                         customerDetails.PolicyHolderTypeid;
                     if (this.productItem.PolicyHolderTypeid == '1') {
@@ -1911,7 +1899,6 @@ export class CustomerInfoComponent implements OnInit {
         let color = '',
             fuel = '';
         const insuranceType = ['73'];
-
         if (
             this.productItem.Color != '' &&
             this.productItem.Color != undefined &&
@@ -1932,7 +1919,6 @@ export class CustomerInfoComponent implements OnInit {
             );
             fuel = entry.label;
         }
-
         let createdBy = '';
         let startDate = '',
             endDate = '';
@@ -1940,7 +1926,6 @@ export class CustomerInfoComponent implements OnInit {
         endDate = this.commonDetails[0].PolicyEndDate;
         const quoteStatus = sessionStorage.getItem('QuoteStatus');
         this.subuserType = sessionStorage.getItem('typeValue');
-
         let appId = '1',
             loginId = '',
             brokerbranchCode = '';
@@ -2104,7 +2089,6 @@ export class CustomerInfoComponent implements OnInit {
         this.currentIndex = this.vehicleDetailsList.length;
         this.totalIndex = this.vehicleDetailsList.length;
     }
-
     onDeleteVehicle() {
         Swal.fire({
             title: '<strong> &nbsp;Delete Vehicle!</strong>',
@@ -2208,7 +2192,6 @@ export class CustomerInfoComponent implements OnInit {
                 }
             });
     }
-
     saveCustomerDetails(data) {
         const entry = this.checkMandatories();
         if (entry) {
@@ -2381,7 +2364,6 @@ export class CustomerInfoComponent implements OnInit {
             createdBy = this.vehicleDetailsList[0].CreatedBy;
         } else {
             createdBy = this.loginId;
-
             if (this.userType != 'Issuer') {
                 this.brokerCode = this.agencyCode;
                 appId = '1';
@@ -2430,7 +2412,6 @@ export class CustomerInfoComponent implements OnInit {
                 else insuranceType.push(this.productItem.InsuranceType);
             }
         }
-
         if (
             this.insuranceId == '100027' ||
             this.insuranceId == '100040' ||
@@ -2483,7 +2464,6 @@ export class CustomerInfoComponent implements OnInit {
             if (usageDesc) VehicleType = usageDesc;
         }
         let motorUsage = null;
-
         if (
             this.productItem.MotorUsage != null &&
             this.productItem.MotorUsage != '' &&
@@ -2669,7 +2649,6 @@ export class CustomerInfoComponent implements OnInit {
         } else {
             createdBy = this.loginId;
         }
-
         let endDate: any = null;
         if (this.endorsementSection && vehicleDetails?.Status == 'D') {
             coverModificationYN = 'Y';
@@ -2718,7 +2697,7 @@ export class CustomerInfoComponent implements OnInit {
             PolicyEndDate: endDate,
             CoverModification: coverModificationYN,
         };
-        const urlLink = `${this.CommonApiUrl}calculator/calc`;
+        const urlLink = `${this.CalcApiUrl}calculator/calc`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(() => {
             this.individualCalcIndex += 1;
             if (this.individualCalcIndex == totalCount) {

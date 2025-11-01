@@ -44,14 +44,19 @@ export class EngineeringAllRiskApiTanzaniya{
                               if(CARBuilding.length!=0){obj['BuildingSumInsureds']=CARBuilding[0].SumInsured;obj['EARMaintenance']=CARBuilding[0].BuildingFloors; obj['IndustryType']=null;if(CARBuilding[0]?.IndustryType!='0')obj['IndustryType']=CARBuilding[0].IndustryType;}
                               let CARConstruction = CARSection.filter(ele=>ele.CoverId==573|| ele.CoverId=='573')
                               if(CARConstruction.length!=0){obj['ConstructionType']=CARConstruction[0].CategoryId;obj['IndustryType']=null;if(CARConstruction[0]?.IndustryType!='0')obj['IndustryType']=CARConstruction[0].IndustryType;}
-                              if(info){ obj['CARDescription']=info[0].Description;}
-                              if(info){ obj['CARAnnual']=info[0].AnnualOpen;}
-                              if(info){ obj['CARPrincipal']=info[0].PrincipalOwner;}
-                              if(info){ obj['CARLocationName']=info[0].LocationName;}
-                              if(info){ obj['CARStartDate']=info[0].StartDate;}
-                              if(info){ obj['CARPeriodOfActivity']=info[0].PeriodOfActivity;}
-                              console.log(obj);
-                              
+                              if(info){
+                                if(info.length!=0){
+                                    let entry = info.filter(ele=>ele.LocationId==obj.LocationId);
+                                    if(entry.length!=0){
+                                      if(entry){ obj['CARDescription']=entry[0].Description;}
+                                      if(entry){ obj['CARAnnual']=entry[0].AnnualOpen;}
+                                      if(entry){ obj['CARPrincipal']=entry[0].PrincipalOwner;}
+                                      if(entry){ obj['CARLocationName']=entry[0].LocationName;}
+                                      if(entry){ obj['CARStartDate']=entry[0].StartDate;}
+                                      if(entry){ obj['CARPeriodOfActivity']=entry[0].PeriodOfActivity;}
+                                    }
+                                }
+                              }
                               return obj
                             }
     }

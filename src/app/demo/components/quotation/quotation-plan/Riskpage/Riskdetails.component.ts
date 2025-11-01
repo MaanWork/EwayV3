@@ -568,7 +568,7 @@ export class RiskDetailsComponent {
   public AppConfig: any = (Mydatas as any).default; firstLossOptions: any[] = [];
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public MarineApiUrl: any = this.AppConfig.MarineApi; firstLossPayeeList: any[] = []; filteredGPAList: any[] = [];
-  public CommonApiUrl: any = this.AppConfig.CommonApiUrl; firstLossSection: boolean; PersonalLiabiltyPhoenix: boolean; fieldPersonalLiability: any[] = [];
+  public CommonApiUrl: any = this.AppConfig.CommonApiUrl;public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl; firstLossSection: boolean; PersonalLiabiltyPhoenix: boolean; fieldPersonalLiability: any[] = [];
   public motorApiUrl: any = this.AppConfig.MotorApiUrl; loopProductItem: any[] = []; fieldsEARPrimary: any[] = []; fieldsEARAdditional: any[] = []; fieldsEARExtensions: any[] = [];
   contentId: null; buildingSection: boolean = false; fieldsEmployee: any[] = []; fields1: any[] = []; fieldsBAR: any[] = [];
   fields2: any[] = []; fields3: any[] = []; fields4: any[] = []; orginalPolicyNo: any = null; exchangeRate: any = null; pAOccupationError: boolean = false;
@@ -1674,8 +1674,10 @@ export class RiskDetailsComponent {
             entry['ElectronicEquipmentSI'] = this.productItem.ElectronicEquipmentSI;
             entry['ElectronicDescription'] = this.productItem.ElectronicDescription;
           }
-          for (let build of entry.EERiskList) {
-            if (build.ElectronicEquipmentSI == null || build.ElectronicEquipmentSI == '' || build.ElectronicDescription == 0 || build.ElectronicDescription == undefined) { entry['ContentSuminsuredError'] = true; i += 1 } else { entry['ContentSuminsuredError'] = false; }
+          if(entry.EERiskList){
+            for (let build of entry.EERiskList) {
+              if (build.ElectronicEquipmentSI == null || build.ElectronicEquipmentSI == '' || build.ElectronicDescription == 0 || build.ElectronicDescription == undefined) { entry['ContentSuminsuredError'] = true; i += 1 } else { entry['ContentSuminsuredError'] = false; }
+            }
           }
         }
         j += 1;
@@ -2151,8 +2153,10 @@ export class RiskDetailsComponent {
           if (entry.BuildingAddress == null || entry.BuildingAddress == '') { entry['BuildingAddressError'] = true; i += 1; }
           else { entry['BuildingAddressError'] = false; }
           if (entry.CoversRequired == 'C' || entry.CoversRequired == 'BC') {
-            for (let build of entry.ContentList) {
-              if (build.SumInsured == null || build.SumInsured == '' || build.Description == 0 || build.Description == undefined) { entry['ContentSuminsuredError'] = true; i += 1 } else { entry['ContentSuminsuredError'] = false; }
+            if(entry.ContentList){
+              for (let build of entry.ContentList) {
+                if (build.SumInsured == null || build.SumInsured == '' || build.Description == 0 || build.Description == undefined) { entry['ContentSuminsuredError'] = true; i += 1 } else { entry['ContentSuminsuredError'] = false; }
+              }
             }
           }
         }
@@ -2989,7 +2993,6 @@ export class RiskDetailsComponent {
                     }
                   }
                   const ContentRiskArray = this.contentRiskForm.get('contentRisk') as FormArray;
-                  console.log("Content Array 2", ContentRiskArray)
                   //obj['ContentSuminsured'] = contentDetails[0].SumInsured; obj['ContentDescription'] = contentDetails[0].DescriptionOfRisk; 
                 }
                 let AllRiskDetails = subDetails.filter(ele => ele['CoverId'] == "45");
@@ -18600,7 +18603,7 @@ export class RiskDetailsComponent {
           "EffectiveDate": effectiveDate,
           "PolicyEndDate": this.commonDetails[0].PolicyEndDate
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             let res: any = data;
@@ -18648,7 +18651,7 @@ export class RiskDetailsComponent {
             "PolicyEndDate": this.commonDetails[0].PolicyEndDate,
             "CoverModification": coverModificationYN
           }
-          let urlLink = `${this.CommonApiUrl}calculator/calc`;
+          let urlLink = `${this.CalcApiUrl}calculator/calc`;
           this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
             (data: any) => {
               let res: any = data;
@@ -18747,7 +18750,7 @@ export class RiskDetailsComponent {
             "EffectiveDate": effectiveDate,
             "PolicyEndDate": endDate,
           }
-          let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+          let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
           this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
             (data: any) => {
               if (data) {
@@ -18857,7 +18860,7 @@ export class RiskDetailsComponent {
             "EffectiveDate": effectiveDate,
             "PolicyEndDate": endDate,
           }
-          let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+          let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
           this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
             (data: any) => {
               if (data) {

@@ -12,20 +12,23 @@ export class ConstructionAllRiskUptoApiTanzaniya{
       let CARSection  = subDetails.filter(ele=>ele['SectionId']=='232');
       if(CARSection.length!=0){
         obj['CARuptoConstruction']=CARSection[0].CategoryId;
-        obj['IndustryType']=CARSection[0].IndustryType;
+        if(CARSection[0].IndustryType) obj['IndustryType']=CARSection[0].IndustryType;
         obj['CARuptoStoreys']=CARSection[0].BuildingFloors;
-        obj['CARuptoMonths']=CARSection[0].BuildingAge;
+        if(CARSection[0].BuildingAge) obj['CARuptoMonths']=CARSection[0].BuildingAge;
         obj['CARuptoSumInsured']=CARSection[0].SumInsured;
         obj['EARMaintenance']=CARSection[0].DescriptionOfRisk;
         if(info){
             if(info.length!=0){
-            if(info){ obj['CARDescription']=info[0].Description;}
-            if(info){ obj['CARAnnual']=info[0].AnnualOpen;}
-            if(info){ obj['CARPrincipal']=info[0].PrincipalOwner;}
-            if(info){ obj['CARLocationName']=info[0].LocationName;}
-            if(info){ obj['CARStartDate']=info[0].StartDate;}
-            if(info){ obj['CARPeriodOfActivity']=info[0].PeriodOfActivity;}
-            }
+              let entry = info.filter(ele=>ele.LocationId==obj.LocationId);
+              if(entry.length!=0){
+                obj['CARDescription']=entry[0].Description;
+                obj['CARAnnual']=entry[0].AnnualOpen;
+                obj['CARPrincipal']=entry[0].PrincipalOwner;
+                obj['CARLocationName']=entry[0].LocationName;
+                obj['CARStartDate']=entry[0].StartDate;
+                obj['CARPeriodOfActivity']=entry[0].PeriodOfActivity;
+              }
+           }
         }
         return obj
       }

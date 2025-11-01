@@ -2704,6 +2704,6 @@ export class UpdateCustomerInfoComponent implements OnInit {
                 );
               }
               onBuyPolicy(){
-                // alert("Enna");
+                alert("Enna");
               }  
 }

@@ -958,12 +958,9 @@ export class UpdateShortInfoComponent implements OnInit {
             let ReqObj = {
               "UserType": this.sourceCodeDesc,
               "SubUserType": this.sourceCodeDesc,
-              "BranchCode": this.branchCode,
+            "BranchCode": this.branchCode,
               "InsuranceId": this.insuranceId
             }
-             if(this.sourceCodeDesc == 'Direct' || this.sourceCodeDesc == 'Agent'){
-                ReqObj['UserType'] = 'Broker';
-              }
             let urlLink = `${this.CommonApiUrl}admin/dropdown/getbrokerlist`;
             this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
               (data: any) => {

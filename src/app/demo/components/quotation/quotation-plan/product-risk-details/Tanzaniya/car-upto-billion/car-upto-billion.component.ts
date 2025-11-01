@@ -66,7 +66,7 @@ export class CarUptoBillionComponent {
               if (this.insuranceId == '100002') constructionAllRiskApi = new ConstructionAllRiskUptoApiTanzaniya();
               obj = constructionAllRiskApi.getEditDetails(subDetails, obj, this.engineerData);
             }
-            if(this.tabIndex==i && obj.SectionList){
+            if(this.tabIndex==i && subDetails){
                 console.log("Edit Obj",obj)
                 if(obj?.CARuptoConstruction) this.productItem['CARuptoConstruction']=obj?.CARuptoConstruction;
                 if(obj?.CARuptoMonths) this.productItem['CARuptoMonths']=obj?.CARuptoMonths;
@@ -220,11 +220,11 @@ export class CarUptoBillionComponent {
           }
           if (j == this.tabIndex) {
                  if(entry.SectionList) obj.SectionList = entry.SectionList.filter(ele=>ele.SectionId!='232');
-              entry['CARuptoConstruction'] = this.productItem['CARuptoConstruction'];
-              entry['CARuptoStoreys'] = this.productItem['CARuptoStoreys'];
-              entry['CARuptoMonths'] = this.productItem['CARuptoMonths'];
-              entry['CARuptoSumInsured'] = String(this.productItem['CARuptoSumInsured']).replaceAll(',','');
-              entry['EARMaintenance'] = this.productItem['EARMaintenance'];
+              obj['CARuptoConstruction'] = entry['CARuptoConstruction'] = this.productItem['CARuptoConstruction'];
+              obj['CARuptoStoreys'] = entry['CARuptoStoreys'] = this.productItem['CARuptoStoreys'];
+              obj['CARuptoMonths'] = entry['CARuptoMonths'] = this.productItem['CARuptoMonths'];
+              obj['CARuptoSumInsured'] = entry['CARuptoSumInsured'] = String(this.productItem['CARuptoSumInsured']).replaceAll(',','');
+              obj['EARMaintenance'] = entry['EARMaintenance'] = this.productItem['EARMaintenance'];
               if(entry.CARuptoConstruction!='0' && entry.CARuptoConstruction!=null && entry.CARuptoConstruction!='' && entry.CARuptoStoreys!='0' && entry.CARuptoStoreys!=null && entry.CARuptoStoreys!='' && entry.CARuptoMonths!='0' && entry.CARuptoMonths!=null && entry.CARuptoMonths!='' && entry.CARuptoSumInsured!='0' && entry.CARuptoSumInsured!=null && entry.CARuptoSumInsured!=''){
                     let subEntry= {
                       "SectionId": "232",
@@ -238,21 +238,29 @@ export class CarUptoBillionComponent {
                       "BuildingBuildYear": entry.CARuptoMonths,
                       "DescriptionOfRisk": entry.EARMaintenance
                     }
-                    if(this.productItem.IndustryId){subEntry['IndustryId'] = this.productItem.IndustryId;subEntry["IndustryTypeDesc"]= this.industryTypeList.find(ele=>ele.Code==this.productItem.IndustryId)?.CodeDesc}
+                    if(this.productItem.IndustryId){subEntry['IndustryId'] = this.productItem.IndustryId;subEntry['IndustryType'] = this.productItem.IndustryId;subEntry["IndustryTypeDesc"]= this.industryTypeList.find(ele=>ele.Code==this.productItem.IndustryId)?.CodeDesc}
                     obj['CARAnnual'] = entry['CARAnnual'] = this.productItem['CARAnnual'];
                     obj['CARPrincipal'] = entry['CARPrincipal'] = this.productItem['CARPrincipal'];
                     obj['CARDescription'] = entry['CARDescription'] = this.productItem['CARDescription'];
                     obj['CARLocationName'] = entry['CARLocationName'] = this.productItem['CARLocationName'];
                     obj['CARStartDate'] = entry['CARStartDate'] = this.productItem['CARStartDate'];
                     obj.SectionList.push(subEntry);
-                    locationList.push(JSON.parse(JSON.stringify(obj)));
                     
-                    j += 1;
-                    if (j == this.locationList.length) {console.log("Final Obj", JSON.parse(JSON.stringify(obj)), locationList);this.finalRedirect(locationList,type)}
                 }
           }
-          else if(entry?.SectionList){obj['SectionList']=entry?.SectionList;j += 1;
-              if (j == this.locationList.length) {this.finalRedirect(locationList,type)}}
+          else if(entry?.SectionList){
+              obj['SectionList']=entry?.SectionList;
+                  if(entry?.CARAnnual){ obj['CARAnnual'] = entry?.CARAnnual}
+                  if(entry?.CARPrincipal){ obj['CARPrincipal'] = entry?.CARPrincipal}
+                  if(entry?.CARLocationName){ obj['CARLocationName'] = entry?.CARLocationName}
+                  if(entry?.CARStartDate){ obj['CARStartDate'] = entry?.CARStartDate}
+                  if(entry?.CARPeriodOfActivity){ obj['CARPeriodOfActivity'] = entry?.CARPeriodOfActivity}
+                  if(entry?.CARDescription){ obj['CARDescription'] = entry?.CARDescription}
+                  if(entry?.IndustryType){ obj['IndustryId'] = entry?.CARuptoConstruction}
+            }
+          locationList.push(JSON.parse(JSON.stringify(obj)));
+          j += 1;
+          if (j == this.locationList.length) {this.finalRedirect(locationList,type)}
         }
       }
     }
@@ -294,5 +302,12 @@ export class CarUptoBillionComponent {
     }
     IndustryChanged() {
       this.locationList[this.tabIndex].IndustryId = this.productItem.IndustryId;
+    }
+    previous() {
+      let res = {
+          "locationList": this.locationList,
+          "type": 'Previous'
+        }
+      this.previousSection.emit(res);
     }
 }

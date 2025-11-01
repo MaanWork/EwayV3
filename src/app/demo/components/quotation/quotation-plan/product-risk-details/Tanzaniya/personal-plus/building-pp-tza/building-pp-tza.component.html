@@ -1,0 +1,151 @@
+<div>
+    <div class="grid justify-content-start">
+        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+            <b>Building Details</b>
+        </div>
+    </div>
+     <div class="w-100 overflow-auto">
+        <div class="text-right mb-3">
+            <p-button label="Add New"
+                styleClass="mr-3 p-button-outlined"
+                (click)="addBuildingList()"></p-button>
+        </div>
+        <div>
+            <p-table [value]="BuildingList"
+                dataKey="LocationName" editMode="row" [rows]="5"
+                [paginator]="false"
+                [style]="{'max-width': '100%'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="column"
+                            *ngFor="let column of columnHeaderBuilding">
+                            {{column}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-Building
+                    let-ri="rowIndex">
+                    <tr>
+                        <td>
+                            <p-dropdown class="w-full flex css"
+                                styleClass="w-full"
+                                placeholder="Select Wall Type"
+                                [options]="wallMaterialList"
+                                appendTo="body"
+                                optionLabel="CodeDesc"
+                                optionValue="Code"
+                                [filter]="true"
+                                filterBy="CodeDesc"
+                                [(ngModel)]="Building.WallType" />
+                            <div class="input-form-error"
+                                *ngIf="Building.WallTypeError"
+                                style="width: max-content;">
+                                <div
+                                    class="error-text text-danger">
+                                    Select WallType
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p-dropdown class="w-full flex css"
+                                styleClass="w-full"
+                                placeholder="Select Roof Type"
+                                [options]="roofMaterialList"
+                                appendTo="body"
+                                optionLabel="CodeDesc"
+                                optionValue="Code"
+                                [filter]="true"
+                                filterBy="CodeDesc"
+                                [(ngModel)]="Building.RoofType" />
+                            <div class="input-form-error"
+                                *ngIf="Building.RoofTypeError"
+                                style="width: max-content;">
+                                <div
+                                    class="error-text text-danger">
+                                    Select RoofType
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input pInputText type="text"
+                                [(ngModel)]="Building.BuildingYear"
+                                placeholder="Enter No of Years"
+                                maxlength="3"
+                                class="p-inputtext p-ml-2" />
+                            <div class="input-form-error"
+                                *ngIf="Building.BuildingYearError">
+                                <div
+                                    class="error-text text-danger">
+                                    Enter No of Years
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p-dropdown class="w-full flex css"
+                                styleClass="w-full"
+                                placeholder="Select FirstLossPayee"
+                                [options]="bankList"
+                                appendTo="body"
+                                optionLabel="CodeDesc"
+                                optionValue="Code"
+                                [filter]="true"
+                                filterBy="CodeDesc"
+                                [(ngModel)]="Building.FirstLossPayee" />
+                            <div class="input-form-error"
+                                *ngIf="Building.FirstLossPayeeError">
+                                <div
+                                    class="error-text text-danger">
+                                    Select FirstLossPayee
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p-inputNumber type="number"
+                                [(ngModel)]="Building.BuildingSumInsured"
+                                inputId="integeronly" />
+                            <div class="input-form-error"
+                                *ngIf="Building.SumInsuredError">
+                                <div class="error-text text-danger">
+                                    Enter Valid Amount
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input pInputText type="text"
+                                [(ngModel)]="Building.BuildingDescription"
+                                placeholder="Enter Description"
+                                class="p-inputtext p-ml-2" />
+                            <div class="input-form-error"
+                                *ngIf="Building.DescriptionError">
+                                <div
+                                    class="error-text text-danger">
+                                    Enter Description
+                                </div>
+                            </div>
+                        </td>
+                         <td>
+                            <ng-container *ngIf="ri!=0">
+                                <div
+                                    class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button"
+                                        icon="pi pi-trash"
+                                        (click)="onDeleteBuilding(ri)"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="text-center mt-2">
+            <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+             <p-button class="mr-2" label="Save & Proceed" size="small" (click)="listProceed('Save')"></p-button>&nbsp;
+             <p-button label="Proceed" size="small" *ngIf="CoversRequired=='B' &&  (locationList.length>1 && (tabIndex+1)!=locationList.length)"
+                    (click)="onProceedData('Next')"></p-button>&nbsp;
+            <p-button label="View Premium" *ngIf="CoversRequired=='B' && ((tabIndex+1)==locationList.length)" (click)="listProceed('Submit')" size="small"></p-button>
+        </div>
+    </div>
+</div>

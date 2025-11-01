@@ -629,7 +629,7 @@
                         <label for="html"></label>
                     </td>
                     <td>{{customer?.CustomerReferenceNo}}</td>
-                    <td><ng-container *ngIf="customer.TitleDesc">{{customer.TitleDesc}}&nbsp;</ng-container> {{ customer.ClientName }} <ng-container *ngIf="customer.MiddleName">&nbsp;{{customer.MiddleName}}</ng-container></td>
+                    <td>{{ customer.ClientName }} <ng-container *ngIf="customer.MiddleName">&nbsp;{{customer.MiddleName}}</ng-container></td>
                     <td>{{customer?.PolicyHolderTypeDesc }}</td>
                     <td>{{ customer?.IdNumber }}</td>
                 </tr>

@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import * as Mydatas from '../../../../../app-config.json';
-import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import {
@@ -20,10 +19,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { MessageService } from 'primeng/api';
 import { AppComponent } from 'src/app/app.component';
 import { TranslateService } from '@ngx-translate/core';
-
+import * as moment from 'moment';
 declare var $:any;
-
-
 @Component({
   selector: 'app-excess-discount',
   templateUrl: './excess-discount.component.html',
@@ -40,7 +37,6 @@ declare var $:any;
   providers: [MessageService]
 })
 export class ExcessDiscountComponent implements OnInit {
-
   closeResult: string;
   tooltip:boolean=false;
   coverList:any[]=[];discountList:any[]=[];
@@ -48,7 +44,6 @@ export class ExcessDiscountComponent implements OnInit {
   public dataSource: any;columnHeader: any[] = [];
   //@ViewChild(NbPopoverDirective) popover;
   @ViewChild(MatSort) sort!: MatSort;
-
   @ViewChild(MatPaginator) private paginator!: MatPaginator;
   sortProperty: any = 'AllotedYN';loadingList:any[]=[];
   sortDirection: any = 'desc';taxList:any[]=[];
@@ -69,6 +64,7 @@ export class ExcessDiscountComponent implements OnInit {
   public AppConfig: any = (Mydatas as any).default;
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
+  public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl;
   public motorApiUrl:any = this.AppConfig.MotorApiUrl;
   innerDisplayedColumns = ['Id', 'Username', 'City', 'Country'];
   displayedColumns: string[] = ['CoverName', 'PremiumAfterDiscount'];
@@ -143,7 +139,6 @@ emiyn="N";
   WarrantiesColumnHeader:any[]=[];
   insertClause:any[]=[];
   CoverList:any[]=[];
-
   onClauses:boolean= false;onExclusion:boolean= false;onWars:boolean= false;onWarranty:boolean= false;
   CoveList:boolean=true;
   viewList: any;
@@ -162,7 +157,6 @@ emiyn="N";
   common2:any[]=[];
   common3:any[]=[];
   common4:any[]=[];
-
   Wcommon:any[]=[];
   Ecommon:any[]=[];
   inserts: any[] = [];
@@ -283,12 +277,10 @@ emiyn="N";
       else if(this.productId!='5' && this.productId!='46' && this.productId!='29') this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/domestic-risk-details'])
       else  this.router.navigate(['/quotation/plan/main/document-info']);
     }
-   
     console.log("Received Session",this.userDetails)
     this.localCurrency = this.userDetails.Result.CurrencyId;
     this.loginId = this.userDetails.Result.LoginId;
     this.sampleloginId = this.loginId;
-    
     sessionStorage.removeItem('vehicleDetailsList');
       let endorseObj = JSON.parse(sessionStorage.getItem('endorseTypeId'))
       if(endorseObj){
@@ -351,7 +343,6 @@ emiyn="N";
       //     isEdit: true,
       //   },
       // },
-
     ];
     this.emi3MonthsList = [
       {
@@ -424,21 +415,16 @@ emiyn="N";
       }
   ]
     // this.vehicleId = sessionStorage.getItem('editVehicleId');
-
-
     //this.vehicleDetails = JSON.parse(sessionStorage.getItem('vehicleDetails'));
     // this.coverList = JSON.parse(sessionStorage.getItem('coverObject'));
     // const data:any[] = this.coverList.map(x=>({
     //   CoverageType:x.CoverageType
     // }));
-
     // const groupCoverList:any[] = [];
     // for (let index = 0; index < data.length; index++) {
     //   const element = data[index];
     //   let list:any[] = this.coverList.filter((ele:any)=> ele.CoverageType === element.CoverageType);
-
     //   groupCoverList.push(...list);
-
     // }
     this.quoteRefNo = sessionStorage.getItem('quoteReferenceNo');
     this.requestReferenceNo = this.quoteRefNo;
@@ -450,11 +436,9 @@ emiyn="N";
     this.maxDate = new Date(year, month, day+90);
     let quoteNo = sessionStorage.getItem('quoteNo');
     if(quoteNo) this.quoteNo = quoteNo;
-    
     let referenceNo =  sessionStorage.getItem('customerReferenceNo');
     if(referenceNo){
       this.getCustomerDetails(referenceNo);
-      
       //this.viewCondition('direct');
     }
     let quoteStatus = sessionStorage.getItem('QuoteStatus');
@@ -525,18 +509,13 @@ emiyn="N";
                       { key: 'SumInsured', display: 'Sum Insured' },
                       { key: 'PremiumAfterDiscount', display: 'After Discount' },
                       { key: 'PremiumIncludedTax', display: 'Included Tax' },
-              
                     ]
-              
-     
-                   
                   //}
                   //this.EmiInstallment();
               }
             }
           }
           else{
-
             this.getUpdatedVehicleDetails();
           }
         }
@@ -552,10 +531,8 @@ emiyn="N";
         if(quoteNo) this.quoteNo = quoteNo;
         this.getUpdatedVehicleDetails();
       }
-
       if(this.fromWorkFlow!=null)this.getSatusForWorkFlow();
    }
-
   ngOnInit(): void {
     let chassisNo = sessionStorage.getItem('vehChassisNo');
     //this.vehicleId = String(this.vehicleDetailsList.Vehicleid);
@@ -570,7 +547,6 @@ emiyn="N";
       sessionStorage.setItem('language',this.lang)
       this.translate.setDefaultLang(sessionStorage.getItem('language'));}
      this.checkSelectedCovers();
-
      console.log('Final Status Value',this.statusValue)
     //this.currencyCode="TZS"
      //this.getCoverList(coverListObj);
@@ -584,16 +560,13 @@ emiyn="N";
     //   { key: 'ClausesDesc', display: 'Clauses Description' },
     // ];
     // this.ExclusionColumnHeader =[
-
     //   { key: 'ExclusionId', display: 'Exclusion Id' },
     //   { key: 'ExclusionDesc', display: 'Exclusion Description' },
     //   { key: 'DocRefNo', display: 'Document Reference No' },
     // ];
     // this.ExclusionsColumnHeader =[
-
     //   { key: 'ExclusionId', display: 'Exclusion Id' },
     //   { key: 'ExclusionDesc', display: 'Exclusion Descriptions' },
-
     // ];
     // this.WarrantyColumnHeader =[
     //   { key: 'WarrantyId', display: 'Warranty Id' },
@@ -603,7 +576,6 @@ emiyn="N";
     // this.WarrantiesColumnHeader =[
     //   { key: 'WarrantyId', display: 'Warranty Id' },
     //   { key: 'WarrantyDesc', display: 'Warranty Description' },
-
     // ];
     // this.WarrteColumnHeader =[
       // { key: 'WarrateId', display: 'Warrate Id' },
@@ -611,26 +583,20 @@ emiyn="N";
       // { key: 'DocRefNo', display: 'Document Reference No' },
     //];
     this.ViewDropDown();
-
     // $('#exampleModal').on('shown.bs.modal', function () {
     //   $('#myInput').trigger('focus')
     // })
-
     if(this.userType=='Broker'){
       this.button=false
     }
     else{
       this.button=true
     }
-
-
   //   $(function () {
   //     $("#exampleModal").click(function () {
   //         $("#exampleModal").modal("hide");
   //     });
   // });
-
-
   }
   getHeaderName(val: any){
      let name = val.replaceAll(' ', '');
@@ -705,7 +671,6 @@ emiyn="N";
           else coverModificationYN = 'N';
         }
         else {
-  
         }
         let ReqObj ={
           "EffectiveDate":null,
@@ -725,7 +690,7 @@ emiyn="N";
           "RequestReferenceNo": coverListObj?.RequestReferenceNo,
           "CoverModification": coverModificationYN
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
           (data: any) => {
             let entry = data;
@@ -742,14 +707,12 @@ emiyn="N";
             if(i==groupList.length){
               this.vehicleDetailsList = vehicleList;
               this.checkSelectedCovers();
-  
             }
           },
           (err) => { },
         );
       }
     }
-  
   }
     onChangeBodyType(){
       if(this.bodyTypeValue=='7') this.cityValue='';
@@ -758,7 +721,6 @@ emiyn="N";
       this.vehicleSI ="0";this.accessoriesSI="0",this.windShieldSI="0";this.tppdSI = "0";
     }
     /*CommaFormatted() {
-  
       // format number
       if (this.getTotalCost) {
        this.getTotalCost = this.getTotalCost.replace(/\D/g, "")
@@ -778,7 +740,6 @@ emiyn="N";
                 this.typeList = data.Result;
                 this.getInsuranceClassList();
             }
-  
           },
           (err) => { },
         );
@@ -806,12 +767,10 @@ emiyn="N";
                 this.bodyTypeValue = motorValue;
                 this.getMotorUsageList(vehicleUsage);
             }
-  
           },
           (err) => { },
         );
       }
-  
   getInsuranceClassList(){
     let loginId = null;
       if(this.userType!='Issuer'){
@@ -850,7 +809,6 @@ emiyn="N";
             this.borrowerList = data.Result;
             this.getBankList();
         }
-  
       },
       (err) => { },
     );
@@ -868,7 +826,6 @@ emiyn="N";
             this.bankList = data.Result;
             //this.getCurrencyList();
         }
-  
       },
       (err) => { },
     );
@@ -898,7 +855,6 @@ emiyn="N";
             this.motorUsageList = data.Result;
             this.motorUsageValue = vehicleValue;
         }
-  
       },
       (err) => { },
     );
@@ -915,7 +871,6 @@ emiyn="N";
             if(data.Result){
               this.vehicleDetails = data.Result;
               this.myPopover=true;
-  
               if(type=='edit'){
                 this.setVehicleValues(type);
                 this.open(modal);
@@ -973,7 +928,6 @@ emiyn="N";
           }
         }
         else{
-  
         }
         this.cityValue = this.vehicleDetails?.CityLimit;
         if(this.vehicleDetails?.PolicyStartDate != null ){
@@ -985,7 +939,6 @@ emiyn="N";
         }
         if(this.vehicleDetails?.PolicyEndDate != null ){
           var dateParts = this.vehicleDetails?.PolicyEndDate.split("/");
-  
     // month is 0-based, that's why we need dataParts[1] - 1
           this.policyEndDate = dateParts[2]+'-'+dateParts[1]+'-'+dateParts[0];
           this.onChangeEndDate();
@@ -1003,8 +956,6 @@ emiyn="N";
           this.accessoriesCommaFormatted();
           this.getVehicleDetails(this.vehicleDetails?.Chassisnumber);
         }
-  
-  
       }
       onChangeEndDate(){
         const oneday = 24 * 60 * 60 * 1000;
@@ -1012,26 +963,22 @@ emiyn="N";
         const formattedDate = moment(momentDate).format("YYYY-MM-DD");
         const formattedDatecurrent = new Date(this.policyStartDate);
         console.log(formattedDate);
-  
       console.log(formattedDatecurrent);
       this.noOfDays = Math.round(Math.abs((Number(momentDate)  - Number(formattedDatecurrent) )/oneday)+1);
       }
       CommaFormatted() {
-  
         // format number
         if (this.vehicleSI) {
          this.vehicleSI = this.vehicleSI.replace(/\D/g, "")
            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }}
         TppdCommaFormatted() {
-  
           // format number
           if (this.tppdSI) {
            this.tppdSI = this.tppdSI.replace(/\D/g, "")
              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }}
         accessoriesCommaFormatted() {
-  
           // format number
           if (this.accessoriesSI) {
            this.accessoriesSI = this.accessoriesSI.replace(/\D/g, "")
@@ -1045,7 +992,6 @@ emiyn="N";
              .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           }
         }
-  
     canbeChecked(rowData){
       return rowData.selected;
     }
@@ -1056,7 +1002,6 @@ emiyn="N";
       return this.innerColumnHeader.map(({ key }) => key);
     }
     ngOnChanges() {
-  
     }
     toggle(index: number) {
       let entry = this.vehicleDetailsList[index];
@@ -1142,7 +1087,6 @@ emiyn="N";
                     vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
                     vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
                   }
-                
                 }
                 else{
                   if(cover.Endorsements!=null){
@@ -1153,7 +1097,6 @@ emiyn="N";
                     vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
                     vehicle['totalPremium'] =  cover.PremiumIncludedTax;
                   }
-                  
                 }
                 // if(vehicle?.totalPremium){
                 //   vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + cover.PremiumIncludedTax;
@@ -1187,7 +1130,6 @@ emiyn="N";
                 }
                 cover.PremiumIncludedTax = cover.PremiumIncludedTax+subCover.PremiumIncludedTax;
                 cover.PremiumIncludedTax = cover.PremiumIncludedTax+subCover.PremiumIncludedTax;
-  
                 cover.selected = true;
                 for(let sub of cover.SubCovers){
                   if(sub.SubCoverId==subCover.SubCoverId){
@@ -1225,7 +1167,6 @@ emiyn="N";
                     vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
                     vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
                   }
-                
                 }
                 else{
                   if(cover.Endorsements!=null){
@@ -1236,7 +1177,6 @@ emiyn="N";
                     vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
                     vehicle['totalPremium'] =  cover.PremiumIncludedTax;
                   }
-                  
                 }
                   // if(vehicle?.totalPremium){
                   //   vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + cover.PremiumIncludedTax;
@@ -1299,7 +1239,6 @@ emiyn="N";
                       vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
                       vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
                     }
-                  
                   }
                   else{
                     if(cover.Endorsements!=null){
@@ -1310,7 +1249,6 @@ emiyn="N";
                       vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
                       vehicle['totalPremium'] =  cover.PremiumIncludedTax;
                     }
-                    
                   }
                   console.log("Total Premium",cover,vehicle)
                   this.getTotalVehiclesCost();
@@ -1364,7 +1302,6 @@ emiyn="N";
                         vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
                         vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
                       }
-                    
                     }
                     else{
                       if(cover.Endorsements!=null){
@@ -1375,12 +1312,10 @@ emiyn="N";
                         vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
                         vehicle['totalPremium'] =  cover.PremiumIncludedTax;
                       }
-                      
                     }
                     console.log("Total Premium",cover,vehicle)
                     this.getTotalVehiclesCost();
                   }
-                  
                 }
                }
               }
@@ -1403,7 +1338,6 @@ emiyn="N";
               }
               cover.PremiumIncludedTax = cover.PremiumIncludedTax+subCover.PremiumIncludedTax;
               cover.PremiumIncludedTax = cover.PremiumIncludedTax+subCover.PremiumIncludedTax;
-  
               cover.selected = true;
               for(let sub of cover.SubCovers){
                 if(sub.SubCoverId==subCover.SubCoverId){
@@ -1441,7 +1375,6 @@ emiyn="N";
                   vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
                   vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
                 }
-                
               }
               else{
                 if(cover.Endorsements!=null){
@@ -1452,7 +1385,6 @@ emiyn="N";
                   vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
                   vehicle['totalPremium'] =  cover.PremiumIncludedTax;
                 }
-                
               }
               this.getTotalVehiclesCost();
             }
@@ -1466,7 +1398,6 @@ emiyn="N";
               let covers:any[] = sectionEntry.Covers;
               let findCover = covers.filter(ele=>ele.CoverId==cover.CoverId);
               subCover['selected'] = false;
-              
               cover.PremiumIncludedTax = cover.PremiumIncludedTax-subCover.PremiumIncludedTax;
               cover.PremiumIncludedTax = cover.PremiumIncludedTax-subCover.PremiumIncludedTax;
               if(vehicle?.totalPremium==null || vehicle?.totalPremium==undefined){ vehicle['totalLcPremium']=0;vehicle['totalPremium']=0 }
@@ -1496,7 +1427,6 @@ emiyn="N";
                 "LocationId": vehicle.LocationId,"Id": id,"SectionId": cover.SectionId
               }
               if((cover.PremiumIncludedTax!=null && cover.PremiumIncludedTax!='0' && cover.PremiumIncludedTax!=undefined && cover.CoverageType!='A')){
-                
                 vehicle['totalLcPremium'] = vehicle['totalLcPremium'] - cover.PremiumIncludedTax;
                 vehicle['totalPremium'] =  vehicle['totalPremium'] - cover.PremiumIncludedTax; 
                 cover.PremiumIncludedTax = 0;
@@ -1543,7 +1473,6 @@ emiyn="N";
                 vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTaxLC;
                 vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
               }
-            
             }
             else{
               if(cover.Endorsements!=null){
@@ -1555,11 +1484,9 @@ emiyn="N";
                 vehicle['totalPremium'] =  cover.PremiumIncludedTax;
               }
             }
-            
             this.getTotalVehiclesCost();
           }
           else{
-            
            let sectionEntry = entry.find(ele=>ele.SectionId == cover.SectionId);
            if(sectionEntry == undefined){
             let id=null;
@@ -1637,7 +1564,6 @@ emiyn="N";
               this.getTotalVehiclesCost();
            }
            else{
-            
             let covers:any[] = sectionEntry.Covers;
             let findCover = covers.filter(ele=>ele.CoverId==cover.CoverId);
             if(findCover.length==0) {
@@ -1677,7 +1603,6 @@ emiyn="N";
               }
               subCover['selected'] = true;
               sectionEntry.Covers.push(newEntry);
-              
               if(vehicle?.totalPremium){
                 if(cover.Endorsements!=null){
                   vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + cover.Endorsements[cover.Endorsements.length-1].PremiumIncludedTax;
@@ -1767,8 +1692,6 @@ emiyn="N";
                 }
                 console.log("Total Premium",cover,vehicle)
                 this.getTotalVehiclesCost();
-              
-              
             }
            }
           }
@@ -1831,7 +1754,6 @@ emiyn="N";
               vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + subCover.PremiumIncludedTax;
               vehicle['totalPremium'] =  vehicle['totalPremium']+subCover.PremiumIncludedTax;
             }
-            
           }
           else{
             if(cover.Endorsements!=null){
@@ -1842,7 +1764,6 @@ emiyn="N";
               vehicle['totalLcPremium'] =  cover.PremiumIncludedTax;
               vehicle['totalPremium'] =  cover.PremiumIncludedTax;
             }
-            
           }
           this.getTotalVehiclesCost();
         }
@@ -1852,7 +1773,6 @@ emiyn="N";
       const config = {
         multi: true
       };
-  
       return { ...config, ...options };
     }
     getUpdatedVehicleDetails(){
@@ -1868,7 +1788,6 @@ emiyn="N";
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if(data.Result){
-  
                 this.vehicleData = data.Result;
                 if(this.vehicleData.length!=0){
                   let finalizeyn = this.vehicleData[0]?.FinalizeYn;
@@ -1877,7 +1796,6 @@ emiyn="N";
                 }
                 // this.emipolicytype=this.vehicleData[0]?.RiskDetails?.InsuranceClass;
                 //     console.log('KKKKKKKKKKKK',this.emipolicytype);
-               
                 // let refRemarks = this.vehicleData[0].ReferalRemarks;
                 // if(refRemarks){
                 //   this.referralRemarks = refRemarks.split('~');
@@ -1893,7 +1811,6 @@ emiyn="N";
                       this.emipolicytype='99999';
                       console.log('Firsteee',this.emipolicytype)
                     }
-                   
                   }
                   else{
                    this.emipolicytype=this.vehicleData[0]?.RiskDetails?.InsuranceClass;
@@ -1905,7 +1822,6 @@ emiyn="N";
                  else{
                   this.emipolicytype='99999';
                  }
-  
                 let vehicleList:any[]=[];
                 if(this.vehicleData.length!=0){
                   this.SourceType = this.vehicleData[0].SourceType;
@@ -1974,7 +1890,6 @@ emiyn="N";
                   let admRemarks = this.vehicleData[0].AdminRemarks;
                   if(admRemarks){
                     this.adminRemarks = admRemarks.split('~');
-  
                   }
                   this.currencyCode= this.vehicleData[0].CoverList[0].Currency;
                   let i=0;
@@ -1992,7 +1907,6 @@ emiyn="N";
                     }
                     if(veh.EndorsementYn=='Y'){
                       if(this.endorsementSection==false){
-                        
                       }
                     }
                     // if(veh.ReferalRemarks){
@@ -2026,7 +1940,6 @@ emiyn="N";
                       i+=1;
                       if(i==this.vehicleData.length){
                         console.log("Vehiclessss",vehicleList)
-                        
                         //sessionStorage.setItem('vehicleDetailsList',JSON.stringify(vehicleList));
                         if(this.productId!='4' && this.productId!='5' && this.productId!='46' && this.productId!='29'){
                           this.vehicleData = vehicleList;
@@ -2051,7 +1964,6 @@ emiyn="N";
                       this.EmiInstallment();
                     }
                 }
-                
             }
           },
           (err) => { },
@@ -2141,7 +2053,6 @@ emiyn="N";
                   j+=1;
                   if(j==vehicle.CoverList.length) entry.CoverList = entry.CoverList.concat(vehicle.CoverList);
                 }
-                  
                 // }
                 // else{
                 //   vehicleList.push(vehicle);
@@ -2217,8 +2128,6 @@ emiyn="N";
           this.subuserType = sessionStorage.getItem('typeValue');
           this.applicationId = "01";
         }
-  
-  
       let appId = "1",loginId="",brokerbranchCode="";
       if(this.userType!='Issuer'){
         appId = "1"; loginId = this.loginId;
@@ -2376,7 +2285,7 @@ emiyn="N";
                 "PolicyEndDate": this.vehicleDetails?.PolicyEndDate,
                 "CoverModification": coverModificationYN
               }
-              let urlLink = `${this.CommonApiUrl}calculator/calc`;
+              let urlLink = `${this.CalcApiUrl}calculator/calc`;
               let i=0;
               this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
                 (data: any) => {
@@ -2392,12 +2301,8 @@ emiyn="N";
           },
           (err) => { },
         );
-  
-  
-  
     }
     covername(){
-      
     }
     covernameinfo(modal,row){
       this.tooltip=true;
@@ -2414,24 +2319,16 @@ emiyn="N";
       (data: any) => {
         if(data.Result){
           this.coverBenefitDisplay = true;
-
           this.CoverHeader=['BenefitId', 'Benefit Description', 'Calc Type','Section Description','Value', 'Long Description']
-  
               this.CoverList=data?.Result;
-  
           //this.CoverList = obj.concat(data?.Result);
           //this.getExistingDocument();
           //if(!this.CountryValue){ this.CountryValue = "99999"; this.getStateList() }
         }
       },
-  
       (err) => { },
     );
-      
     }
-  
-  
-  
     htmlcard(rowData,modal)
     {
       this.HtmlCard=true;
@@ -2441,12 +2338,10 @@ emiyn="N";
     editcard(rowData,modal)
     {
       this.getEditVehicleDetails(rowData,'edit',modal);
-  
       //this.setVehicleValues('direct')
     }
     editWarranty(id){
       const dialogRef = this.dialog.open(DialogComponent, {
-  
         data: {
           title:"Warranty",
           existingData:this.WarrantyData,
@@ -2462,15 +2357,10 @@ emiyn="N";
         console.log('The dialog was closed');
         this.WarrantyStatuss();
         //  this.WarrantyStatus(i,this.tempData)
-      
       });
-  
     }
     saveClausesData(rawData,type){
-
       let clauses
-       
-  
       console.log('QQQQQ',this.quoteNo,rawData);
           let quote
       if(this.quoteNo){
@@ -2502,7 +2392,6 @@ emiyn="N";
             TermsAndConditionReq:passData,
             RequestReferenceNo: this.requestReferenceNo
           };
-      
           let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`;
           this.sharedService.onPostMethodSync(urlLink, Req).subscribe((data: any) => {
             if (data.Result) {
@@ -2516,7 +2405,6 @@ emiyn="N";
               this.clause = false;
               this.clauses = false;
               this.showGrid=true;
-              
          if(type){
           if(type=='Clauses'){
             this.viewCondition('direct');
@@ -2538,21 +2426,15 @@ emiyn="N";
             }
           }
             }
-            
           });
         }
       }
-    
       //console.log('SSSSSSSSSSSS',this.tempData)
       //console.log('aaaaaaaaaaaaaa',this.jsonList)
-      
     }
     editClauses(id){
-  
-  
       //this.open(modal);
       const dialogRef = this.dialog.open(DialogComponent, {
-  
         data: {
           title:"Clauses",
           existingData:this.ClausesData,
@@ -2570,11 +2452,9 @@ emiyn="N";
         //  this.ClausesStatus(i,this.tempData);
       });
     }
-  
     editExclusion(id){
       //this.open(modal);
       const dialogRef = this.dialog.open(DialogComponent, {
-  
         data: {
           title:"Exclusion",
           existingData:this.ExclusionData,
@@ -2589,11 +2469,9 @@ emiyn="N";
         let i=id
         this.ExclusioStatuss();
         //this.ExclusioStatus(i,this.tempData);
-        
       });
     }
     saveExclusionData(){
-  
     }
     CloseClauses(){
       //$('#exampleModal').modal('hide');
@@ -2601,7 +2479,6 @@ emiyn="N";
       //modal.dismiss('Cross click');
       $('#exampleModal').modal('hide');
     }
-  
     getVehicleDetails(chassisNo){
       let ReqObj = {
         "ReqChassisNumber": chassisNo,
@@ -2637,7 +2514,6 @@ emiyn="N";
             cover['ExcessDesc'] = 'None';
             let fieldList = [];
             if(cover.Endorsements!=null && veh.Status!='D'){
-              
               cover['DifferenceYN']= 'Y';
               if(veh?.EndtTypeMaster?.Endtdependantfields){
                 fieldList = veh?.EndtTypeMaster?.Endtdependantfields.split(',')
@@ -2645,7 +2521,6 @@ emiyn="N";
             }
             if(cover.Endorsements!=null && !this.endorsementSection){
               this.endorsementSection = true;
-              
               let obj = {
                 "EndtTypeId":cover.Endorsements[0].EndorsementId,
                 "FieldsAllowed": fieldList,
@@ -2674,7 +2549,6 @@ emiyn="N";
               else{
                 this.onSelectCover(cover,true,cover.VehicleId,veh,'coverList','direct');
               }
-              
             }
             else{
               console.log("Not Selected 1",cover);
@@ -2728,7 +2602,6 @@ emiyn="N";
                             if(SectionEntry.length!=0){
                               let coverList = SectionEntry[0]?.CoverList;
                               let covers = coverList.filter(ele=>ele.CoverId==cover.CoverId);
-                              
                               if(!(covers[0].UserOpt=='Y' || covers[0].isSelected=='D' || covers[0].isSelected=='O')){
                                 console.log("Opted Sections",SectionEntry[0],covers)
                                 covers[0]['selected']= true;
@@ -2736,13 +2609,10 @@ emiyn="N";
                                  covers[0]['DifferenceYN'] = 'Y';
                               }
                             }
-                            
                           }
-                        
                         j+=1;
                         if(j==coverList.length) n+=1;
                       }
-                      
                       if(n==vehicles.length){
                         if(this.quoteNo!="null" && this.quoteNo!=null){
                         }
@@ -2750,7 +2620,6 @@ emiyn="N";
                           this.getEditQuoteDetails();
                         }
                         else{
-                          
                         }
                       }
                     }
@@ -2764,7 +2633,6 @@ emiyn="N";
                     this.getEditQuoteDetails();
                   }
                   else{
-                    
                   }
                 }
             }
@@ -2778,15 +2646,11 @@ emiyn="N";
                 this.getEditQuoteDetails();
               }
               else{
-                
               }
             }
-            
             //this.onGetCoverListById();
           }
         }
-  
-  
       }
     }
     getExcessDetails(){
@@ -2842,7 +2706,6 @@ emiyn="N";
         this.coverSection = false;
         this.selectedVehicleList = [this.selectedRowData]
         this.coverSection = true;
-  
       }
     }
     onSelectSections(event,rowData){
@@ -2880,7 +2743,6 @@ emiyn="N";
           sessionStorage.removeItem('FromWorkFlow')
         }
         else{
-
           if(this.finalizeYN!=null && this.subuserType=='low'){
               this.updateFinalizeYN('back')
           }
@@ -2947,7 +2809,6 @@ emiyn="N";
                       else if(this.statusValue=='RE') this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/customer-details']);
                       else{
                         this.onSetBackPage();
-                       
                       } 
                     }
                   }
@@ -3007,7 +2868,6 @@ emiyn="N";
           let j=0;
           console.log("CoverList are",covers,veh)
           for(let cover of covers){
-            
               let entry = this.vehicleDetailsList.find(ele=>String(ele.VehicleId)==String(veh.VehicleId))
               if(entry){
                 let coverList = entry.CoverList;
@@ -3053,12 +2913,10 @@ emiyn="N";
                   //     },
                   //     { key: 'CoverName', display: 'Cover Name' },
                   //     { key: 'SumInsured', display: 'Sum Insured' }
-              
                   //   ]
                   // }
                   // else{
                     this.columnHeader = [
-        
                       {
                         key: 'CalcType',
                         display: '',
@@ -3083,29 +2941,21 @@ emiyn="N";
                       //{ key: 'MinimumPremium', display: 'Minimum' },
                       { key: 'PremiumAfterDiscount', display: 'AfterDiscount' },
                       { key: 'PremiumIncludedTax', display: 'IncludedTax' },
-              
                     ]
-              
-                   
                   //}
                   // if(!this.endorsementSection){
                   if(this.insuranceId=='100027' || this.insuranceId=='100040' || this.insuranceId=='100042')   this.EmiInstallment();
                   // }
-                  
                   console.log("Final Vehicle Listaaaa",this.vehicleDetailsList,this.selectedCoverList)
                 }
               }
           }
-  
-          
       }
-  
     }
     getTotalCost(rowData){
       //console.log('rowData entry',rowData);
       if(rowData?.totalPremium) return rowData?.totalPremium;
       else return 0;
-  
     }
     numberWithCommas(totalPremium) {
       var parts = totalPremium.toString().split(".");
@@ -3113,10 +2963,8 @@ emiyn="N";
       return parts.join(".");
   }
     onCheckChange(){
-  
     }
     onGetInfo(){
-  
     }
     onSelectCover(rowData,event,vehicleId,vehicleData,type,directType){
       if(event==null){
@@ -3127,10 +2975,8 @@ emiyn="N";
           if(this.productId!='4' && this.productId!='5' && this.productId!='46' && this.productId!='29'){
             vehicle = this.vehicleDetailsList.find(ele=>(ele.LocationId==rowData.LocationId && ele.SectionId==rowData.SectionId));
             if(vehicle==undefined) vehicle = vehicleData
-           
           }
           else{
-  
             vehicle = this.vehicleDetailsList.find(ele=>ele.VehicleId==vehicleId);
           }
           console.log("Vehicle",vehicle,this.vehicleDetailsList)
@@ -3142,7 +2988,6 @@ emiyn="N";
               else rowData.DifferenceYN = 'Y'
             }
             if(this.selectedCoverList.length!=0){
-             
             let entry = this.selectedCoverList.filter(ele=>(ele.Id==vehicleId && (this.productId=='5' || this.productId=='46')) || (ele.Id==rowData.RiskId && (this.productId!='5' && this.productId!='46')) );
               if(entry.length==0){
                 let id=null;
@@ -3161,12 +3006,9 @@ emiyn="N";
                     "LocationId": rowData.LocationId,
                     "Id": id,
                     "SectionId": rowData.SectionId,
-  
                   }
                   this.selectedCoverList.push(element);
                 }
-                
-                
                 if(directType=='change' && this.endorsementSection){
                   console.log('Endorsemet section Values')
                   if((this.endorseAddOnCovers || this.endorseCovers) && (rowData.Modifiable==undefined || rowData.Modifiable!='N')){
@@ -3182,7 +3024,6 @@ emiyn="N";
                         vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                         vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       }
-                      
                     }
                     else{
                       vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
@@ -3206,16 +3047,13 @@ emiyn="N";
                       vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                     }
-                    
                   }
                   else{
                       if(rowData.CoverageType!='A' ){
                         vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.PremiumIncludedTax;
                         vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.PremiumIncludedTax;
                       }
-                      
                   }
-                  
                 }
                 else{
                   console.log('Endorsemet section Values3')
@@ -3262,7 +3100,6 @@ emiyn="N";
                     "LocationId": rowData.LocationId,
                     "Id": id,
                     "SectionId": rowData.SectionId,
-  
                   }
                   this.selectedCoverList.push(element);
                   if(this.endorseAddOnCovers || this.endorseCovers){
@@ -3270,9 +3107,7 @@ emiyn="N";
                   }
                   console.log("Selected Cover Lists",this.selectedCoverList)
                 }
-                
                 if(directType=='change' && this.endorsementSection){
-                  
                   if((this.endorseAddOnCovers || this.endorseCovers) && (rowData.Modifiable==undefined || rowData.Modifiable!='N')){
                     rowData['ModifiedYN'] = 'Y';
                   }
@@ -3296,8 +3131,6 @@ emiyn="N";
                         vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                         vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       }
-    
-    
                     }
                     else{
                       if(rowData.CoverageType!='A'){
@@ -3305,7 +3138,6 @@ emiyn="N";
                         vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.PremiumIncludedTax;
                       }
                     }
-                    
                   }
                   else{
                     rowData['Modifiable']='N';
@@ -3325,7 +3157,6 @@ emiyn="N";
                       }
                     }
                   }
-                  
                 }
                 else if(vehicle?.totalPremium){
                   rowData['Modifiable']='N';
@@ -3337,8 +3168,6 @@ emiyn="N";
                       vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                     }
-  
-  
                   }
                   else{
                     if(rowData.CoverageType!='A'){
@@ -3346,7 +3175,6 @@ emiyn="N";
                       vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.PremiumIncludedTax;
                     }
                   }
-                  
                 }
                 else{
                   rowData['Modifiable']='N';
@@ -3397,7 +3225,6 @@ emiyn="N";
                         vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                         vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       }
-                      
                     }
                     else{
                       console.log('JJJJJJJJJ',vehicle?.totalLcPremium,vehicle?.totalPremium);
@@ -3433,13 +3260,11 @@ emiyn="N";
                     }
                     if(rowData.Endorsements!=null && rowData.Endorsements!=undefined){
                       if(this.coverModificationYN!='Y' || this.endorseSIModification){
-                        
                         if(!vehicle?.totalLcPremium){ vehicle['totalLcPremium'] = 0;}
                         if(!vehicle?.totalPremium){ vehicle['totalPremium']=0;}
                         vehicle['totalLcPremium'] = rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                         vehicle['totalPremium'] = rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       }
-                      
                     }
                     else{
                       if(!vehicle?.totalLcPremium) {vehicle['totalLcPremium'] = 0;}
@@ -3470,7 +3295,6 @@ emiyn="N";
                   "LocationId": rowData.LocationId,
                   "Id": id,
                   "SectionId": rowData.SectionId,
-  
                 }
                 this.selectedCoverList.push(element);
               }
@@ -3488,13 +3312,11 @@ emiyn="N";
                       vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                       vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                     }
-                    
                   }
                   else{
                     vehicle['totalLcPremium'] = vehicle['totalLcPremium'] + rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                     vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.Endorsements[rowData.Endorsements.length-1].PremiumIncludedTax;
                   }
-                  
                 }
                 else{
                   if(rowData.CoverageType!='A'){
@@ -3502,7 +3324,6 @@ emiyn="N";
                   vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.PremiumIncludedTax;
                   }
                 }
-                
               }
               else if(vehicle?.totalPremium){
                 if(rowData.Endorsements!=null && rowData.Endorsements!=undefined){
@@ -3517,7 +3338,6 @@ emiyn="N";
                     vehicle['totalPremium'] =  vehicle['totalPremium']+rowData.PremiumIncludedTax;
                   }
                 }
-              
               }
               else{
                 if(rowData.Endorsements!=null && rowData.Endorsements!=undefined){
@@ -3535,7 +3355,6 @@ emiyn="N";
                   vehicle['totalPremium'] =  rowData.PremiumIncludedTax;
                   }
                 }
-                
               }
             this.getTotalVehiclesCost();
             }
@@ -3551,7 +3370,6 @@ emiyn="N";
             }
             else entry = this.selectedCoverList.filter(ele=>ele.Id==vehicleId)
             if(entry){
-              
               let sectionEntry = entry.find(ele=>ele.SectionId==rowData.SectionId && ele.LocationId==rowData.LocationId);
               if(sectionEntry!=undefined){
                 let covers:any[] = sectionEntry.Covers;
@@ -3589,7 +3407,6 @@ emiyn="N";
                       vehicle['totalPremium'] =  vehicle['totalPremium'] - rowData.PremiumIncludedTax;
                       }
                     }
-                  
                 }
                 else if(vehicle?.totalPremium){
                   if(rowData.Endorsements!=null && rowData.Endorsements!=undefined){
@@ -3602,7 +3419,6 @@ emiyn="N";
                     vehicle['totalPremium'] =  vehicle['totalPremium']-rowData.PremiumIncludedTax;
                     }
                   }
-                
                 }
                 if(rowData.SubCovers){
                   rowData.SubCoverId=null;
@@ -3612,7 +3428,6 @@ emiyn="N";
                 }
                 this.getTotalVehiclesCost();
               }
-            
             }
           }
     }
@@ -3650,8 +3465,6 @@ emiyn="N";
     onViewOverAllPremium(modal){
       this.discountList = [];this.loadingList=[];
       this.onUpdateFactor('fleetSave',modal);
-     
-      
     }
     setDiscountDetails(vehData,rowData,modal){
       this.discountList = [];this.loadingList=[];
@@ -3694,7 +3507,6 @@ emiyn="N";
       // this.discountOpen(modal);
       if(modal=='excess') this.showExcessSection = true;
       else this.showDiscountSection = true;
-      
     }
     SaveLoadingDetails(modal){
       if(this.loadingList.length!=0){
@@ -3792,7 +3604,6 @@ emiyn="N";
         coverData[0].Endorsements[coverData[0].Endorsements.length-1].ExcessPercent = this.excessPercent;
         coverData[0].Endorsements[coverData[0].Endorsements.length-1].ExcessAmount = this.excessAmount;
         coverData[0].Endorsements[coverData[0].Endorsements.length-1].EndorsementRate = this.ratePercent;
-  
       }
       else{
         coverData[0].PremiumAfterDiscount = this.afterDiscount;
@@ -3802,7 +3613,6 @@ emiyn="N";
         coverData[0].ExcessAmount = this.excessAmount;
         coverData[0].Rate = this.ratePercent;
       }
-      
       this.selectedVehId = null;this.excessPercent = null;
       this.selectedCoverId = null;this.excessAmount=null;
       this.selectedSectionId = null;this.ratePercent = null;
@@ -3826,7 +3636,6 @@ emiyn="N";
     setTotalPremium(){
         let finalPremium = 0;
         finalPremium = Number(this.beforeDiscount+finalPremium);
-         
         if(this.loadingList.length!=0){
             let i=0;
             for(let load of this.loadingList){
@@ -3850,9 +3659,7 @@ emiyn="N";
     }
     getTotalVehiclesCost(){
       let totalCost = 0,i=0,totalLocalCost=0;
-      
       for(let veh of this.vehicleDetailsList){
-        
         if(veh?.totalPremium) totalCost = totalCost+veh?.totalPremium;console.log('Total1 premium',veh,totalCost,veh?.totalPremium);
         if(veh?.totalLcPremium) totalLocalCost = totalLocalCost+veh?.totalLcPremium; console.log('Total2 premium',veh,totalLocalCost,veh?.totalLcPremium);
         i+=1;
@@ -3861,7 +3668,6 @@ emiyn="N";
           this.totalPremium = totalCost;
           console.log('Total3 premium', this.localPremiumCost);
         console.log('Total4 premium',this.totalPremium );
-          
       }
       console.log("Total Premium",this.vehicleDetailsList)
       console.log("Final Cost Of Vehicle",this.vehicleDetailsList)
@@ -3899,7 +3705,6 @@ emiyn="N";
       //               if(EmiYnShow=='Y'){
       //                 this.gridshow=true;
       //                 if(emiList.length!=0){
-        
       //                   let i=0,yearlyList=[],nineList=[],sixList=[],threeList=[],fiveList=[],eightList=[];
       //                   for(let entry of emiList){
       //                       let emiDetails = entry.EmiPremium;
@@ -3956,7 +3761,6 @@ emiyn="N";
       //               }
       //         }
       //         else{this.gridshow=true;}
-  
       //         //this.getBorrowerList();
       //     }
       //   },
@@ -4023,7 +3827,6 @@ emiyn="N";
              this.Emilist1.push(entry);
              i+=1;
              if(i==sixList.length){this.emiSection=true}
-  
         }
      }
      else if(this.threeMonthSection){
@@ -4107,7 +3910,6 @@ emiyn="N";
           }
           this.taxList = rowData.Taxes.filter(ele=>ele.DependentYN!='N');
         }
-       
       }
     }
     onGetEndorsement(rowData){
@@ -4120,7 +3922,6 @@ emiyn="N";
     }
     onFormSubmit(){
       console.log("Selected Covers",this.selectedCoverList);
-      
       this.subuserType = sessionStorage.getItem('typeValue');
       if(this.selectedCoverList.length!=0){
         let coverList:any[]=[];
@@ -4138,7 +3939,6 @@ emiyn="N";
           else this.onProceed(this.selectedCoverList);
         }
         else this.onProceed(this.selectedCoverList);
-  
       }
     }
     public async onCustomerSave(data) {
@@ -4212,7 +4012,6 @@ emiyn="N";
                 const errorList: any[] = res.ErrorMessage || res?.Result?.ErrorMessage;
                   let ulList:any='';
                   for (let index = 0; index < errorList.length; index++) {
-          
                   const element = errorList[index];
                   ulList +=`<li class="list-group-login-field">
                     <div style="color: darkgreen;">Field<span class="mx-2">:</span>${element?.Field}</div>
@@ -4235,15 +4034,12 @@ emiyn="N";
                 }
             }
             else {
-              
             }
           },
-  
           (err: any) => { console.log(err); },
         );
     }
     onOtpValidate() {
-  
       if (this.otpValue == "" || this.otpValue == undefined || this.otpValue == null) {
         let element = '<div class="my-1"><i class="far fa-dot-circle text-danger p-1"></i>Please Enter OTP</div>';
         Swal.fire(
@@ -4274,7 +4070,6 @@ emiyn="N";
             for (let i = 0; i < data.Errors.length; i++) {
             element += '<div class="my-1"><i class="far fa-dot-circle text-danger p-1"></i>' + data.Errors[i].Message + "</div>";
             }
-    
             Swal.fire(
             'Please Fill Valid Value',
             `${element}`,
@@ -4282,12 +4077,9 @@ emiyn="N";
             )
           }
           else {
-    
-    
             this.otpId = "";
             this.otpValue = "";
             this.onGuestLogin()
-           
           }
           }
         }, (err) => {
@@ -4297,7 +4089,6 @@ emiyn="N";
       }
     }
       onGuestLogin(){
-      
         const urlLink = `${this.CommonApiUrl}authentication/login`;
         let loginId=this.customerObj.MobileCodeDesc1+this.customerObj.MobileNo1
         const reqData = {
@@ -4305,7 +4096,6 @@ emiyn="N";
         "Password": 'Admin@01',
         "ReLoginKey": 'Y'
         };
-      
           this.sharedService.onPostMethodSync(urlLink, reqData).subscribe(
             (data: any) => {
               let res: any = data;
@@ -4327,7 +4117,6 @@ emiyn="N";
             userDetails.Result['BranchCode'] = this.branchCode;
             userDetails.Result['CurrencyId'] = this.userDetails.Result.CurrencyId;
             userDetails.Result['InsuranceId'] = this.insuranceId;
-            
             sessionStorage.setItem('Userdetails', JSON.stringify(userDetails));
               // Swal.fire(
               //   'Success',
@@ -4364,7 +4153,6 @@ emiyn="N";
       }
       let url = `${this.CommonApiUrl}otp/generate`;
       try {
-    
         this.sharedService.onPostMethodSync(url, reqObj).subscribe((data: any) => {
         console.log("Otp Generate Res", data);
         if (data.Errors) {
@@ -4374,7 +4162,6 @@ emiyn="N";
           for (let i = 0; i < data.Errors.length; i++) {
           element += '<div class="my-1"><i class="far fa-dot-circle text-danger p-1"></i>' + data.Errors[i].Message + "</div>";
           }
-    
           Swal.fire(
           'Please Fill Valid Value',
           `${element}`,
@@ -4382,7 +4169,6 @@ emiyn="N";
           )
         }
         else {
-    
            this.otpId = data.OtpToken;
            this.otpGenerated = data.OTP;
           this.otpSection = true;
@@ -4396,13 +4182,11 @@ emiyn="N";
       }
     }
     setTimeInterval() {
-  
       var count = 15,
         timer = setInterval(() => {
           var seconds = (count--) - 1;
           var percent_complete = (seconds / 60) * 100;
           percent_complete = Math.floor(percent_complete);
-  
           this.OtpBtnTime = count;
           if (seconds == 0) {
             clearInterval(timer);
@@ -4417,7 +4201,6 @@ emiyn="N";
         if(this.productId!='4'){
           console.log('Referral Approved',coverList);
            if((this.productId=='59' || this.productId=='19' || this.productId=='39' || this.productId=='32' || this.productId=='14' || this.productId=='1' || this.productId=='6' || this.productId=='16' || this.productId=='42' || this.productId=='43' || this.productId=='25') && this.insuranceId!='100046' && this.insuranceId!='100047' && this.insuranceId!='100048' && this.insuranceId!='100049' && this.insuranceId!='100050'){
-            
             let homeSession = JSON.parse(sessionStorage.getItem('homeCommonDetails'));
             if(homeSession){
               if(this.loginType=='B2CFlow' && this.loginId=='guest'){
@@ -4436,7 +4219,6 @@ emiyn="N";
               else this.router.navigate(['/quotation/plan/main/document-info']);
               //else this.router.navigate(['quotation/plan/main/accessories']);
             }
-  
           }
           else if(this.productId == '5'){
             let i=0;let coverlist:any=[];
@@ -4466,13 +4248,11 @@ emiyn="N";
               this.router.navigate(['/quotation/plan/main/document-info']);
              }
           }
-    
           else{
             sessionStorage.setItem('riskSection','normal');
             this.router.navigate(['/quotation/plan/main/document-info']);
           }
           //this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/premium-details']);
-  
         }
         else if(this.productId == '4'){
           console.log('Referral Approved');
@@ -4481,7 +4261,6 @@ emiyn="N";
           }
           else this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/travel-quote-details']);
         }
-      
       }
       else{
         if(!this.statusValue && this.isMannualReferal=='Y'){
@@ -4501,7 +4280,6 @@ emiyn="N";
               //   config);
             }
         }
-        
         let ReqObj:any ={},createdBy = "";
         let quoteStatus = sessionStorage.getItem('QuoteStatus');
           if(quoteStatus=='AdminRP'){
@@ -4518,7 +4296,6 @@ emiyn="N";
             let i=0,orgCoverList:any[]=[];
             for(let cover of coverList){
               let Exist = entry.some(ele=>ele.VehicleId==cover.Id);
-              
               if(!Exist) orgCoverList.push(cover);
               i+=1;
               if(i==coverList.length) {
@@ -4553,15 +4330,11 @@ emiyn="N";
           //     sessionStorage.setItem('buyPolicyDetails',JSON.stringify(ReqObj));
           //     this.router.navigate(['./Home/existingQuotes/customerSelection/customerDetails/userDetails'])
           // }
-          
           // else{
             this.finalFormSubmit(ReqObj);
           //}
-          
         }
       }
-  
-  
     }
     finalFormSubmit(ReqObj){
       if(this.insuranceId=='100028'){
@@ -4581,7 +4354,6 @@ emiyn="N";
                   console.log(ReqObj,entry);
                   if(entry){
                     console.log("Final Entry",entry)
-                    
                     ReqObj['Vehicles'] = [entry];
                     this.onProceedBuyPolicy(ReqObj);
                   }
@@ -4609,7 +4381,6 @@ emiyn="N";
             let vechileId: any;
             let sectionId: any;
             let i = 0;
-  
             if(this.userType=='Broker'|| this.userType=='User'){
               this.onFinalProceed();
             }
@@ -4626,10 +4397,8 @@ emiyn="N";
                       this.onFinalProceed();
                     }
                   }
-  
               }
             }
-  
             // for (let v of this.vehicleDetailsList) {
             //   vechileId = v.VehicleId;
             //   sectionId = v.SectionId;
@@ -4637,15 +4406,11 @@ emiyn="N";
             //   if (v.Common) {
             //     this.CommonMethod(v,i);
             //   }
-  
             //   else{
             //     if(i==this.vehicleDetailsList.length) {
-  
             //     }
             //   }
-  
             // }
-  
               /*if(this.productId=='59'){
                 let homeSession = JSON.parse(sessionStorage.getItem('homeCommonDetails'));
                 if(homeSession){
@@ -4654,8 +4419,6 @@ emiyn="N";
                 else{
                   this.getExistingBuildingList();
                 }
-
-  
               }
               else if(this.productId !='3' && this.productId!='4'){
                 if(this.emiYN=='Y'){
@@ -4664,7 +4427,6 @@ emiyn="N";
                 else{
                   this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/premium-details']);
                 }
-  
               }
               else if(this.productId == '4'){
                 this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/travel-quote-details']);
@@ -4704,8 +4466,6 @@ emiyn="N";
         clauses=common.ClausesList
         index++;
       }*/
-  
-  
      clauses=rowdata.Common.ClausesList;
      let exclusion=rowdata.Common.ExclusionList;
      let warranties=rowdata.Common.WarrantyList;
@@ -4718,9 +4478,7 @@ emiyn="N";
      if(warranties == null || warranties == undefined){
       warranties=[];
      }
-  
       let newArr = [];
-  
       let subId: any;
       let subDesc: any;
       let sub: any;
@@ -4743,15 +4501,10 @@ emiyn="N";
           console.log("EEEEEEEE", exclusion);
         }*/
         this.inserts = clauses.concat(warranties, exclusion);
-  
         console.log("insert", this.inserts);
-  
       } else {
-  
          //this.inserts=this.selected
       }
-  
-  
       /*insert.map((item, index) => {
         this.vehicleDetailsList.push(insert[index]);
         this.vehicleDetailsList[index]['Insert'] = insert[index];
@@ -4772,7 +4525,6 @@ emiyn="N";
         TermsAndConditionReq: this.inserts,
         RequestReferenceNo: this.quoteRefNo
       };
-  
       let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`;
       this.sharedService.onPostMethodSync(urlLink, Req).subscribe((data: any) => {
         if (data.Result) {
@@ -4815,9 +4567,7 @@ emiyn="N";
         //   else{
         //     this.getExistingBuildingList();
         //   }
-  
         // }
-  
         // else if(this.productId == '4'){
         //   if(this.loginType=='B2CFlow' && this.loginId=='guest'){
         //     window.location.reload();
@@ -4887,11 +4637,9 @@ emiyn="N";
                 console.log('VVVVVVVVV',vehEntry);
                 if(vehEntry.length!=0){
                   let entry = vehEntry.filter(ele=>ele.CoverId == '55');
-                  
                   if(entry.length!=0){
                     let veh = this.vehicleDetailsList.find(ele=>String(ele.Vehicleid)==String(vehicle.Id));
                     console.log("C",this.vehicleDetailsList)
-                    
                     if(veh){
                       if(veh.Status!='D')this.coverlist.push(entry)
                     }
@@ -4911,7 +4659,6 @@ emiyn="N";
              }
             }
             else this.insertPayementDetails();
-            
           }
         },
         (err) => {
@@ -4966,12 +4713,9 @@ emiyn="N";
               if(data.Result?.Response=='Saved Successful'){
               //    if(this.onClauses=true){
               //      let Id:any;
-  
               //      for(let clause of this.insertClause){
               //         Id= clause.Id;
-  
               //      }
-  
               //       let Req= {
               //     "BranchCode":this.branchCode,
               //     "CreatedBy":this.loginId,
@@ -4981,7 +4725,6 @@ emiyn="N";
               //     "RiskId": "1",
               //     "SectionId": "2",
               //     "TermsAndConditionReq":this.insertClause
-  
               // }
               // let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`
               // this.sharedService.onPostMethodSync(urlLink, Req).subscribe(
@@ -4990,7 +4733,6 @@ emiyn="N";
               //         this.insert=data.Result
               //       }},);
               //    }
-                
               }
             },
             (err) => { },
@@ -5006,35 +4748,29 @@ emiyn="N";
         else{
           this.getExistingBuildingList();
         }
-
       }
-
       else if(this.productId == '4'){
         if(this.loginType=='B2CFlow' && this.loginId=='guest'){
           window.location.reload();
         }
         else this.router.navigate(['/Home/existingQuotes/customerSelection/customerDetails/travel-quote-details']);
       }
- 
       else if((this.productId=='32' || this.productId=='39' || this.productId=='14' || this.productId=='15' || this.productId=='19' || this.productId=='1' || this.productId=='6' || this.productId=='16' || this.productId =='21' || this.productId =='26' || this.productId =='25' || this.productId =='24'|| this.productId=='42' || this.productId=='43' || this.productId=='13' || this.productId=='27' || this.productId=='57' || this.productId=='56') && this.insuranceId!='100046' && this.insuranceId!='100047' && this.insuranceId!='100048' && this.insuranceId!='100049'){
          if(this.productId=='6') this.router.navigate(['/quotation/plan/main/document-info']);
          //else this.router.navigate(['quotation/plan/main/accessories']);
          else this.router.navigate(['/quotation/plan/main/document-info']);
       }
       else if(this.productId=='5' || this.productId=='46' || this.productId=='29'){
-
         this.coverlist=[];let i=0;
         for(let vehicle of this.newcoverlist){
           let vehEntry = vehicle.Covers;
           if(vehEntry.length!=0){
             let entry = vehEntry.filter(ele=>ele.CoverId == '55' );
-            
             if(entry.length!=0 ){
               let veh = this.vehicleDetailsList.find(ele=>String(ele.Vehicleid)==String(vehicle.Id));
               if(veh){
                 if(veh.Status!='D')this.coverlist.push(entry)
               }
-              
             }
           }
           i+=1;
@@ -5199,7 +4935,6 @@ emiyn="N";
                                 if(data.Result){
                                   i+=1;
                                   if(i==this.selectedVehicleList.length){
-  
                                   }
                                 }
                               },
@@ -5208,13 +4943,10 @@ emiyn="N";
                       }
                     }
                   }
-                  
-  
               }
                   console.log("Entry",entry)
             }
           }
-          
         }
       }
     }
@@ -5247,7 +4979,6 @@ emiyn="N";
       // else{
         this.updateFactorRateAlt(type,modal)
       //}
-  
     }
     onSaveExcessDetails(excessList,type,modal){
         let ReqObj={
@@ -5297,12 +5028,10 @@ emiyn="N";
                           }
                         }
                     }
-                    
                   }
                   i+=1;if(i==this.vehicleData.length){ 
                     console.log("Final List Update3",List)
                     this.finalUpdateFactorRate(List,type,modal)
-  
                   }
                 }
                 else{
@@ -5328,7 +5057,6 @@ emiyn="N";
                  this.finalUpdateFactorRate(List,type,modal)
                 }
                 }
-               
              // if(vehEntry.length!=0){
              //   let entry = vehEntry.filter(ele=>ele.SectionId==vehicle.SectionId);
              //   if(entry.length!=0){
@@ -5535,10 +5263,8 @@ emiyn="N";
       this.checkSelectedCovers();
       this.ViewDropDown();
     }
-   
     checkEndorseValue(rowData,type,menu){
         let endorse = rowData.Endorsements;
-        
         if(endorse.length!=0){
           let entry = endorse[endorse.length-1];
           if(type == 'empty'){
@@ -5562,7 +5288,6 @@ emiyn="N";
     updateReferralStatus(){
       let ReqObj,urlLink;
       if(this.fromWorkFlow!=null){
-        
         ReqObj = {
           "CompanyId": this.insuranceId,
           "ProductId": this.productId,
@@ -5620,10 +5345,8 @@ emiyn="N";
               (err) => { },
             );
     }
-  
     proceed()
     {
-  
     }
     getTermsSectionList(){
       console.log("Sele",this.selectedRowData)
@@ -5657,7 +5380,6 @@ emiyn="N";
         SectionId:this.termsSectionId,
         // SectionId:this.vehicleDetailsList[index].SectionId,
         RequestReferenceNo: this.quoteRefNo
-  
       }
       let urlLink = `${this.CommonApiUrl}api/viewtermsandcondition`;
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
@@ -5693,25 +5415,19 @@ emiyn="N";
               /*console.log('bbbbbbbbbbbbb',this.userType)
               this.ClauseColumnHeader;
               this.clause=true;*/
-  
                //const isChecked=false;
                this.clause=true;
                this.ClauseColumnHeader =[
                 { key: 'SubId', display: 'Clauses Id' },
                 { key: 'SubIdDesc', display: 'Clauses Description' },
-  
               ];
               this.ClausesDataId.map(x=>({
                 ...x,
                 isChecked:false
               }));
-  
               this.ExclusionsColumnHeader =[
-  
-  
                 { key: 'SubId', display: 'Exclusion Id' },
                 { key: 'SubIdDesc', display: 'Exclusion Description' },
-  
               ];
               this.ExclusionDataId.map(x=>({
                 ...x,
@@ -5720,7 +5436,6 @@ emiyn="N";
               this.WarrantiesColumnHeader =[
                 { key: 'SubId', display: 'Warranty Id' },
                 { key: 'SubIdDesc', display: 'Warranty Description' },
-  
               ];
               this.WarrantyDataId.map(x=>({
                 ...x,
@@ -5740,7 +5455,6 @@ emiyn="N";
                      model:'isChecked'
                    },
                  },
-  
                  { key: 'ClausesId', display: 'Clauses Id' },
                  { key: 'ClausesDesc', display: 'Clauses Description',
                  config: {
@@ -5752,7 +5466,6 @@ emiyn="N";
                   Edit: true,
                   model:'Edit'
                 },}*/
-  
                ];
                this.ClausesDataId.map(x=>({
                  ...x,
@@ -5766,9 +5479,7 @@ emiyn="N";
                     isChecked: true,
                     model:'isChecked'
                   },
-  
                 },
-  
                 { key: 'ExclusionId', display: 'Exclusion Id' },
                 { key: 'ExclusionDesc', display: 'Exclusion Description' },
                 { key:'Edit', display:'Edit',
@@ -5777,7 +5488,6 @@ emiyn="N";
                   model:'Edit'
                   },
                 }
-  
               ];
               this.ExclusionDataId.map(x=>({
                 ...x,
@@ -5799,9 +5509,7 @@ emiyn="N";
                  Edit: true,
                  model:'Edit'
                },}
-  
               ];
-  
             }
             if(this.onClauses==true || this.onWarranty==true || this.onExclusion==true){
               let commonObj = {
@@ -5816,7 +5524,6 @@ emiyn="N";
         (err) => { },
       );
     }
-  
     ViewDropDown(){
       let ReqObj = {
         "InsuranceId":this.insuranceId,
@@ -5862,7 +5569,6 @@ emiyn="N";
             }
             let Exclusion = this.viewDropDown.filter(ele => ele.Code == '7')
             if(Exclusion){ 
-  
               this.id = "7";
               this.ExclusionList = [
                 {
@@ -5876,32 +5582,24 @@ emiyn="N";
                 }
               ]
           }
-  
             /*for(let i = 0; i<this.vehicleDetailsList.length; i++) {
               console.log('EEEEEEEEEEEE',this.vehicleDetailsList)
               this.viewCondition(i);
             }*/
-  
             //let i=0;
             //this.viewCondition(i);
             //i++;
-  
             /*let i=0;
             for(let s of this.vehicleDetailsList){
               console.log('RSSSSSS',s)
               this.viewCondition(i);
               i++;
             }*/
-  
-  
-  
-  
           }
         },
         (err) => { },
       )
     }
-  
    ClausesStatuss(){
     let common:any;
     console.log('this',this.vehicleDetailsList);
@@ -5940,8 +5638,6 @@ emiyn="N";
   onAddWarranty(){
     this.newAddWarranty = true;
   }
-  
-  
     ClausesStatus(i,rowData){
       /*this.viewList[i]
       this.ClausesData = this.viewList[i].ClausesList;
@@ -5955,7 +5651,6 @@ emiyn="N";
         this.VehicleSectionId = this.vehicleDetailsList;
         this.viewCondition(rowData);
       }*/
-  
       let common:any;
       console.log('this',this.vehicleDetailsList)
       /*if(this.userType!='Broker'){
@@ -5963,10 +5658,8 @@ emiyn="N";
         let rowData = this.vehicleDetailsList[i];
         common=rowData.Common;
         this.common1=common.ClausesList;
-  
        console.log('Common',this.common1)
       }*/
-  
           console.log('TTTTTTT',this.vehicleDetailsList);
       this.CoveList=false;
      // this.ClausesSection=true;
@@ -5981,8 +5674,6 @@ emiyn="N";
         this.tempVehicleId = rowData.VehicleId;
       }
       else this.tempVehicleId = rowData.SectionId;
-      
-  
       this.tempData=rowData
     this.viewCondition(i);
     }
@@ -6005,28 +5696,23 @@ emiyn="N";
       this.onClauses = false;
       this.onWars = false;
       this.onExclusion = false;
-  
       this.warranty = true;
       this.clauses = false;
       this.Exclusion = false;
       let common
-  
      /* if(this.userType!='Broker'){
         this.viewCondition(i);
         let rowData = this.vehicleDetailsList[i];
         common=rowData.Common;
         //this.common3=common.WarrantyList;
       }*/
-  
   console.log('Common',this.common3);
   if(this.productId!='59'){
     this.tempVehicleId = rowData.VehicleId;
   }
   else this.tempVehicleId = rowData.SectionId;
-  
   this.tempData=rowData
   this.viewCondition(i);
-  
     }
     /*WarrateStatus(i){
       this.viewList[i]
@@ -6058,7 +5744,6 @@ emiyn="N";
       this.Exclusion = true;
       this.warranty = false;
       this.clauses = false;
-  
       let common
    /*if(this.userType!='Broker'){
     this.viewCondition(i);
@@ -6071,7 +5756,6 @@ emiyn="N";
     this.tempVehicleId = rowData.VehicleId;
   }
   else this.tempVehicleId = rowData.SectionId;
-  
   this.tempData=rowData
   this.viewCondition(i);
     }
@@ -6093,11 +5777,9 @@ emiyn="N";
       else if(!checked) {clause['selected']=false;}
     }
      onCheckExclusion(i, event,clause) {
-      
       const checked = event.target.checked; // stored checked value true or false
       if (checked) {clause['selected']=true;} 
       else if(!checked) {clause['selected']=false;}
-    
      }
      onCheckWarranties(i, event,clause) {
       const checked = event.target.checked; // stored checked value true or false
@@ -6124,7 +5806,6 @@ emiyn="N";
          else if(!checked) {
            let index = this.WarrantyData.findIndex(ele => ele.SubIdDesc == clause.SubIdDesc && ele.SubId == clause.SubId);
            this.WarrantyData[index].selected=false;
-          
        }
     }
     onUser(i,event,clause){
@@ -6180,10 +5861,7 @@ emiyn="N";
         return  `with: ${reason}`;
       }
     }
-  
-  
     saveChanges(tempData,jsonList){
-  
       //let insert= this.jsonList.concat(this.json, this.Exclusion);
       let i=0;
       /*if (tempData.length != 0) {
@@ -6200,16 +5878,12 @@ emiyn="N";
         this.json.forEach((item) => (item["Id"] = "7"));
         console.log("EEEEEEEE", this.json);
       }*/
-  
       //let insert=this.jsonList.concat(this.ExclusionList, this.json);
-  
-  
         //this.ClausesData.forEach((item) => (item["Id"] = "6"));
         //var funcs = [];
           //this.ClausesData.forEach((i) => funcs.push( () => i  ))
         console.log("EEEEEEEE", this.ClausesData);
         console.log("Final Added ROws",this.jsonList)
-  
      let clauses
        if(this.ClausesData!=null || this.ClausesData !=undefined){
         clauses= this.ClausesData.concat(this.jsonList);
@@ -6226,7 +5900,6 @@ emiyn="N";
    else{
      quote="";
    }
-  
       console.log('SSSSSSSSSSSS',this.tempData)
       console.log('aaaaaaaaaaaaaa',this.jsonList)
       let Req = {
@@ -6241,34 +5914,25 @@ emiyn="N";
         TermsAndConditionReq:clauses,
         RequestReferenceNo: this.quoteRefNo
       };
-  
       let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`;
       this.sharedService.onPostMethodSync(urlLink, Req).subscribe((data: any) => {
         if (data.Result) {
-  
           /*let vech= this.ClausesData.filter(
             (ele) => ele.SubIdDesc ==""
           );
           if(vech){
-  
             let clauses = this.ClausesData
-  
             clauses.concat(this.jsonList);
-  
             console.log('clauses',clauses)
           }
           else{
             console.log("canot Added");
-  
           }*/
-  
           //this.ddata=data.Result;
           //this.ClausesData=this.ClausesData.concat(this.json);
-  
           console.log('TOOOOOOOOO');
           console.log('VechileLength',this.vehicleDetailsList.length);
           //this.closes=false;
-  
           //exampleModel.hide()
           this.jsonList =[
             {
@@ -6287,21 +5951,14 @@ emiyn="N";
           this.showGrid=true;
           this.newAddClauses = false;
           //this.jsonList.splice();
-  
-  
           //$('#ExclusionModal').modal('hide');
           //$('#WarrantyModel').modal('hide');
-  
-          
           //window.location.reload();
         }
       });
-  
     }
   saveExclusion(tempData,ExclusionList){
-  
     let i=0;
-  
     let clauses:any[]=[]
     if(this.ExclusionData!=null || this.ExclusionData !=undefined){
       clauses= this.ExclusionData.concat(this.ExclusionList);
@@ -6332,11 +5989,9 @@ emiyn="N";
       TermsAndConditionReq:clauses,
       RequestReferenceNo: this.quoteRefNo
     };
-  
     let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`;
     this.sharedService.onPostMethodSync(urlLink, Req).subscribe((data: any) => {
       if (data.Result) {
-  
         this.ddata=data.Result;
         console.log('TOOOOOOOOO');
         console.log('VechileLength',this.vehicleDetailsList.length);
@@ -6362,10 +6017,8 @@ emiyn="N";
       }
     });
   }
-  
   saveWarranty(tempData,json){
     let i=0;
-  
     let clauses:any[]=[]
     if(this.WarrantyData !=null || this.WarrantyData !=undefined){
       clauses= this.WarrantyData.concat(this.json);
@@ -6389,11 +6042,9 @@ emiyn="N";
       TermsAndConditionReq:clauses,
       RequestReferenceNo: this.quoteRefNo
     };
-  
     let urlLink = `${this.CommonApiUrl}api/inserttermsandcondition`;
     this.sharedService.onPostMethodSync(urlLink, Req).subscribe((data: any) => {
       if (data.Result) {
-  
         this.ddata=data.Result;
         console.log('TOOOOOOOOO');
         console.log('VechileLength',this.vehicleDetailsList.length);
@@ -6412,7 +6063,6 @@ emiyn="N";
              "selected": true
           }
         ];
-  
         this.viewCondition('direct');
         this.newAddWarranty = false;
         this.warranty = true;
@@ -6421,7 +6071,6 @@ emiyn="N";
       }
     });
   }
-  
   addItem(){
     //this.jsonList.push(row);
       let entry = [{
@@ -6434,7 +6083,6 @@ emiyn="N";
        "DocRefNo":null,
         "DocumentId":null,
         "selected": true
-       
      }]
       this.jsonList = entry.concat(this.jsonList);
      }
@@ -6474,9 +6122,6 @@ emiyn="N";
        const index = this.ExclusionList.indexOf(row);
        this.ExclusionList.splice(index, 1);
      }
-  
-  
      onCheckEndorseSelect(rowData){
-      
     }
 }

@@ -241,6 +241,7 @@
     "Zone":"Zone",
     "Class":"Class",
     "StartDate": "Start Date",
+    "EndDate": "End Date",
     "CollateralCompanyAddress":"Company Address",
     "CollateralCompanyName":"Company Name",
     "LoanAmount":"Loan Amount",

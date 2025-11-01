@@ -379,29 +379,124 @@
                                         <goods-in-transit-tanz [form]="form" [industryTypeList]="industryTypeList"
                                             [locationList]="locationList" [locationDetails]="locationDetails"
                                             [tabIndex]="tabIndex" [productItem]="productItem"
-                                            (finalProceed)="onProceed($event)"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
                                             [renderType]="renderType"></goods-in-transit-tanz>
                                     </ng-container>
                                     <ng-container *ngIf="CarrierLegalTZA">
                                         <carrier-legal-liability [form]="form" [industryTypeList]="industryTypeList"
                                             [locationList]="locationList" [locationDetails]="locationDetails"
                                             [tabIndex]="tabIndex" [productItem]="productItem"
-                                            (finalProceed)="onProceed($event)"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
                                             [renderType]="renderType"></carrier-legal-liability>
                                     </ng-container>
                                     <ng-container *ngIf="carUptoTZA">
                                         <car-upto-billion [form]="form" [industryTypeList]="industryTypeList"
                                             [locationList]="locationList" [locationDetails]="locationDetails"
                                             [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
-                                            (finalProceed)="onProceed($event)"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
                                             [renderType]="renderType"></car-upto-billion>
                                     </ng-container>
                                     <ng-container *ngIf="carAboveTZA">
                                         <car-above-billion [form]="form" [industryTypeList]="industryTypeList"
                                             [locationList]="locationList" [locationDetails]="locationDetails"
                                             [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
-                                            (finalProceed)="onProceed($event)"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
                                             [renderType]="renderType"></car-above-billion>
+                                    </ng-container>
+                                    <ng-container *ngIf="fireTZA">
+                                        <fire-allied-perils [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></fire-allied-perils>
+                                    </ng-container>
+                                    <ng-container *ngIf="earTZA">
+                                        <erection-all-risk [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></erection-all-risk>
+                                    </ng-container>
+                                    <ng-container *ngIf="AccidentalDamageTZA">
+                                        <accidental-damage-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></accidental-damage-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="BurglaryTZA">
+                                        <burglary-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></burglary-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="PersonalPlusTZA">
+                                        <personal-plus-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" [renderType]="renderType"></personal-plus-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="BusinessAllRiskTZA">
+                                        <business-all-risk-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></business-all-risk-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="FarmCareTZA">
+                                        <farm-care-tza [form]="form" [industryTypeList]="industryTypeList" [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem" [engineerData]="engineerData"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></farm-care-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="ElectronicEquipmentTZA && industryTypeList.length!=0">
+                                        <electronic-equipment-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)"
+                                            [renderType]="renderType"></electronic-equipment-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="MoneyTZA && industryTypeList.length!=0">
+                                        <money-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></money-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="EmployeeTZA && industryTypeList.length!=0">
+                                        <employers-liability-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></employers-liability-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="FidelityTZA && industryTypeList.length!=0">
+                                        <fidelity-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)" [renderType]="renderType"></fidelity-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="MachineryTZA && industryTypeList.length!=0">
+                                        <machinery-breakdown-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></machinery-breakdown-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="BondTZA && industryTypeList.length!=0">
+                                        <bond-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></bond-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="PlantAllRiskTZA && industryTypeList.length!=0">
+                                        <plant-all-risk-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></plant-all-risk-tza>
+                                    </ng-container>
+                                    <ng-container *ngIf="PlateGlassTZA && industryTypeList.length!=0">
+                                        <plate-glass-tza [form]="form" [industryTypeList]="industryTypeList"
+                                            [locationList]="locationList" [locationDetails]="locationDetails"
+                                            [tabIndex]="tabIndex" [productItem]="productItem"
+                                            (finalProceed)="onProceed($event)" (skipSection)="skip($event)" (previousSection)="Previous($event)" (saveSection)="packageSave($event)"
+                                            [renderType]="renderType"></plate-glass-tza>
                                     </ng-container>
                                 </p-tabPanel>
                             </ng-container>

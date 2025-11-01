@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SharedService } from 'src/app/shared/shared.service';
-
 @Component({
     selector: 'app-tira-failure',
     templateUrl: './tira-failure.component.html',
@@ -37,7 +36,7 @@ export class TiraFailureComponent implements OnInit {
     loginId: any;
     insuranceList: any[] = [];
     branchValue: any;
-    branchList: any;
+    branchList: any[]=[];
     loginType: any;
     countryId: any;
     brokerbranchCode: any;
@@ -75,6 +74,7 @@ export class TiraFailureComponent implements OnInit {
         this.insuranceId = this.userDetails.Result.InsuranceId;
         this.branchList = this.userDetails.Result.LoginBranchDetails;
         this.loginType = this.userDetails.Result.LoginType;
+        this.productList = this.userDetails.Result.BrokerCompanyProducts;
         const d = new Date();
         this.maxDate = d;
     }
@@ -159,7 +159,6 @@ export class TiraFailureComponent implements OnInit {
                     this.tiradetails = data?.Result;
                     this.outergrid = [];
                     this.innergrid = [];
-
                     for (let i = 0; i <= this.tiradetails.length; i++) {
                         this.innergrid = this.tiradetails.filter(
                             (ele) =>
@@ -209,7 +208,6 @@ export class TiraFailureComponent implements OnInit {
         if (type == 'change') {
             this.branchValue = null;
         }
-
         const ReqObj = {
             InsuranceId: this.insuranceId,
         };
@@ -262,7 +260,6 @@ export class TiraFailureComponent implements OnInit {
     search() {
         this.EndDate = '';
     }
-
     openRejectpopup(modal) {
         this.open(modal);
     }

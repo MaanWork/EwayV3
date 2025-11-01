@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from 'src/app/_services/shared.service';
 import * as Mydatas from '../../../../app-config.json';
 import { Title } from 'chart.js';
-
 @Component({
   selector: 'app-motor-documents-detail',
   templateUrl: './motor-documents-detail.component.html',
@@ -32,6 +31,7 @@ export class MotorDocumentsDetailComponent {
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
   public motorApiUrl:any = this.AppConfig.MotorApiUrl;
+  public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl
   ViewRisk: any;
   RopVechileDetails: any;
   PaymentInfo: any;
@@ -111,16 +111,12 @@ export class MotorDocumentsDetailComponent {
         }
       }
     });
-
     this.addInfoDetail= [
       {tittle:'Driver Details'},
       {tittle:'Additional Information'},
       {tittle:'Collateral Details'}
     ]
-   
     let CustomerObj = JSON.parse(sessionStorage.getItem('editCustomer'));
-         
-     
     this.search=CustomerObj?.Search;
     this.searchValue=CustomerObj.SearchValue;
     this.quoteNo=CustomerObj.QuoteNo;
@@ -152,14 +148,11 @@ export class MotorDocumentsDetailComponent {
         if(this.productId == '39'){
          this.getmachinerydetails();
         }
-
         // && this.quoteNo || this.ReferenceNo 
         if(this.productId =='5'){
-        
          //this.onRisk();
          this.getDriverDetails();
          this.getAccessories();
-         
          // this.getBorrowerList();
         }
         if(this.productId =='4' && this.ReferenceNo){
@@ -170,7 +163,6 @@ export class MotorDocumentsDetailComponent {
          this.getContentDetails();
          this.getPersonalAccidentDetails();
          this.getPersonalIntermediaryDetails();
-         
         }
         if(this.productId =='16'){
          this.getMoneyDetails();
@@ -178,11 +170,9 @@ export class MotorDocumentsDetailComponent {
         if(this.Emiyn=='Y'){
          this.getCurrentEmiDetails();
         }
-
        //  if(this.ReferenceNo){
        //   this.onRating()
        //  }
-
         if(this.productId =='46'){
          this.getmotordetails();
         }
@@ -202,13 +192,10 @@ export class MotorDocumentsDetailComponent {
           // this.getRiskDetails();
          }
          this.getMachineryRisk();
-
         }
    //  if(this.searchValue){
    //    this.onCustomerSearch();
    //  }
-
-
     this.customerData=[{
       "SectionName":"VISN10018954",
         "CoverName":"Wind Cover",
@@ -228,9 +215,6 @@ export class MotorDocumentsDetailComponent {
       }]
 },
   ];
-
-
- 
   /*this.innerColumnHeader=[
       { key: 'PolicyType', display: 'Policy Type' },
       { key: 'PolicyStartDate', display: 'Policy StartDate' },
@@ -245,34 +229,24 @@ export class MotorDocumentsDetailComponent {
           isEdit: true,
           },
         },
- 
   ];*/
-
   this.innerTableData= [
-        
       {
           "PolicyType":"PrivateComprehensive",
             "PolicyStartDate":"31/01/2023",
             "VechileType":"Private"
-
       },
   ];
- 
      console.log('jjjjjjjjjjj',this.innerTableData)
-
-
  }
-
  vehicleDocuments(){
   if(this.productId!='5' && this.productId!='4' && this.productId!='59') return 'Individual Documents';
   else if(this.productId=='5') return 'Vehicle Documents';
   else if(this.productId=='4') return 'Passenger Documents';
   else if(this.productId=='59') return 'Location Documents';
-
  }
  addInfoDetails(){
   if(this.productId=='5') {
-   
   }
   // return 'Driver Details';
   // else if(this.productId=='5') return 'Additional Information';
@@ -296,11 +270,9 @@ export class MotorDocumentsDetailComponent {
            console.log('Get details of Accessories', this.accessoriesList);
          }
         }
-     
       }
     })
 }
-
  getDriverDetails(){
   let ReqObj = {
     "QuoteNo": this.quoteNo
@@ -325,7 +297,6 @@ export class MotorDocumentsDetailComponent {
   getmachinerydetails() {
     throw new Error('Method not implemented.');
   }
-
   onTravelRisk() {
     throw new Error('Method not implemented.');
   }
@@ -347,7 +318,6 @@ export class MotorDocumentsDetailComponent {
   getmotordetails() {
     throw new Error('Method not implemented.');
   }
- 
   getEmployeeDetails() {
     throw new Error('Method not implemented.');
   }
@@ -382,7 +352,6 @@ export class MotorDocumentsDetailComponent {
     }
   }
   Documentview(){
- 
     let ReqObj={
       "QuoteNo": this.quoteNo,
       "ProductId":this.productId,
@@ -390,34 +359,24 @@ export class MotorDocumentsDetailComponent {
     }
     let urlLink = `${this.CommonApiUrl}api/viewdocumentdetails`;
     //http://192.168.1.91:8086/dropdown/viewdocumentdetails
-  
-   
-   
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
         console.log('Document Info',data.Result);
         if(data?.Result){
-              
           if(data.Result.IndividualDocumentRes){
             this.DocumentInfo=data?.Result?.IndividualDocumentRes;
             console.log(this.DocumentInfo);
           }
-  
           if(data.Result.CommonDocumentRes){
             this.CommonDoc=data?.Result?.CommonDocumentRes;
           }
-            
             // this.CommonDoc=data?.Result?.CommonDocumentRes;
             //this.quoteno=data.Result.QuoteNo
-  
-  
         }
-  
       },
       (err) => { },
     );
   }
-  
   getTiraDetails(){
     let ReqObj={
       "QuoteNo":this.quoteNo,
@@ -450,7 +409,6 @@ export class MotorDocumentsDetailComponent {
           let Risk=[],entry,i=0;
           this.LocationName = data.Result.LocationDetails;
           for( entry of data.Result.LocationDetails){
-            
             this.SectionDetails=entry.SectionDetails;
             console.log(entry.SectionDetails,"this.riskDetailsNonMotor");
             this.DriverInfo=entry.DriverDetails;
@@ -463,7 +421,6 @@ export class MotorDocumentsDetailComponent {
           //   this.sectionCovers = entry2.Covers;
           //   // const filtered = entry2.Covers.filter(cover => cover.CoverName.includes(entry2.Covers.CoverName));
           //   console.log(this.sectionCovers,"filteredfilteredfiltered");
-            
           //   // this.riskDetailsNonMotor.push(filtered)
           // }
         }
@@ -474,7 +431,6 @@ export class MotorDocumentsDetailComponent {
   coverList(data){
     this.sectionCovers = data.Covers;
     console.log(this.sectionCovers,"sectionCoverssectionCoverssectionCoverssectionCovers");
-    
   }
   onCustomerSearch(){
     let app
@@ -502,7 +458,6 @@ export class MotorDocumentsDetailComponent {
           "VehicleMake": null,
           "VehicleModel": null,
           "VehicleType": null
-   
          }
          let urlLink = `${this.CommonApiUrl}api/adminviewcustomerdetails`;
          this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
@@ -537,11 +492,8 @@ export class MotorDocumentsDetailComponent {
         },
         (err) => { },
       );
-    
     }
-
     domesticRisk(){
-      
       let Reqobj={
         "QuoteNo": this.quoteNo,
         "ProductId": this.productId,
@@ -552,7 +504,6 @@ export class MotorDocumentsDetailComponent {
       this.sharedService.onPostMethodSync(urlLink, Reqobj).subscribe(
         (data: any) => {
           console.log(data);
-          
           if(data?.Result){
             if(data?.Result.BurglaryRisk)this.riskDetails=data?.Result.BurglaryRisk;
             console.log(this.riskDetails,"this.riskDetails");
@@ -562,17 +513,14 @@ export class MotorDocumentsDetailComponent {
               this.ContentSumInsured=data?.Result.ContentRisk.ContentSumInsured;
               this.PersonalLiability=data?.Result.PersonalLiability;
             }
-             
           }
         },
         (err) => { },
       );
-    
     }
     onCommonDocumentDownload(index){
       let entry = this.CommonDoc[index];
       console.log("onCommonDocumentDownload",index);
-      
       let ReqObj = {
        "Id": index.Id,
         "QuoteNo": this.quoteNo,
@@ -597,7 +545,6 @@ export class MotorDocumentsDetailComponent {
       let entry = this.CommonDoc[index];
       //this.viewImageSection = true;
       console.log("onCommonDocumentDownload",index);
-      
       let ReqObj = {
        "Id": index.Id,
         "QuoteNo": this.quoteNo,
@@ -632,32 +579,24 @@ export class MotorDocumentsDetailComponent {
               console.log('RopInformation',this.RopVechileDetails)
               //this.quoteno=data.Result.QuoteNo
           }
-
         },
         (err) => { },
       );
      }
      payment(){
-
       let ReqObj={
         "QuoteNo":this.quoteNo,
          "ProductId":this.productId
       }
       let urlLink = `${this.CommonApiUrl}api/adminviewpaymentinfo`;
-     
-     
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
         (data: any) => {
           console.log(data);
           if(data?.Result){
-    
               this.PaymentInfo=data?.Result;
               this.tittlepay=[{tittle:data?.Result[0]?.PaymentTypedesc
               }]
-    
-    
           }
-    
         },
         (err) => { },
       );
@@ -668,12 +607,11 @@ export class MotorDocumentsDetailComponent {
          "ProductId":this.productId,
          "InsuranceId":this.insuranceId
       }
-      let urlLink = `${this.CommonApiUrl}api/view/calc`;
+      let urlLink = `${this.CalcApiUrl}api/view/calc`;
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
         (data: any) => {
           console.log(data);
           if(data?.Result){
-         
               this.PremiumInfo=data?.Result;
               this.sectionnameopted=this.PremiumInfo[0]?.SectionName;
               this.Currency=this.PremiumInfo[0].Currency;
@@ -683,7 +621,6 @@ export class MotorDocumentsDetailComponent {
               }
               console.log('PREEEEEEEEEEEEEEE',this.sectionname);
              // this.PremiumInfoList = this.PremiumInfo?.CoverList
-             
               if(data.Result.length!=0){
                 let i=0;
                for(let s of data.Result){
@@ -702,12 +639,8 @@ export class MotorDocumentsDetailComponent {
                   i+=1;
                }
               }
-              
               //this.quoteno=data.Result.QuoteNo
-
-
           }
-
         },
         (err) => { },
       );
@@ -716,5 +649,3 @@ export class MotorDocumentsDetailComponent {
   window.open(this.CRMPath, '_self');
  }
 }
-
-

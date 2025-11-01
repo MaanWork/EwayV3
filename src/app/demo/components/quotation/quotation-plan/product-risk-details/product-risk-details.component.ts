@@ -21,7 +21,12 @@ export class ProductRiskDetailsComponent {
   public AppConfig: any = (Mydatas as any).default; firstLossOptions: any[] = [];
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public MarineApiUrl: any = this.AppConfig.MarineApi;
-  public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
+  public CommonApiUrl: any = this.AppConfig.CommonApiUrl;public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl;FarmCareTZA: boolean;
+  ElectronicEquipmentTZA: boolean;
+  MoneyTZA: boolean;
+  PlantAllRiskTZA: boolean;
+  PlateGlassTZA: boolean;
+;
   public motorApiUrl: any = this.AppConfig.MotorApiUrl;
   loginId: any = null; userDetails: any = null; insuranceId: any = null; productId: any = null;
   userType: any = null; branchCode: any = null; coversreuired: string; locationIndex: any = 0; agencyCode: any; tabIndex = 0; countryId: any; brokerbranchCode: any;
@@ -47,12 +52,12 @@ export class ProductRiskDetailsComponent {
   currentIndex: any = null;
   selectedCurrency: any;
   locationDetails: any[] = []; quoteNo: any = null;
-  renderType: any = null; EmployeePhoenix: boolean = false;
+  renderType: any = null; EmployeePhoenix: boolean = false;EmployeeTZA:boolean=false;
   FirePhoenix: boolean; BuildingCombinedPhoenix: boolean = false;
   ElectronicEquipmentPhoenix: boolean = false; CommercialPackage: boolean = false; UmbrellaPhoenix: boolean; theftPhoenix: boolean;
-  AccountsRecivablePhoneix: boolean; BidTension: boolean = false; AccidentalDamagePhoneix: boolean = false; MachineryPhoenix: boolean = false;
-  FidelityPhoenix: boolean = false; GlassPhoenix: boolean = false; StateBenefitsPhoenix: boolean = false;
-  engineerData: any;
+  AccountsRecivablePhoneix: boolean; BidTension: boolean = false; AccidentalDamagePhoneix: boolean = false; MachineryTZA:boolean=false;MachineryPhoenix: boolean = false;
+  FidelityPhoenix: boolean = false;FidelityTZA:boolean=false; GlassPhoenix: boolean = false; StateBenefitsPhoenix: boolean = false;
+  engineerData: any;BondTZA:boolean=false;
   BusinessAllRiskPhoenix: boolean;
   MoneyPhoenix: boolean;
   OfficeContentPhoenix: boolean;
@@ -78,10 +83,9 @@ export class ProductRiskDetailsComponent {
   CustomsTransitPhoenix: boolean;
   PersonalPackagePlus: Boolean = false;
   NichePackagePlus: boolean = false;
-  AgriculturePhoenix: boolean=false;
-  GoodsInTransitTZA: boolean=false;
-  CarrierLegalTZA: boolean=false;
-  carUptoTZA: boolean=false;carAboveTZA:boolean=false;
+  AgriculturePhoenix: boolean=false;carUptoTZA: boolean=false;carAboveTZA:boolean=false;
+  GoodsInTransitTZA: boolean=false;earTZA:boolean=false;CarrierLegalTZA: boolean=false;fireTZA:boolean=false;
+  AccidentalDamageTZA: boolean=false;BurglaryTZA: boolean;PersonalPlusTZA: boolean;BusinessAllRiskTZA:boolean=false;
   constructor(private router: Router, private datePipe: DatePipe, private translate: TranslateService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private appComp: AppComponent, private sharedService: SharedService, public http: HttpClient, private repeatService: RepeatService) {
     this.coversreuired = sessionStorage.getItem('coversRequired');
@@ -238,18 +242,30 @@ export class ProductRiskDetailsComponent {
     if (this.productId == '75') { this.DetoriationPhoenix = true; }
     else if (this.productId == '66') { this.FirePhoenix = true; }
     else if (this.productId == '67') { this.BuildingCombinedPhoenix = true; }
-    else if (this.productId == '14') { this.EmployeePhoenix = true; }
+    else if (this.productId == '14') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.EmployeePhoenix = true; 
+      else if(this.insuranceId=='100002') this.EmployeeTZA = true; }
+    else if(this.productId=='103'){this.PlateGlassTZA=true;}
     else if (this.productId == '72') { this.GlassPhoenix = true; }
     else if (this.productId == '74') { this.StateBenefitsPhoenix = true; }
     else if (this.productId == '92') { this.CommercialPackage = true; }
     else if (this.productId == '73') { this.UmbrellaPhoenix = true; }
     else if (this.productId == '71') { this.theftPhoenix = true; }
     else if (this.productId == '69') { this.AccountsRecivablePhoneix = true; }
-    else if (this.productId == '70') { this.AccidentalDamagePhoneix = true; }
-    else if (this.productId == '39') { this.MachineryPhoenix = true; }
-    else if (this.productId == '25') { this.ElectronicEquipmentPhoenix = true; } else if (this.productId == '32') { this.FidelityPhoenix = true; }
-    else if (this.productId == '26') { this.BusinessAllRiskPhoenix = true; }
-    else if (this.productId == '16') { this.MoneyPhoenix = true; }
+    else if (this.productId == '70') { 
+      if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.AccidentalDamagePhoneix = true; 
+      else if(this.insuranceId=='100002') this.AccidentalDamageTZA = true;
+     }
+    else if (this.productId == '39') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.MachineryPhoenix = true; 
+      else if(this.insuranceId=='100002') this.MachineryTZA = true; }
+    else if (this.productId == '25') { 
+      if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.ElectronicEquipmentPhoenix = true; 
+      else if(this.insuranceId=='100002') this.ElectronicEquipmentTZA = true;
+     } else if (this.productId == '32') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.FidelityPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.FidelityTZA = true;; }
+    else if (this.productId == '26') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.BusinessAllRiskPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.BusinessAllRiskTZA = true; }
+    else if (this.productId == '16') {if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.MoneyPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.MoneyTZA = true; }
     else if (this.productId == '68') { this.OfficeContentPhoenix = true; }
     else if (this.productId == '76') { this.HouseOwnerPhoenix = true; }
     else if (this.productId == '49') { 
@@ -270,16 +286,18 @@ export class ProductRiskDetailsComponent {
     else if (this.productId == '99') { this.CountBondPhoenix = true; }
     else if (this.productId == '100') { this.FuelGuaranteePhoenix = true; }
     else if (this.productId == '106') { this.LiveStockPhoenix = true; }
-    else if (this.productId == '21') { this.PlantAllRiskPhoenix = true; }
+    else if (this.productId == '21') {  if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.PlantAllRiskPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.PlantAllRiskTZA = true; }
     else if (this.productId == '98') { this.PerfomanceGuranteePhoenix = true; }
     else if (this.productId == '57') { this.GroupPersonalAccidentPhoenix = true; }
     else if (this.productId == '97') { this.CustomsTransitPhoenix = true }
-    else if (this.productId == '93') { this.PersonalPackagePlus = true; }
-    else if (this.productId == '102') { this.NichePackagePlus = true; }
-    else if (this.productId == '104') {this.AgriculturePhoenix = true;}
-    else if (this.productId == '96') { this.BidTension = true; }
-    else if (this.productId == '105') { this.CarrierLegalTZA = true; }
+    else if (this.productId == '93') { this.PersonalPackagePlus = true; }else if(this.productId=='61'){this.BondTZA=true;}
+    else if (this.productId == '102') { this.NichePackagePlus = true; }else if(this.productId=='86'){this.FarmCareTZA=true;}
+    else if (this.productId == '104') {this.AgriculturePhoenix = true;}else if(this.productId=='26'){this.BusinessAllRiskTZA=true;}
+    else if (this.productId == '96') { this.BidTension = true; }else if(this.productId=='59'){this.PersonalPlusTZA=true;}
+    else if (this.productId == '105') { this.CarrierLegalTZA = true; }else if (this.productId == '6') {this.fireTZA = true; }
     else if (this.productId == '82') {this.carUptoTZA = true; }else if (this.productId == '83') {this.carAboveTZA = true; }
+    else if (this.productId == '84') {this.earTZA = true; }else if (this.productId == '1') {this.BurglaryTZA = true; }
   }
   checkFieldNames() {
     if (this.fields.length != 0 && this.insuranceId != '100046' && this.insuranceId != '100047' && this.insuranceId != '100048' && this.insuranceId != '100049' && this.insuranceId != '100050') {
@@ -357,12 +375,12 @@ export class ProductRiskDetailsComponent {
   //Phoenix Edit
   onEditfirePhoneix() {
     this.productItem = new ProductData();
-    this.DetoriationPhoenix = false; this.FirePhoenix = false; this.BuildingCombinedPhoenix = false; this.EmployeePhoenix = false;
-    this.ElectronicEquipmentPhoenix = false; this.FidelityPhoenix = false; this.GlassPhoenix = false; this.StateBenefitsPhoenix = false;
-    this.CommercialPackage = false; this.MachineryPhoenix = false; this.AccidentalDamagePhoneix = false; this.AccountsRecivablePhoneix = false; this.BusinessAllRiskPhoenix = false; this.MoneyPhoenix = false;
-    this.OfficeContentPhoenix = false; this.HouseOwnerPhoenix = false; this.GoodsInTransitPhoenix = false; this.PersonalAllRisKPhoenix = false; this.DirectorOfficerPhoenix = false;
-    this.KidnapAndRandomPhoenix = false;this.GoodsInTransitTZA=false;
-    this.CashInTransitPhoenix = false;
+    this.DetoriationPhoenix = false; this.FirePhoenix = false; this.BuildingCombinedPhoenix = false;this.PlateGlassTZA=false; this.EmployeeTZA=false;this.EmployeePhoenix = false;
+    this.ElectronicEquipmentPhoenix = false;this.ElectronicEquipmentTZA=false; this.FidelityPhoenix = false;this.FidelityTZA=false; this.GlassPhoenix = false; this.StateBenefitsPhoenix = false;this.BusinessAllRiskTZA=false;
+    this.CommercialPackage = false; this.MachineryPhoenix = false; this.BondTZA=false;this.MachineryTZA=false;this.AccidentalDamagePhoneix = false; this.AccountsRecivablePhoneix = false; this.BusinessAllRiskPhoenix = false; this.MoneyPhoenix = false;
+    this.OfficeContentPhoenix = false; this.HouseOwnerPhoenix = false; this.GoodsInTransitPhoenix = false; this.PersonalAllRisKPhoenix = false; this.DirectorOfficerPhoenix = false;this.MoneyTZA = false;
+    this.KidnapAndRandomPhoenix = false;this.GoodsInTransitTZA=false;this.AccidentalDamageTZA=false;
+    this.CashInTransitPhoenix = false;this.BurglaryTZA=false;this.PersonalPlusTZA=false;this.FarmCareTZA=false;
     this.PublicLiablityPhoenix = false;
     this.HouseHolderPhoenix = false;
     this.ThirdPartLiabilityPhoenix = false;
@@ -374,10 +392,10 @@ export class ProductRiskDetailsComponent {
     this.LiveStockPhoenix = false;
     this.FuelGuaranteePhoenix = false;
     this.PerfomanceGuranteePhoenix = false;
-    this.PlantAllRiskPhoenix = false;
-    this.GroupPersonalAccidentPhoenix = false;
+    this.PlantAllRiskPhoenix = false;this.PlantAllRiskTZA=false;
+    this.GroupPersonalAccidentPhoenix = false;this.earTZA=false;
     this.CustomsTransitPhoenix = false;this.carAboveTZA=false;
-    this.PersonalPackagePlus = false;this.carUptoTZA=false;
+    this.PersonalPackagePlus = false;this.carUptoTZA=false;this.fireTZA=false;
     this.NichePackagePlus = false;this.CarrierLegalTZA=false;
     this.AgriculturePhoenix = false;this.BidTension = false;
     let i = 0;
@@ -386,19 +404,28 @@ export class ProductRiskDetailsComponent {
       i += 1; if (i == this.locationList.length) {
         setTimeout(() => {
           if (this.productId == '75') this.DetoriationPhoenix = true; else if (this.productId == '66') { this.FirePhoenix = true; } else if (this.productId == '67') { this.BuildingCombinedPhoenix = true; }
-          else if (this.productId == '14') { this.EmployeePhoenix = true; } else if (this.productId == '25') { this.ElectronicEquipmentPhoenix = true; }
-          else if (this.productId == '32') { this.FidelityPhoenix = true; } else if (this.productId == '72') { this.GlassPhoenix = true; }
+          else if (this.productId == '14') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.EmployeePhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.EmployeeTZA = true;} 
+          else if(this.productId=='103'){this.PlateGlassTZA=true;}
+          else if (this.productId == '25') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.ElectronicEquipmentPhoenix = true; 
+              else if(this.insuranceId=='100002') this.ElectronicEquipmentTZA = true; }
+          else if (this.productId == '32') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.FidelityPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.FidelityTZA = true; } else if (this.productId == '72') { this.GlassPhoenix = true; }
           else if (this.productId == '74') { this.StateBenefitsPhoenix = true; }
           else if (this.productId == '92') { this.CommercialPackage = true; }
           else if (this.productId == '73') { this.UmbrellaPhoenix = true; }
           else if (this.productId == '71') { this.theftPhoenix = true; }
           else if (this.productId == '69') { this.AccountsRecivablePhoneix = true; }
-          else if (this.productId == '70') { this.AccidentalDamagePhoneix = true; }
-          else if (this.productId == '39') { this.MachineryPhoenix = true; }
-          else if (this.productId == '26') { this.BusinessAllRiskPhoenix = true; }
-          else if (this.productId == '16') { this.MoneyPhoenix = true; }
+          else if (this.productId == '70') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.AccidentalDamagePhoneix = true; 
+                                              else if(this.insuranceId=='100002') this.AccidentalDamageTZA = true; }
+          else if (this.productId == '39') {  if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.MachineryPhoenix = true; 
+      else if(this.insuranceId=='100002') this.MachineryTZA = true; }
+          else if (this.productId == '26') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.BusinessAllRiskPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.BusinessAllRiskTZA = true; }
+          else if (this.productId == '16') {if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.MoneyPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.MoneyTZA = true;}
           else if (this.productId == '68') { this.OfficeContentPhoenix = true; }
-          else if (this.productId == '76') { this.HouseOwnerPhoenix = true; }
+          else if (this.productId == '76') { this.HouseOwnerPhoenix = true; }else if(this.productId=='61'){this.BondTZA=true;}
           else if (this.productId == '49') { 
             if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.GoodsInTransitPhoenix = true; 
             else if(this.insuranceId=='100002') this.GoodsInTransitTZA = true;
@@ -417,13 +444,14 @@ export class ProductRiskDetailsComponent {
           else if (this.productId == '99') { this.CountBondPhoenix = true; }
           else if (this.productId == '100') { this.FuelGuaranteePhoenix = true; }
           else if (this.productId == '106') { this.LiveStockPhoenix = true; }
-          else if (this.productId == '21') { this.PlantAllRiskPhoenix = true; }
+          else if (this.productId == '21') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.PlantAllRiskPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.PlantAllRiskTZA = true; }
           else if (this.productId == '98') { this.PerfomanceGuranteePhoenix = true; }
-          else if (this.productId == '57') { this.GroupPersonalAccidentPhoenix = true; }
-          else if (this.productId == '97') { this.CustomsTransitPhoenix = true }
-          else if (this.productId == '93') { this.PersonalPackagePlus = true; }
-          else if (this.productId == '102') { this.NichePackagePlus = true; }
-          else if (this.productId == '104') {this.AgriculturePhoenix = true;}
+          else if (this.productId == '57') { this.GroupPersonalAccidentPhoenix = true; }else if(this.productId=='86'){this.FarmCareTZA=true;}
+          else if (this.productId == '97') { this.CustomsTransitPhoenix = true }else if(this.productId=='59'){this.PersonalPlusTZA=true;}
+          else if (this.productId == '93') { this.PersonalPackagePlus = true; }else if (this.productId == '1') {this.BurglaryTZA = true; }
+          else if (this.productId == '102') { this.NichePackagePlus = true; }else if (this.productId == '84') {this.earTZA = true; }
+          else if (this.productId == '104') {this.AgriculturePhoenix = true;}else if (this.productId == '6') {this.fireTZA = true; }
           else if (this.productId == '96') { this.BidTension = true; }else if (this.productId == '83') {this.carAboveTZA = true; }
           else if (this.productId == '105') { this.CarrierLegalTZA = true; } else if (this.productId == '82') { this.carUptoTZA = true; }
         }, 100)
@@ -433,17 +461,26 @@ export class ProductRiskDetailsComponent {
   finalEnableProducts() {
     setTimeout(() => {
       if (this.productId == '75') this.DetoriationPhoenix = true; else if (this.productId == '66') { this.FirePhoenix = true; } else if (this.productId == '67') { this.BuildingCombinedPhoenix = true; }
-      else if (this.productId == '14') { this.EmployeePhoenix = true; } else if (this.productId == '25') { this.ElectronicEquipmentPhoenix = true; }
-      else if (this.productId == '32') { this.FidelityPhoenix = true; } else if (this.productId == '72') { this.GlassPhoenix = true; }
+      else if (this.productId == '14') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.EmployeePhoenix = true; 
+      else if(this.insuranceId=='100002') this.EmployeeTZA = true;}
+      else if(this.productId=='103'){this.PlateGlassTZA=true;}
+      else if (this.productId == '25') { 
+        if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.ElectronicEquipmentPhoenix = true; 
+      else if(this.insuranceId=='100002') this.ElectronicEquipmentTZA = true;
+       }
+      else if (this.productId == '32') {if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.FidelityPhoenix = true; 
+                                              else if(this.insuranceId=='100002') this.FidelityTZA = true; } else if (this.productId == '72') { this.GlassPhoenix = true; }
       else if (this.productId == '74') { this.StateBenefitsPhoenix = true; } else if (this.productId == '96') { this.BidTension = true; }
       else if (this.productId == '92') { this.CommercialPackage = true; }else if (this.productId == '105') { this.CarrierLegalTZA = true; }
       else if (this.productId == '73') { this.UmbrellaPhoenix = true; }else if (this.productId == '82') { this.carUptoTZA = true; }
       else if (this.productId == '71') { this.theftPhoenix = true; }else if (this.productId == '83') {this.carAboveTZA = true; }
-      else if (this.productId == '69') { this.AccountsRecivablePhoneix = true; }
-      else if (this.productId == '70') { this.AccidentalDamagePhoneix = true; }
-      else if (this.productId == '39') { this.MachineryPhoenix = true; }
-      else if (this.productId == '93') { this.PersonalPackagePlus = true; }
-      else if (this.productId == '102') { this.NichePackagePlus = true;}
+      else if (this.productId == '69') { this.AccountsRecivablePhoneix = true; }else if (this.productId == '6') {this.fireTZA = true; }
+      else if (this.productId == '70') { if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.AccidentalDamagePhoneix = true; 
+      else if(this.insuranceId=='100002') this.AccidentalDamageTZA = true; }else if (this.productId == '84') {this.earTZA = true; }
+      else if (this.productId == '39') {  if(this.insuranceId=='100046' || this.insuranceId=='100047' || this.insuranceId=='100048' || this.insuranceId=='100049' || this.insuranceId=='100050') this.MachineryPhoenix = true; 
+      else if(this.insuranceId=='100002') this.MachineryTZA = true; }else if(this.productId=='61'){this.BondTZA=true;}else if (this.productId == '1') {this.BurglaryTZA = true; }
+      else if (this.productId == '93') { this.PersonalPackagePlus = true; }else if(this.productId=='59'){this.PersonalPlusTZA=true;}
+      else if (this.productId == '102') { this.NichePackagePlus = true;}else if(this.productId=='86'){this.FarmCareTZA=true;}
     }, 100)
   }
   //Save Details
@@ -637,7 +674,7 @@ export class ProductRiskDetailsComponent {
                       if (this.productId == '19') {
                       }
                       else {
-                        if (this.productId == '96' || this.productId=='82' || this.productId=='83') {
+                        if (this.productId == '96' || this.productId=='82' || this.productId=='83' || this.productId=='84') {
                           this.InsertEnginnerInfo(type, packageType, data.Result)
                         }
                         else {
@@ -822,7 +859,7 @@ export class ProductRiskDetailsComponent {
         "EffectiveDate": effectiveDate,
         "PolicyEndDate": this.commonDetails[0].PolicyEndDate
       }
-      let urlLink = `${this.CommonApiUrl}calculator/calc`;
+      let urlLink = `${this.CalcApiUrl}calculator/calc`;
       this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
         (data: any) => {
           let res: any = data;
@@ -870,7 +907,7 @@ export class ProductRiskDetailsComponent {
           "PolicyEndDate": this.commonDetails[0].PolicyEndDate,
           "CoverModification": coverModificationYN
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             let res: any = data;
@@ -931,7 +968,7 @@ export class ProductRiskDetailsComponent {
           "EffectiveDate": effectiveDate,
           "PolicyEndDate": endDate,
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if (data) {
@@ -1041,7 +1078,7 @@ export class ProductRiskDetailsComponent {
           "EffectiveDate": effectiveDate,
           "PolicyEndDate": endDate,
         }
-        let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+        let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if (data) {
@@ -1188,7 +1225,7 @@ export class ProductRiskDetailsComponent {
       });
   }
   InsertEnginnerInfo(type, packageType, res) {
-    console.log("Locations", this.locationList)
+    console.log("Locations on Engineer", this.locationList)
     let obj = [];
     let payload;
     for (let i = 0; i < this.locationList.length; i++) {
@@ -1507,7 +1544,6 @@ export class ProductRiskDetailsComponent {
       //   if (loc.SectionList == undefined) loc['SectionList'] = [];
       //   i += 1;
       //   if (i == list.length) {
-          
       //   }
       // }
     }
@@ -1518,5 +1554,8 @@ export class ProductRiskDetailsComponent {
       return new Date(year, month - 1, day);
     }
     return new Date(date);
+  }
+  Previous(res){
+    this.onProceed(res)
   }
 } 

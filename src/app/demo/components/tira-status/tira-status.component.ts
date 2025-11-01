@@ -34,7 +34,7 @@ export class TiraStatusComponent implements OnInit {
     loginId: any;
     insuranceList: any[] = [];
     branchValue: any;
-    branchList: any;
+    branchList: any[]=[];
     loginType: any;
     countryId: any;
     brokerbranchCode: any;
@@ -124,7 +124,6 @@ export class TiraStatusComponent implements OnInit {
             this.getalldetails();
         }
     }
-
     getCompanyList() {
         const ReqObj = {
             BrokerCompanyYn: '',
@@ -145,7 +144,6 @@ export class TiraStatusComponent implements OnInit {
         if (type == 'change') {
             this.branchValue = null;
         }
-
         const ReqObj = {
             InsuranceId: this.insuranceId,
         };
@@ -221,7 +219,6 @@ export class TiraStatusComponent implements OnInit {
             .onPostMethodSync(urlLink, ReqObj)
             .subscribe((data: any) => {
                 if (data.Result) {
-                    
                     this.issuerData = data.Result;
                     if(this.startDate!=null && this.startDate!=undefined){
                         let obj ={
@@ -253,7 +250,6 @@ export class TiraStatusComponent implements OnInit {
                     this.tiradetails = data?.Result;
                     this.outergrid = [];
                     this.innergrid = [];
-
                     for (let i = 0; i <= this.tiradetails.length; i++) {
                         this.innergrid = this.tiradetails.filter(
                             (ele) =>
@@ -269,7 +265,6 @@ export class TiraStatusComponent implements OnInit {
                 }
             });
     }
-
     openRejectpopup(modal) {
         this.open(modal);
     }
@@ -307,7 +302,6 @@ export class TiraStatusComponent implements OnInit {
         link.click();
         link.remove();
     }
-
     onHit(event) {
         const ReqObj = {
             QuoteNo: event.QuoteNo,

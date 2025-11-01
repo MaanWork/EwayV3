@@ -137,6 +137,26 @@ import { GoodsInTransitTZAComponent } from './product-risk-details/Tanzaniya/goo
 import { CarrierLegalLiabilityComponent } from './product-risk-details/Tanzaniya/carrier-legal-liability/carrier-legal-liability.component';
 import { CarUptoBillionComponent } from './product-risk-details/Tanzaniya/car-upto-billion/car-upto-billion.component';
 import { CarAboveBillionComponent } from './product-risk-details/Tanzaniya/car-above-billion/car-above-billion.component';
+import { FireAlliedPerilsComponent } from './product-risk-details/Tanzaniya/fire-allied-perils/fire-allied-perils.component';
+import { ErectionAllRiskComponent } from './product-risk-details/Tanzaniya/erection-all-risk/erection-all-risk.component';
+import { AccidentalDamageTZAComponent } from './product-risk-details/Tanzaniya/accidental-damage/accidental-damage.component';
+import { BurglaryTZAComponent } from './product-risk-details/Tanzaniya/burglary/burglary.component';
+import { PersonalPlusTZAComponent } from './product-risk-details/Tanzaniya/personal-plus/personal-plus.component';
+import { BuildingPPTZAComponent } from './product-risk-details/Tanzaniya/personal-plus/building-pp-tza/building-pp-tza.component';
+import { ContentPpTzaComponent } from './product-risk-details/Tanzaniya/personal-plus/content-pp-tza/content-pp-tza.component';
+import { AllRiskPpTzaComponent } from './product-risk-details/Tanzaniya/personal-plus/all-risk-pp-tza/all-risk-pp-tza.component';
+import { OwnersLiabilityPpTzaComponent } from './product-risk-details/Tanzaniya/personal-plus/owners-liability-pp-tza/owners-liability-pp-tza.component';
+import { ElectronicEquipmentPpTzaComponent } from './product-risk-details/Tanzaniya/personal-plus/electronic-equipment-pp-tza/electronic-equipment-pp-tza.component';
+import { BusinessAllRiskTZAComponent } from './product-risk-details/Tanzaniya/business-all-risk/business-all-risk.component';
+import { FarmCareTZAComponent } from './product-risk-details/Tanzaniya/farm-care/farm-care.component';
+import { ElectronicEquipmentTZAComponent } from './product-risk-details/Tanzaniya/electronic-equipment/electronic-equipment.component';
+import { MoneyTZAComponent } from './product-risk-details/Tanzaniya/money/money.component';
+import { EmployersLiabilityTZAComponent } from './product-risk-details/Tanzaniya/employers-liability/employers-liability.component';
+import { FidelityTZAComponent } from './product-risk-details/Tanzaniya/fidelity/fidelity.component';
+import { MachineryBreakdownTZAComponent } from './product-risk-details/Tanzaniya/machinery-breakdown/machinery-breakdown.component';
+import { BondTZAComponent } from './product-risk-details/Tanzaniya/bond/bond.component';
+import { PlantAllRiskTZAComponent } from './product-risk-details/Tanzaniya/plant-all-risk/plant-all-risk.component';
+import { PlateGlassTZAComponent } from './product-risk-details/Tanzaniya/plate-glass/plate-glass.component';
 //import { textareaTypeField } from './formlyTypes/textareaTypeField';
 export function maxlengthValidationMessage(err, field) {
   return `This value should be less than ${field.templateOptions.maxLength} characters`;
@@ -212,15 +232,15 @@ export function maxlengthValidationMessage(err, field) {
     PersonalLiabilityComponent,
     ConstructionAllRiskComponent,
     ProfessionalIndeminityComponent,
-    CourtBondComponent,
-    FuelGuaranteeComponent,
-    PerformanceGuaranteeComponent,
-    LivestockComponent,
-    PlantAllRiskComponent,
-    GroupPersonalAccidentComponent,
-    BidTenderBondComponent,
-    CustomsAndTransitBondComponent,
-    PersonalPackagePlusComponent,
+    CourtBondComponent,BondTZAComponent,PlantAllRiskTZAComponent,PlateGlassTZAComponent,
+    FuelGuaranteeComponent,FidelityTZAComponent,MachineryBreakdownTZAComponent,
+    PerformanceGuaranteeComponent,ElectronicEquipmentTZAComponent,EmployersLiabilityTZAComponent,
+    LivestockComponent,BusinessAllRiskTZAComponent,FarmCareTZAComponent,MoneyTZAComponent,
+    PlantAllRiskComponent,OwnersLiabilityPpTzaComponent,ElectronicEquipmentPpTzaComponent,
+    GroupPersonalAccidentComponent,ContentPpTzaComponent,AllRiskPpTzaComponent,
+    BidTenderBondComponent,BurglaryTZAComponent,PersonalPlusTZAComponent,
+    CustomsAndTransitBondComponent,AccidentalDamageTZAComponent,BuildingPPTZAComponent,
+    PersonalPackagePlusComponent,FireAlliedPerilsComponent,ErectionAllRiskComponent,
     NichePackagePlusComponent,CarUptoBillionComponent,CarAboveBillionComponent,
     AgricultureComponent,GoodsInTransitTZAComponent,CarrierLegalLiabilityComponent
   ],

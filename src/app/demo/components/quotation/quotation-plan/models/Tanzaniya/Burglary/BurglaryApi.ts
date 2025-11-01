@@ -17,7 +17,16 @@ export class BurglaryApiTanzaniya{
         let Section  = subDetails.filter(ele=>ele['SectionId']=='52');
                             if(Section.length!=0){
                               let burglarySection = Section.filter(ele=>ele.CoverId==116|| ele.CoverId=='116')
-                              if(burglarySection.length!=0){obj['FireSumInsured']=burglarySection[0].FirstLossPercentId;obj['BurglarySi']=burglarySection[0].SumInsured;obj['RegionCode']=burglarySection[0].RegionCode;obj['DistrictCode']=burglarySection[0].DistrictCode;obj['DescriptionOfRisk']=burglarySection[0].DescriptionOfRisk;obj['CoveringDetails']=burglarySection[0].CoveringDetails;obj['IndustryType']=null;if(burglarySection[0]?.IndustryType!='0')obj['IndustryType']=burglarySection[0].IndustryType;}
+                              if(burglarySection.length!=0){
+                                obj['FireSumInsured']=burglarySection[0].FirstLossPercentId;
+                                obj['BurglarySi']=burglarySection[0].SumInsured;
+                                obj['RegionCode']=burglarySection[0].RegionCode;
+                                obj['DistrictCode']=burglarySection[0].DistrictCode;
+                                obj['DescriptionOfRisk']=burglarySection[0].DescriptionOfRisk;
+                                obj['CoveringDetails']=burglarySection[0].CoveringDetails;
+                                obj['IndustryType']=null;
+                                if(burglarySection[0]?.IndustryType!='0')obj['IndustryType']=burglarySection[0].IndustryType;
+                              }
                               
                               return obj
                             }

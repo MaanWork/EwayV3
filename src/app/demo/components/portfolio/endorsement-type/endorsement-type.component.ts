@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import * as Mydatas from '../../../../app-config.json';
 import { SharedService } from 'src/app/shared/shared.service';
 import Swal from 'sweetalert2';
-import * as moment from 'moment';
+import moment from 'moment';
 import { NodeService } from '@app/_services';
 @Component({
   selector: 'app-endorsement-type',
@@ -54,7 +54,7 @@ stateOptions11: any[] = [
 ];
 public AppConfig: any = (Mydatas as any).default;
 public ApiUrl1: any = this.AppConfig.ApiUrl1;
-public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
+public CommonApiUrl: any = this.AppConfig.CommonApiUrl;public CalcApiUrl: any = this.AppConfig.CustomCommonCalcApiUrl;
 public motorApiUrl: any = this.AppConfig.MotorApiUrl;
 ingredient!: string;enableFinancialList:boolean=false;
 value1: string = 'Removal Of Covers';
@@ -637,7 +637,7 @@ policyNo:any=null;productItem:any=null;quoteNo:any=null;effectiveDate:any=null;
                 "EffectiveDate": effectiveDate,
                 "PolicyEndDate": endDate,
               }
-      let urlLink = `${this.CommonApiUrl}calculator/calc/call`;
+      let urlLink = `${this.CalcApiUrl}calculator/calc/call`;
         this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if (data) {
@@ -1389,7 +1389,7 @@ policyNo:any=null;productItem:any=null;quoteNo:any=null;effectiveDate:any=null;
               "PolicyEndDate": endDate,
               "CoverModification":'Y'
             }
-            let urlLink = `${this.CommonApiUrl}calculator/calc`;
+            let urlLink = `${this.CalcApiUrl}calculator/calc`;
             this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
               (data: any) => {
                 let entry = data;
@@ -1465,7 +1465,7 @@ policyNo:any=null;productItem:any=null;quoteNo:any=null;effectiveDate:any=null;
                 "PolicyEndDate": customerData.PolicyEndDate,
                 "CoverModification": this.coverModificationYN
               }
-              let urlLink = `${this.CommonApiUrl}calculator/calc`;
+              let urlLink = `${this.CalcApiUrl}calculator/calc`;
               this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
                 (data: any) => {
                   if (data) {
@@ -1869,7 +1869,7 @@ policyNo:any=null;productItem:any=null;quoteNo:any=null;effectiveDate:any=null;
           "PolicyEndDate": endDate,
           "CoverModification":this.coverModificationYN
       }
-      let urlLink = `${this.CommonApiUrl}calculator/calc`;
+      let urlLink = `${this.CalcApiUrl}calculator/calc`;
       this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
         (data: any) => {
           let res:any = data;

@@ -410,7 +410,7 @@
     <p-button styleClass="p-button-outlined" label="Back" size="small"
         [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
     <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
-        (click)="onProceedData('Previous')" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+        (click)="previous()" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
         icon="pi pi-chevron-left"></p-button>
     <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
         (click)="onProceedData('Next')"></p-button>&nbsp;

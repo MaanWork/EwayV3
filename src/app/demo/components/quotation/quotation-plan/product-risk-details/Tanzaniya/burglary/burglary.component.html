@@ -1,0 +1,48 @@
+<div class="grid">
+    <div class="col-12 lg:col-8 xl:col-8 mx-auto">
+        <div class="memberDetailCard">
+            <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Industry&nbsp;<span class="text-danger">*</span></label>
+                        <p-dropdown class="w-full flex css" styleClass="w-full" placeholder="Select Industry"
+                            [filter]="true" filterBy="CodeDesc" [(ngModel)]="productItem.IndustryId"
+                            (onChange)="IndustryChanged()" [options]="industryTypeList" appendTo="body"
+                            optionLabel="CodeDesc" optionValue="Code" />
+                    </div>
+                    <div class="error-text text-danger" *ngIf="IndustryError">Please Select Industry</div><br>
+            </div>
+            <div class="grid justify-content-start">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b>Burglary</b>
+                </div>
+            </div>
+            <div class="sm:px-0 md:px-5 lg:px-5 xl:px-5">
+                <div class="px-5">
+                    <div>
+                        <!-- <div class="mt-4 mr-3 ml-3">
+                            <img src="./assets/images/content.png"
+                                width="40" height="35">
+                        </div> -->
+                        <div>
+                            <form [formGroup]="form">
+                                <formly-form [form]="form"
+                                    [fields]="burglaryfields"
+                                    [model]="productItem"></formly-form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <p-button styleClass="p-button-outlined" label="Back" size="small"
+        [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+    <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+        (click)="previous()" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+        icon="pi pi-chevron-left"></p-button>
+    <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+        (click)="onProceedData('Next')"></p-button>&nbsp;
+    <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+</div>

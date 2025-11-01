@@ -1,0 +1,455 @@
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <div class="grid ml-2">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b>Distributor Info</b>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <div>
+                    <div>
+                        <div class="col-12">
+                            <div>
+                                <p-table [value]="fieldsFarmCare"
+                                    class="p-datatable-gridlines">
+                                    <ng-template pTemplate="header">
+                                    </ng-template>
+                                    <ng-template pTemplate="body"
+                                        let-row>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    *ngIf="row[0] && !row[0]?.fieldGroup">{{
+                                                    row[0]?.props?.label
+                                                    }}</label>
+                                                <label
+                                                    *ngIf="row[0]?.fieldGroup">{{
+                                                    row[0]?.fieldGroup[0]?.props?.label
+                                                    }}</label>
+                                            </td>
+                                            <td>
+                                                <ng-container
+                                                    *ngIf="row[0]?.type ==='group'">
+                                                    <input pInputText
+                                                        styleClass=" w-full"
+                                                        [(ngModel)]="productItem[row[0]?.key]"
+                                                        type="number"
+                                                        class=" w-full"
+                                                        [placeholder]="row[0]?.props?.placeholder"
+                                                        [required]="row[0]?.props?.required" />
+                                                    <!-- <p-inputGroup>
+                                                        <input
+                                                            pInputText
+                                                            [(ngModel)]="productItem[row[0]?.key]"
+                                                            type="text" class="w-full" styleClass="col-5 p-0  w-full"
+                                                            placeholder="Enter Valid Code"
+                                                            required="true" />
+                                                    </p-inputGroup> -->
+                                                </ng-container>
+                                                <input
+                                                    *ngIf="row[0]?.type === 'commaSeparator' || row[0]?.type === 'number-input' || row[0]?.type === 'input'"
+                                                    pInputText
+                                                    [(ngModel)]="productItem[row[0]?.key]"
+                                                    type="text"
+                                                    class="w-full"
+                                                    [disabled]="row[0]?.props?.disabled"
+                                                    [placeholder]="row[0]?.props?.placeholder"
+                                                    [required]="row[0]?.props?.required"
+                                                    styleClass="col-5 p-0  w-full" />
+                                                <p-dropdown
+                                                    *ngIf="row[0]?.type === 'ngselect'"
+                                                    appendTo="body"
+                                                    class=" w-full flex css"
+                                                    (onChange)="onDropdownChange(row[0]?.key)"
+                                                    [(ngModel)]="productItem[row[0]?.key]"
+                                                    [options]="row[0]?.props?.options"
+                                                    [placeholder]="row[0]?.props?.placeholder"
+                                                    [required]="row[0]?.props?.required"
+                                                    [filter]="true"
+                                                    styleClass="col-5 p-0 w-full flex css">
+                                                </p-dropdown>
+                                                <!-- For Radio Button List (Horizontal Layout) -->
+                                                <div *ngIf="row[0]?.type === 'radioList'"
+                                                    class="flex gap-4">
+                                                    <div *ngFor="let option of row[0]?.props?.options"
+                                                        class="flex align-items-center">
+                                                        <p-radioButton
+                                                            [name]="row[0]?.key"
+                                                            [value]="option.value"
+                                                            [(ngModel)]="productItem[row[0]?.key]"
+                                                            [inputId]="option.value">
+                                                        </p-radioButton>
+                                                        <label
+                                                            [for]="option.value"
+                                                            class="ml-2">
+                                                            {{
+                                                            option.label
+                                                            }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <textarea
+                                                    *ngIf="row[0]?.type === 'primeTextArea' || row[0]?.type === 'number-input'"
+                                                    pInputText
+                                                    [(ngModel)]="productItem[row[0]?.key]"
+                                                    type="text"
+                                                    class="w-full"
+                                                    [placeholder]="row[0]?.props?.placeholder"
+                                                    [required]="row[0]?.props?.required"
+                                                    styleClass="col-5 p-0  w-full">
+                                                        </textarea>
+                                                <!-- Date Picker (p-calendar) -->
+                                                <div
+                                                    *ngIf="row[0]?.type === 'datepicker'">
+                                                    <p-calendar
+                                                        class="w-full"
+                                                        styleClass="w-full"
+                                                        [(ngModel)]="productItem[row[0]?.key]"
+                                                        [formlyAttributes]="row[0]"
+                                                        [maxDate]="row[0]?.props?.datepickerOptions?.max"
+                                                        [minDate]="row[0]?.props?.datepickerOptions?.min"
+                                                        appendTo="body"
+                                                        [iconDisplay]="'input'"
+                                                        [showIcon]="true"
+                                                        dateFormat="dd/mm/yy"
+                                                        [placeholder]="row[0]?.props?.placeholder">
+                                                    </p-calendar>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!-- If row[1] is a normal field, display its label -->
+                                                <label
+                                                    *ngIf="row[1] && !row[1]?.fieldGroup">{{
+                                                    row[1]?.props?.label
+                                                    }}</label>
+                                                <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                                <label
+                                                    *ngIf="row[1]?.fieldGroup">{{
+                                                    row[1]?.fieldGroup[0]?.props?.label
+                                                    }}</label>
+                                            </td>
+                                            <td>
+                                                <input
+                                                    *ngIf="row[1]?.type === 'commaSeparator' || row[1]?.type === 'input'"
+                                                    pInputText
+                                                    styleClass=" w-full"
+                                                    [(ngModel)]="productItem[row[1]?.key]"
+                                                    [type]="row[1]?.type"
+                                                    class=" w-full"
+                                                    (input)="checkLimitValue($event,row[1]?.key,'min')"
+                                                    [placeholder]="row[1]?.props?.placeholder"
+                                                    [required]="row[1]?.props?.required" />
+                                                <p-dropdown
+                                                    *ngIf="row[1]?.type === 'ngselect'"
+                                                    appendTo="body"
+                                                    styleClass=" w-full"
+                                                    [(ngModel)]="productItem[row[1]?.key]"
+                                                    [options]="row[1]?.props?.options"
+                                                    class=" w-full flex css"
+                                                    (onChange)="onChangeDropdown(row[1].key,'change')"
+                                                    [placeholder]="row[1]?.props?.placeholder"
+                                                    [required]="row[1]?.props?.required"
+                                                    [filter]="true">
+                                                </p-dropdown>
+                                                <div *ngIf="row[1]?.type === 'radioList'"
+                                                    class="flex gap-4">
+                                                    <div *ngFor="let option of row[1]?.props?.options"
+                                                        class="flex align-items-center">
+                                                        <p-radioButton
+                                                            [name]="row[1]?.key"
+                                                            [value]="option.value"
+                                                            [(ngModel)]="productItem[row[1]?.key]"
+                                                            [inputId]="option.value">
+                                                        </p-radioButton>
+                                                        <label
+                                                            [for]="option.value"
+                                                            class="ml-2">
+                                                            {{
+                                                            option.label
+                                                            }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <textarea
+                                                    *ngIf="row[1]?.type === 'primeTextArea' || row[1]?.type === 'number-input'"
+                                                    pInputText
+                                                    [(ngModel)]="productItem[row[1]?.key]"
+                                                    type="text"
+                                                    class="w-full"
+                                                    [placeholder]="row[1]?.props?.placeholder"
+                                                    [required]="row[1]?.props?.required"
+                                                    styleClass="col-5 p-0  w-full">
+                                                            </textarea>
+                                                <!-- Date Picker (p-calendar) -->
+                                                <div
+                                                    *ngIf="row[1]?.type === 'datepicker'">
+                                                    <p-calendar
+                                                        class="w-full"
+                                                        styleClass="w-full"
+                                                        [(ngModel)]="productItem[row[1]?.key]"
+                                                        [formlyAttributes]="row[1]"
+                                                        [maxDate]="row[1]?.props?.datepickerOptions?.max"
+                                                        [minDate]="row[1]?.props?.datepickerOptions?.min"
+                                                        appendTo="body"
+                                                        [iconDisplay]="'input'"
+                                                        [showIcon]="true"
+                                                        dateFormat="dd/mm/yy"
+                                                        [placeholder]="row[1]?.props?.placeholder">
+                                                    </p-calendar>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+    <div class="col-12 lg:col-10 xl:col-10">
+        <div class="memberDetailCard">
+            <div class="grid ml-2">
+                <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                    <b>Farm Details</b>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <div>
+                    <div>
+                        <div class="col-12">
+                            <div>
+                                    <p-table [value]="fieldsFarmCarePrimary"
+                                        class="p-datatable-gridlines">
+                                        <ng-template pTemplate="header">
+                                            <!-- <tr>
+                                                    <th>Cover Type</th>
+                                                    <th>Sum Insured </th>
+                                                    <th>Cover Type</th>
+                                                    <th>Sum Insured </th>
+                                                </tr> -->
+                                        </ng-template>
+                                        <ng-template pTemplate="body"
+                                            let-row>
+                                            <tr>
+                                                <td>
+                                                    <ng-container
+                                                        *ngIf="row[0].props.label!='Sum Insured' || (row[0].props.label=='Sum Insured' && (productItem['YaraPackageYN']?.value=='Y' || productItem['YaraPackageYN']?.value=='N'))">
+                                                        <!-- If row[1] is a normal field, display its label -->
+                                                        <label
+                                                            *ngIf="row[0] && !row[0]?.fieldGroup">{{row[0]?.props?.label}}</label>
+                                                        <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                                        <label
+                                                            *ngIf="row[0]?.fieldGroup">{{row[0]?.fieldGroup[0]?.props?.label}}</label>
+                                                    </ng-container>
+                                                </td>
+                                                <td>
+                                                    <ng-container
+                                                        *ngIf="row[0].props.label!='Sum Insured' || (row[0].props.label=='Sum Insured' && (productItem['YaraPackageYN']?.value=='Y' || productItem['YaraPackageYN']?.value=='N'))">
+                                                        <fieldset
+                                                            class="p-0 field_set"
+                                                            *ngIf="row[0]?.type === 'commaSeparator'"
+                                                            [disabled]="checkFarmSIDisabled(row[0]?.key)">
+                                                            <input
+                                                                *ngIf="row[0]?.type === 'commaSeparator' || row[0]?.type === 'number-input' || row[0]?.type === 'input'"
+                                                                pInputText
+                                                                [(ngModel)]="productItem[row[0]?.key]"
+                                                                type="text"
+                                                                class="w-full"
+                                                                (input)="checkLimitValue($event,row[0]?.key,'min')"
+                                                                [placeholder]="row[0]?.props?.placeholder"
+                                                                [required]="row[0]?.props?.required"
+                                                                styleClass="col-5 p-0  w-full" />
+                                                        </fieldset>
+                                                        <input
+                                                            *ngIf="row[0]?.type === 'number-input' || row[0]?.type === 'input'"
+                                                            pInputText
+                                                            [(ngModel)]="productItem[row[0]?.key]"
+                                                            type="text"
+                                                            class="w-full"
+                                                            [placeholder]="row[0]?.props?.placeholder"
+                                                            [required]="row[0]?.props?.required"
+                                                            styleClass="col-5 p-0  w-full" />
+                                                        <p-dropdown
+                                                            *ngIf="row[0]?.type === 'ngselect'"
+                                                            (onChange)="onChangeDropdown(row[0].key,'change')"
+                                                            appendTo="body"
+                                                            class=" w-full flex css"
+                                                            [(ngModel)]="productItem[row[0]?.key]"
+                                                            [options]="row[0]?.props?.options"
+                                                            [placeholder]="row[0]?.props?.placeholder"
+                                                            [required]="row[0]?.props?.required"
+                                                            [filter]="true"
+                                                            styleClass="col-5 p-0 w-full flex css">
+                                                        </p-dropdown>
+                                                        <!-- For Radio Button List (Horizontal Layout) -->
+                                                        <div *ngIf="row[0]?.type === 'radioList'"
+                                                            class="flex gap-4">
+                                                            <div *ngFor="let option of row[0]?.props?.options"
+                                                                class="flex align-items-center">
+                                                                <p-radioButton
+                                                                    [name]="row[0]?.key"
+                                                                    [value]="option.value"
+                                                                    (onClick)="onChangeYaraYN('change')"
+                                                                    [(ngModel)]="productItem[row[0]?.key]"
+                                                                    [inputId]="option.value">
+                                                                </p-radioButton>
+                                                                <label
+                                                                    [for]="option.value"
+                                                                    class="ml-2">
+                                                                    {{
+                                                                    option.label
+                                                                    }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <textarea
+                                                            *ngIf="row[0]?.type === 'primeTextArea' || row[0]?.type === 'number-input'"
+                                                            pInputText
+                                                            [(ngModel)]="productItem[row[0]?.key]"
+                                                            type="text"
+                                                            class="w-full"
+                                                            [placeholder]="row[0]?.props?.placeholder"
+                                                            [required]="row[0]?.props?.required"
+                                                            styleClass="col-5 p-0  w-full">
+                                                        </textarea>
+                                                        <!-- Date Picker (p-calendar) -->
+                                                        <div
+                                                            *ngIf="row[0]?.type === 'datepicker'">
+                                                            <p-calendar
+                                                                class="w-full"
+                                                                styleClass="w-full"
+                                                                [(ngModel)]="productItem[row[0]?.key]"
+                                                                [formlyAttributes]="row[0]"
+                                                                [maxDate]="row[0]?.props?.datepickerOptions?.max"
+                                                                [minDate]="row[0]?.props?.datepickerOptions?.min"
+                                                                appendTo="body"
+                                                                [iconDisplay]="'input'"
+                                                                [showIcon]="true"
+                                                                dateFormat="dd/mm/yy"
+                                                                [placeholder]="row[0]?.props?.placeholder">
+                                                            </p-calendar>
+                                                        </div>
+                                                    </ng-container>
+                                                </td>
+                                                <td>
+                                                    <!-- If row[1] is a normal field, display its label -->
+                                                    <label
+                                                        *ngIf="row[1] && !row[1]?.fieldGroup">{{row[1]?.props?.label}}</label>
+                                                    <!-- If row[1] is a fieldGroup, display the first child field's label -->
+                                                    <label
+                                                        *ngIf="row[1]?.fieldGroup">{{row[1]?.fieldGroup[0]?.props?.label}}</label>
+                                                </td>
+                                                <td>
+                                                    <fieldset
+                                                        class="p-0 field_set"
+                                                        *ngIf="row[1]?.type === 'commaSeparator'"
+                                                        [disabled]="checkFarmSIDisabled(row[1]?.key)">
+                                                        <input
+                                                            *ngIf="row[1]?.type === 'commaSeparator'"
+                                                            pInputText
+                                                            [(ngModel)]="productItem[row[1]?.key]"
+                                                            type="text"
+                                                            class="w-full"
+                                                            (input)="checkLimitValue($event,row[1]?.key,'min')"
+                                                            [placeholder]="row[1]?.props?.placeholder"
+                                                            [required]="row[1]?.props?.required"
+                                                            styleClass="col-5 p-0  w-full" />
+                                                    </fieldset>
+                                                    <input
+                                                        *ngIf="row[1]?.type === 'input'"
+                                                        pInputText
+                                                        styleClass=" w-full"
+                                                        [(ngModel)]="productItem[row[1]?.key]"
+                                                        [type]="row[1]?.type"
+                                                        class=" w-full"
+                                                        (keyup)="onCheckNoOfCalc($event,row[1]?.key)"
+                                                        [placeholder]="row[1]?.props?.placeholder"
+                                                        [required]="row[1]?.props?.required" />
+                                                    <p-dropdown
+                                                        *ngIf="row[1]?.type === 'ngselect'"
+                                                        appendTo="body"
+                                                        styleClass=" w-full"
+                                                        [(ngModel)]="productItem[row[1]?.key]"
+                                                        [options]="row[1]?.props?.options"
+                                                        class=" w-full flex css"
+                                                        (onChange)="onChangeDropdown(row[1].key,'change')"
+                                                        [placeholder]="row[1]?.props?.placeholder"
+                                                        [required]="row[1]?.props?.required"
+                                                        [filter]="true">
+                                                    </p-dropdown>
+                                                    <div *ngIf="row[1]?.type === 'radioList'"
+                                                        class="flex gap-4">
+                                                        <div *ngFor="let option of row[1]?.props?.options"
+                                                            class="flex align-items-center">
+                                                            <p-radioButton
+                                                                [name]="row[1]?.key"
+                                                                [value]="option.value"
+                                                                (onClick)="onChangeYaraYN('change')"
+                                                                [(ngModel)]="productItem[row[1]?.key]"
+                                                                [inputId]="option.value">
+                                                            </p-radioButton>
+                                                            <label
+                                                                [for]="option.value"
+                                                                class="ml-2">
+                                                                {{
+                                                                option.label
+                                                                }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <textarea
+                                                        *ngIf="row[1]?.type === 'primeTextArea' || row[1]?.type === 'number-input'"
+                                                        pInputText
+                                                        [(ngModel)]="productItem[row[1]?.key]"
+                                                        type="text"
+                                                        class="w-full"
+                                                        [placeholder]="row[1]?.props?.placeholder"
+                                                        [required]="row[1]?.props?.required"
+                                                        styleClass="col-5 p-0  w-full">
+                                                                </textarea>
+                                                    <!-- Date Picker (p-calendar) -->
+                                                    <div
+                                                        *ngIf="row[1]?.type === 'datepicker'">
+                                                        <p-calendar
+                                                            class="w-full"
+                                                            styleClass="w-full"
+                                                            [(ngModel)]="productItem[row[1]?.key]"
+                                                            [formlyAttributes]="row[1]"
+                                                            [maxDate]="row[1]?.props?.datepickerOptions?.max"
+                                                            [minDate]="row[1]?.props?.datepickerOptions?.min"
+                                                            appendTo="body"
+                                                            [iconDisplay]="'input'"
+                                                            [showIcon]="true"
+                                                            dateFormat="dd/mm/yy"
+                                                            [placeholder]="row[1]?.props?.placeholder">
+                                                        </p-calendar>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <p-button styleClass="p-button-outlined" label="Back" size="small"
+        [routerLink]="['/quotation/plan/quote-details']" routerLinkActive="router-link-active"></p-button>&nbsp;
+   <p-button label="Previous" *ngIf="locationList.length>1 && (tabIndex!=0)"
+        (click)="previous()" size="small" class="mr-4 text-l mr-0" styleClass="p-button-outlined"
+        icon="pi pi-chevron-left"></p-button>
+    <p-button label="Next" size="small" *ngIf="locationList.length>1 && (tabIndex+1)!=locationList.length"
+        (click)="onProceedData('Next')"></p-button>&nbsp;
+    <p-button label="Proceed" size="small" (click)="onProceedData('Submit')"></p-button>
+</div>

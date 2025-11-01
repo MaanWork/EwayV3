@@ -177,7 +177,6 @@
                             [(ngModel)]="customerName" disabled type="text"
                             placeholder="{{ 'MOTORQUOTE.SourceName' | translate }}" />
                     </div>
-                   
                     <div class="lg:col-6 md:col-6 col-12" *ngIf="insuranceId==='100048'">
                         <label for="username">{{ 'MOTORQUOTE.BusinessSource' | translate }} *</label>
                         <p-dropdown [filter]="true" filterBy="CodeDesc" inputId="BusinessType" class="w-full" styleClass="w-full" [disabled]="endorsementSection"
@@ -264,7 +263,7 @@
                                 </div>
                             </div>
                         </div> -->
-                    <div class="lg:col-6 md:col-6 col-12" *ngIf="productId=='15' || productId=='24' || productId=='1'">
+                    <!-- <div class="lg:col-6 md:col-6 col-12" *ngIf="productId=='15' || productId=='24' || productId=='1'">
                         <label for="username">{{ 'MOTORQUOTE.Industry' | translate }}</label>
                         <p-dropdown [filter]="true" filterBy="CodeDesc" inputId="make" class="w-full"
                             styleClass="w-full" [options]="industryList" [(ngModel)]="IndustryId"
@@ -276,7 +275,7 @@
                                 {{ 'MOTORQUOTE.PleaseSelectIndustry' | translate }}
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </ng-container>
@@ -433,7 +432,6 @@
                         </div>
                         <div class="col-12 lg:col-4 md:col-4 lx:col-4">
                             <label for="">
-
                                 <ng-container
                                     *ngIf="insuranceId!='100046' && insuranceId!='100047' && insuranceId!='100048' && insuranceId!='100049' && insuranceId!='100049' && insuranceId!='100050'">Adult(19
                                     Years-65 Years)</ng-container>
@@ -2200,7 +2198,6 @@
             </p-listbox>
         </div>
     </div>
-
     <div class="col-12" *ngIf="Value =='Premium Plan'">
         <div class="col-12">
             <p-listbox [options]="premiumList" [(ngModel)]="premium" optionLabel="CodeDesc" optionValue="Code"
@@ -2208,7 +2205,6 @@
                 (onChange)="onchangepremium(premium)" styleClass="w-full">
             </p-listbox>
         </div>
-
     </div>
     <div class="col-12" *ngIf="Value =='Plan Type'">
         <div class="col-12">
@@ -2224,12 +2220,9 @@
                         </p-dropdown>
                     </div> -->
     </div>
-
     <div class="col-12" *ngIf="Value === 'No.Of.Persons'">
         <div class="grid">
-
             <div class="col-12 flex align-items-center counter-controls">
-
                 <div class="col-6"><label>Kids (0 - 18 Years)</label></div>
                 <div class="col-6 flex align-items-end"><button pButton pRipple icon="pi pi-minus-circle"
                         class="p-button-outlined travelTextSubBtn mr-2" [disabled]="kids === 0"
@@ -2239,8 +2232,6 @@
                         (click)="Increment('kids')"></button>
                 </div>
             </div>
-
-
             <div class="col-12 flex align-items-center margin-class">
                 <div class="col-6"><label>Adult (19 - 65 Years)</label></div>
                 <div class="col-6 flex align-items-end">
@@ -2250,12 +2241,8 @@
                     <button pButton pRipple icon="pi pi-plus-circle" class="p-button-outlined travelTextAddBtn"
                         (click)="Increment('adult')"></button>
                 </div>
-
             </div>
-
             <div class="col-12 flex align-items-center margin-class">
-
-
                 <div class="col-6"><label>Senior (66 - 75 Years)</label></div>
                 <div class="col-6 flex align-items-end">
                     <button pButton pRipple icon="pi pi-minus-circle" class="p-button-outlined travelTextSubBtn mr-2"
@@ -2265,11 +2252,7 @@
                         (click)="Increment('senior')"></button>
                 </div>
             </div>
-
-
             <div class="col-12 flex align-items-center margin-class">
-
-
                 <div class="col-6 flex align-items-start"><label style="white-space: nowrap;">Super Senior (76 - 80
                         Years)</label></div>
                 <div class="col-6 flex align-items-end">
@@ -2280,11 +2263,7 @@
                         (click)="Increment('superSenior')"></button>
                 </div>
             </div>
-
-
             <div class="col-12 flex align-items-center margin-class" *ngIf="premium === '83' || premium === '84'">
-
-
                 <div class="col-6 flex align-items-start"><label>Grand Senior (81 - 100 Years)</label></div>
                 <div class="col-6 flex align-items-end">
                     <button pButton pRipple icon="pi pi-minus-circle" class="p-button-outlined travelTextSubBtn mr-2"
@@ -2294,10 +2273,8 @@
                         (click)="Increment('grandSenior')"></button>
                 </div>
             </div>
-
         </div>
         <!-- </div> -->
-
     </div>
     <ng-template pTemplate="footer">
         <div *ngIf="Value === 'No.Of.Persons'" class="col-12 flex align-items-end mt-5"

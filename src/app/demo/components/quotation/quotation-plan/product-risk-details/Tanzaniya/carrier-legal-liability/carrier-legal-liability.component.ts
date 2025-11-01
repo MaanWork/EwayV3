@@ -119,7 +119,11 @@ export class CarrierLegalLiabilityComponent {
       this.skipSection.emit(true);
     }
     previous() {
-      this.previousSection.emit(true);
+      let res = {
+          "locationList": this.locationList,
+          "type": 'Previous'
+        }
+      this.previousSection.emit(res);
     }
     onExtensionToggle() {
       if (!this.showExtensions) {
